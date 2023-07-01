@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    url: jdbc:log4jdbc:postgresql://localhost:5432/test
+    username: test
+    password: test
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+  jpa:
+    hibernate:
+      ddl-auto: update
+logging:
+  level:
+    jdbc:
+      audit: off
+      resultset: off
+      resulttable: debug
+      connection: off
+      sqlonly: off
+      sqltimming: debug
