@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -40,6 +41,7 @@ class VeterinaryClinicControllerTest {
                 .andDo(document("clinic/save",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
+                .andDo(print())
                 .andExpect(status().isCreated());
 
     }
