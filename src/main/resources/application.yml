@@ -7,6 +7,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  jackson:
+    serialization:
+      indent-output: true
 logging:
   level:
     jdbc:
