@@ -14,3 +14,43 @@ include::{snippets}/clinic/save/http-request.adoc[]
 === Response
 
 include::{snippets}/clinic/save/http-response.adoc[]
+
+== 동물병원 삭제하기
+
+=== Request
+
+include::{snippets}/clinic/delete/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/clinic/delete/http-response.adoc[]
+
+== 동물병원 수정하기
+
+=== Request
+
+include::{snippets}/clinic/update/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/clinic/update/http-response.adoc[]
+
+== 동물병원 찾기
+
+=== Request
+
+include::{snippets}/clinic/findByIdAndStatus/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/clinic/findByIdAndStatus/http-response.adoc[]
+
+== 동물병원 모두 찾기
+
+=== Request
+
+include::{snippets}/clinic/all/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/clinic/all/http-response.adoc[]

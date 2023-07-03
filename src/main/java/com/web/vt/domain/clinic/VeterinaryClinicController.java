@@ -57,7 +57,7 @@ public class VeterinaryClinicController {
 
     @GetMapping("all")
     public ResponseEntity<Page<VeterinaryClinicVO>> findAll(PageVO vo){
-        if(vo.getPage() == 0 || vo.getSize() == 0){
+        if(vo.getSize() == 0){
             throw new IllegalStateException("PAGINATION INFO IS EMPTY");
         }
         Pageable pageable = PageRequest.of(vo.getPage(), vo.getSize(), by(desc("createdAt")));

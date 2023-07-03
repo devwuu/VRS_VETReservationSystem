@@ -53,7 +53,7 @@ class VeterinaryClinicControllerTest {
 
         mvc.perform(get("/v1/rest/clinic")
                 .param("id", "52"))
-                .andDo(document("clinic/findByIdAnsStatus",
+                .andDo(document("clinic/findByIdAndStatus",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
                 .andDo(print())
@@ -72,7 +72,7 @@ class VeterinaryClinicControllerTest {
         mvc.perform(post("/v1/rest/clinic/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(vo)))
-                .andDo(document("clinic/findByIdAnsStatus",
+                .andDo(document("clinic/update",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
                 .andDo(print())
@@ -102,7 +102,7 @@ class VeterinaryClinicControllerTest {
         mvc.perform(get("/v1/rest/clinic/all")
                 .param("page", "0")
                 .param("size", "2"))
-                .andDo(document("clinic/delete",
+                .andDo(document("clinic/all",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
                 .andDo(print())
