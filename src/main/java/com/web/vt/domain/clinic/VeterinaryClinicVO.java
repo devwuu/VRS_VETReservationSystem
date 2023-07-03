@@ -1,4 +1,4 @@
-package com.web.vt.domain.hospital;
+package com.web.vt.domain.clinic;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.web.vt.domain.common.BaseVO;
@@ -21,12 +21,14 @@ public class VeterinaryClinicVO extends BaseVO implements Serializable {
     private String name;
     private String contact;
     private String remark;
+    private String status;
 
     public VeterinaryClinicVO(VeterinaryClinic entity){
         id = entity.id();
         name = entity.name();
         contact = entity.contact();
         remark = entity.remark();
+        status = entity.status();
         updatedAt(entity.updatedAt());
         updatedBy(entity.updatedBy());
         createdAt(entity.createdAt());

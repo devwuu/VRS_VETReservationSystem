@@ -1,4 +1,4 @@
-package com.web.vt.domain.hospital;
+package com.web.vt.domain.clinic;
 
 import com.web.vt.domain.common.BaseEntity;
 import jakarta.persistence.*;
@@ -27,11 +27,15 @@ public class VeterinaryClinic extends BaseEntity {
     @Column(name = "remark")
     private String remark;
 
+    @Column(name = "status")
+    private String status;
+
     public VeterinaryClinic(VeterinaryClinicVO vo){
         id = vo.id();
         name = vo.name();
         contact = vo.contact();
         remark = vo.remark();
+        status = vo.status();
     }
 
 
