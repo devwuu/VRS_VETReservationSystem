@@ -1,23 +1,40 @@
 package com.web.vt.domain.animal;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.web.vt.domain.common.BaseEntity;
+import com.web.vt.domain.common.BaseVO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+
 @Getter @Setter
 @Accessors(chain = true, fluent = true)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @NoArgsConstructor
-public class AnimalVO extends BaseEntity {
+public class AnimalVO extends BaseVO implements Serializable {
+
+    private static final long serialVersionUID = -7382175167575158446L;
 
     private Long id;
+    private String name;
     private String species;
     private Long age;
     private String remark;
     private Long clinicId;
+
+    public AnimalVO(Animal entity) {
+        id = entity.id();
+        name = entity.name();
+        species = entity.species();
+        age = entity.age();
+        remark = entity.remark();
+        updatedBy(entity.updatedBy());
+        updatedAt(entity.updatedAt());
+        createBy(entity.createBy());
+        createdAt(entity.createdAt());
+    }
 
 /*    public AnimalVO addClinic(){
 

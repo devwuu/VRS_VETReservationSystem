@@ -24,7 +24,7 @@ public class ReservationManagementService {
         VeterinaryClinicVO findClinic = clinicService.findByIdAndStatus(clinic);
 
         ReservationManagement management = new ReservationManagement(vo)
-                .addClinic(new VeterinaryClinic(findClinic));
+                .clinic(new VeterinaryClinic(findClinic));
 
         ReservationManagement saved = reservationManagementRepository.save(management);
 

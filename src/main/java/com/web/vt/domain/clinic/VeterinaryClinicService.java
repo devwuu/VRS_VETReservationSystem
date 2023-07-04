@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = false)
+@Transactional
 public class VeterinaryClinicService {
 
     private final VeterinaryClinicRepository clinicRepository;
@@ -49,6 +49,16 @@ public class VeterinaryClinicService {
     public Page<VeterinaryClinicVO> findAll(Pageable pageable){
         Page<VeterinaryClinic> find = clinicRepository.findAll(pageable);
         return find.map(VeterinaryClinicVO::new);
+    }
+
+    // 공통화 검토
+    @Transactional(readOnly = true)
+    public VeterinaryClinicVO findById(VeterinaryClinicVO vo){
+        Optional<VeterinaryClinic> find = clinicRepository.findById(vo.id());
+        if(find.isEmpty()){
+            throw new NotFoundException("NOT EXIST ID");
+        }
+        return find.map(VeterinaryClinicVO::new).get();
     }
 
     @Transactional(readOnly = true)

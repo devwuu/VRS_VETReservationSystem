@@ -36,8 +36,9 @@ public class ReservationManagement extends BaseEntity {
         endDateTime = vo.endDateTime();
     }
 
-    public ReservationManagement addClinic(VeterinaryClinic clinic){
-        this.clinic = clinic;
-        return this;
-    }
+//    public ReservationManagement addClinic(VeterinaryClinic clinic){
+//        this.clinic = clinic;
+//        return this;
+//    }
+
 }

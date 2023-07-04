@@ -7,13 +7,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
 import java.time.Instant;
 
 @Getter @Setter
 @Accessors(fluent = true, chain = true)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @NoArgsConstructor
-public class ReservationManagementVO extends BaseVO {
+public class ReservationManagementVO extends BaseVO implements Serializable {
+
+    private static final long serialVersionUID = -8608246536563560759L;
 
     private Long id;
     private Long clinicId;
