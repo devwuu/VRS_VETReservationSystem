@@ -34,7 +34,7 @@ class VeterinaryClinicServiceTest {
     public void deleteTest() {
 
         VeterinaryClinicVO vo = new VeterinaryClinicVO()
-                .id(502L);
+                .id(2L);
         VeterinaryClinicVO delete = service.delete(vo);
 
         assertThat(delete.status()).isEqualTo("D");
@@ -55,7 +55,7 @@ class VeterinaryClinicServiceTest {
     @Test @DisplayName("영업 중인 모든 동물병원을 가져옵니다.")
     public void findAllTest() {
         Pageable pageable = PageRequest.of(0, 2, by(Order.desc("createdAt")));
-        Page<VeterinaryClinicVO> result = service.findAllByStatus(pageable);
+        Page<VeterinaryClinicVO> result = service.findAll(pageable);
     }
 
 

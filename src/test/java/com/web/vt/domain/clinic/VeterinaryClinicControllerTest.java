@@ -37,7 +37,7 @@ class VeterinaryClinicControllerTest {
                 .contact("0211112222")
                 .remark("TEST DATA");
 
-        mvc.perform(post("/v1/rest/clinic/save")
+        mvc.perform(post("/v1/admin/clinic/save")
                 .content(mapper.writeValueAsString(vo))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(document("clinic/save",
@@ -51,8 +51,8 @@ class VeterinaryClinicControllerTest {
     @Test @DisplayName("영업 중인 특정 동물병원을 찾습니다.")
     public void findTest() throws Exception {
 
-        mvc.perform(get("/v1/rest/clinic")
-                .param("id", "52"))
+        mvc.perform(get("/v1/clinic")
+                .param("id", "2"))
                 .andDo(document("clinic/findByIdAndStatus",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint())))
@@ -65,11 +65,11 @@ class VeterinaryClinicControllerTest {
     public void updateTest() throws Exception {
 
         VeterinaryClinicVO vo = new VeterinaryClinicVO()
-                .id(52L)
-                .name("Updated")
-                .remark("Updated");
+                .id(2L)
+                .name("Updated name")
+                .remark("Updated remark");
 
-        mvc.perform(post("/v1/rest/clinic/update")
+        mvc.perform(post("/v1/admin/clinic/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(vo)))
                 .andDo(document("clinic/update",
@@ -83,9 +83,9 @@ class VeterinaryClinicControllerTest {
     @Test @DisplayName("동물병원을 삭제(영업중지)합니다.")
     public void deleteTest() throws Exception {
 
-        VeterinaryClinicVO vo = new VeterinaryClinicVO().id(3L);
+        VeterinaryClinicVO vo = new VeterinaryClinicVO().id(52L);
 
-        mvc.perform(post("/v1/rest/clinic/delete")
+        mvc.perform(post("/v1/admin/clinic/delete")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(vo)))
                 .andDo(document("clinic/delete",
@@ -96,10 +96,10 @@ class VeterinaryClinicControllerTest {
 
     }
 
-    @Test @DisplayName("영업중인 동물병원을 모두 가져옵니다.")
+    @Test @DisplayName("동물병원을 모두 가져옵니다.")
     public void findAllTest() throws Exception {
 
-        mvc.perform(get("/v1/rest/clinic/all")
+        mvc.perform(get("/v1/admin/clinic/all")
                 .param("page", "0")
                 .param("size", "2"))
                 .andDo(document("clinic/all",
