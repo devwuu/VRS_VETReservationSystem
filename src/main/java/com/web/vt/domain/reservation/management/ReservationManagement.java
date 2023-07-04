@@ -1,4 +1,4 @@
-package com.web.vt.domain.reservation;
+package com.web.vt.domain.reservation.management;
 
 import com.web.vt.domain.clinic.VeterinaryClinic;
 import com.web.vt.domain.common.BaseEntity;
@@ -20,8 +20,8 @@ public class ReservationManagement extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "clinic_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "clinic_id", updatable = false)
     private VeterinaryClinic clinic;
 
     @Column(name = "start_date_time")

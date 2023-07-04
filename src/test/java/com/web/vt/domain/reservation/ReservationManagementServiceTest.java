@@ -1,5 +1,7 @@
 package com.web.vt.domain.reservation;
 
+import com.web.vt.domain.reservation.management.ReservationManagementService;
+import com.web.vt.domain.reservation.management.ReservationManagementVO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,7 +25,7 @@ class ReservationManagementServiceTest {
     public void saveTest() {
 
         ReservationManagementVO vo = new ReservationManagementVO()
-                .clinicId(2L)
+                .clinicId(102L)
                 .startDateTime(START.toInstant())
                 .endDateTime(END.toInstant());
 
@@ -35,9 +37,9 @@ class ReservationManagementServiceTest {
     public void updateTest() {
 
         ReservationManagementVO vo = new ReservationManagementVO()
-                .id(1L)
-                .clinicId(2L)
-                .startDateTime(START.toInstant());
+                .id(102L)
+                .clinicId(102L)
+                .endDateTime(END.toInstant());
 
         ReservationManagementVO saved = service.update(vo);
         assertThat(saved.clinicId()).isEqualTo(vo.clinicId());

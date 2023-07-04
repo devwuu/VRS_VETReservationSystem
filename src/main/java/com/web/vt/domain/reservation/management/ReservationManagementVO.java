@@ -1,4 +1,4 @@
-package com.web.vt.domain.reservation;
+package com.web.vt.domain.reservation.management;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.web.vt.domain.common.BaseVO;

@@ -1,4 +1,4 @@
-package com.web.vt.domain.reservation;
+package com.web.vt.domain.reservation.management;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
