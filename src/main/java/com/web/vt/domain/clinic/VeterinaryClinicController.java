@@ -1,6 +1,7 @@
 package com.web.vt.domain.clinic;
 
 import com.web.vt.domain.common.PageVO;
+import com.web.vt.exceptions.ValidationException;
 import com.web.vt.utils.ObjectUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,7 +25,7 @@ public class VeterinaryClinicController {
     @PostMapping("save")
     public ResponseEntity<VeterinaryClinicVO> save(@RequestBody VeterinaryClinicVO body){
         if(ObjectUtil.isNotEmpty(body.id())){
-            throw new IllegalStateException("ID SHOULD BE NULL");
+            throw new ValidationException("ID SHOULD BE NULL");
         }
         VeterinaryClinicVO result = clinicService.save(body);
         return ResponseEntity.created(URI.create("/v1/rest/clinic")).body(result);
@@ -40,7 +41,7 @@ public class VeterinaryClinicController {
     @PostMapping("update")
     public ResponseEntity<VeterinaryClinicVO> update(@RequestBody VeterinaryClinicVO body){
         if(ObjectUtil.isEmpty(body.id())){
-            throw new IllegalStateException("ID SHOULD NOT BE NULL");
+            throw new ValidationException("ID SHOULD NOT BE NULL");
         }
         VeterinaryClinicVO update = clinicService.update(body);
         return ResponseEntity.ok().body(update);
@@ -49,7 +50,7 @@ public class VeterinaryClinicController {
     @PostMapping("delete")
     public ResponseEntity<VeterinaryClinicVO> delete(@RequestBody VeterinaryClinicVO body){
         if(ObjectUtil.isEmpty(body.id())){
-            throw new IllegalStateException("ID SHOULD NOT BE NULL");
+            throw new ValidationException("ID SHOULD NOT BE NULL");
         }
         VeterinaryClinicVO result = clinicService.delete(body);
         return ResponseEntity.ok().body(result);
@@ -58,7 +59,7 @@ public class VeterinaryClinicController {
     @GetMapping("all")
     public ResponseEntity<Page<VeterinaryClinicVO>> findAll(PageVO vo){
         if(vo.getSize() == 0){
-            throw new IllegalStateException("PAGINATION INFO IS EMPTY");
+            throw new ValidationException("PAGINATION INFO IS EMPTY");
         }
         Pageable pageable = PageRequest.of(vo.getPage(), vo.getSize(), by(desc("createdAt")));
         Page<VeterinaryClinicVO> result = clinicService.findAllByStatus(pageable);

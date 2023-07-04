@@ -83,7 +83,7 @@ class VeterinaryClinicControllerTest {
     @Test @DisplayName("동물병원을 삭제(영업중지)합니다.")
     public void deleteTest() throws Exception {
 
-        VeterinaryClinicVO vo = new VeterinaryClinicVO().id(452L);
+        VeterinaryClinicVO vo = new VeterinaryClinicVO().id(3L);
 
         mvc.perform(post("/v1/rest/clinic/delete")
                         .contentType(MediaType.APPLICATION_JSON)

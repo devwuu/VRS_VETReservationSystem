@@ -1,5 +1,6 @@
 package com.web.vt.domain.clinic;
 
+import com.web.vt.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +25,7 @@ public class VeterinaryClinicService {
     public VeterinaryClinicVO update(VeterinaryClinicVO vo){
         Optional<VeterinaryClinic> find = clinicRepository.findById(vo.id());
         if(find.isEmpty()){
-            throw new IllegalStateException("NOT EXIST ID");
+            throw new NotFoundException("NOT EXIST ID");
         }
 
         // update method 고려
@@ -38,7 +39,7 @@ public class VeterinaryClinicService {
     public VeterinaryClinicVO delete(VeterinaryClinicVO vo){
         Optional<VeterinaryClinic> find = clinicRepository.findById(vo.id());
         if(find.isEmpty()){
-            throw new IllegalStateException("NOT EXIST ID");
+            throw new NotFoundException("NOT EXIST ID");
         }
         VeterinaryClinic saved = find.get().status("D");//deleted
         return new VeterinaryClinicVO().id(saved.id()).status(saved.status());
