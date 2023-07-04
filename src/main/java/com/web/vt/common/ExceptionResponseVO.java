@@ -1,4 +1,4 @@
-package com.web.vt.exceptions;
+package com.web.vt.common;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import lombok.Getter;
