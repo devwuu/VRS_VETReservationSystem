@@ -1,6 +1,7 @@
 package com.web.vt.domain.reservation;
 
 import com.web.vt.domain.clinic.VeterinaryClinic;
+import com.web.vt.domain.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ import java.time.Instant;
 @Getter @Setter
 @Accessors(fluent = true, chain = true)
 @NoArgsConstructor
-public class ReservationManagement {
+public class ReservationManagement extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;

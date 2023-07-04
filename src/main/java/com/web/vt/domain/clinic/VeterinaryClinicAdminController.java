@@ -22,9 +22,6 @@ public class VeterinaryClinicAdminController {
 
     private final VeterinaryClinicService clinicService;
 
-    /**
-     * for admin
-     * */
     @PostMapping("save")
     public ResponseEntity<VeterinaryClinicVO> save(@RequestBody VeterinaryClinicVO body){
         if(ObjectUtil.isNotEmpty(body.id())){

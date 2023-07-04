@@ -17,9 +17,6 @@ public class VeterinaryClinicService {
 
     private final VeterinaryClinicRepository clinicRepository;
 
-    /**
-     * for admin
-     * */
     public VeterinaryClinicVO save(VeterinaryClinicVO vo){
         VeterinaryClinic saved = clinicRepository.save(new VeterinaryClinic(vo));
         return new VeterinaryClinicVO(saved);
@@ -44,7 +41,7 @@ public class VeterinaryClinicService {
         if(find.isEmpty()){
             throw new NotFoundException("NOT EXIST ID");
         }
-        VeterinaryClinic saved = find.get().status("D");//deleted
+        VeterinaryClinic saved = find.get().name(null).contact(null).remark(null).status("D");//deleted
         return new VeterinaryClinicVO().id(saved.id()).status(saved.status());
     }
 
@@ -54,9 +51,6 @@ public class VeterinaryClinicService {
         return find.map(VeterinaryClinicVO::new);
     }
 
-    /**
-     * for client
-     * */
     @Transactional(readOnly = true)
     public VeterinaryClinicVO findByIdAndStatus(VeterinaryClinicVO vo){
         Optional<VeterinaryClinic> find = clinicRepository.findByIdAndStatus(vo.id(), vo.status());

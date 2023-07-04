@@ -1,7 +1,7 @@
 package com.web.vt.domain.reservation;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.web.vt.domain.clinic.VeterinaryClinic;
+import com.web.vt.domain.common.BaseVO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,7 +13,7 @@ import java.time.Instant;
 @Accessors(fluent = true, chain = true)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @NoArgsConstructor
-public class ReservationManagementVO {
+public class ReservationManagementVO extends BaseVO {
 
     private Long id;
     private Long clinicId;
@@ -24,10 +24,15 @@ public class ReservationManagementVO {
         id = entity.id();
         startDateTime = entity.startDateTime();
         endDateTime = entity.endDateTime();
+        createBy(entity.createBy());
+        createdAt(entity.createdAt());
+        updatedBy(entity.updatedBy());
+        updatedAt(entity.updatedAt());
     }
 
-    public ReservationManagementVO addClinic(VeterinaryClinic entity){
+/*    public ReservationManagementVO addClinic(VeterinaryClinic entity){
         clinicId = entity.id();
         return this;
-    }
+    }*/
+
 }

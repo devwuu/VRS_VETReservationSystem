@@ -16,19 +16,32 @@ class ReservationManagementServiceTest {
     @Autowired
     private ReservationManagementService service;
 
+    private final ZonedDateTime START = LocalDateTime.now().atZone(ZoneOffset.UTC);
+    private final ZonedDateTime END = START.plusDays(1);
+
     @Test
     public void saveTest() {
 
-        ZonedDateTime start = LocalDateTime.now().atZone(ZoneOffset.UTC);
-        ZonedDateTime end = start.plusDays(1);
-
         ReservationManagementVO vo = new ReservationManagementVO()
                 .clinicId(2L)
-                .startDateTime(start.toInstant())
-                .endDateTime(end.toInstant());
+                .startDateTime(START.toInstant())
+                .endDateTime(END.toInstant());
 
         ReservationManagementVO save = service.save(vo);
         assertThat(save.id()).isNotNull();
+    }
+
+    @Test
+    public void updateTest() {
+
+        ReservationManagementVO vo = new ReservationManagementVO()
+                .id(1L)
+                .clinicId(2L)
+                .startDateTime(START.toInstant());
+
+        ReservationManagementVO saved = service.update(vo);
+        assertThat(saved.clinicId()).isEqualTo(vo.clinicId());
+
     }
 
 }

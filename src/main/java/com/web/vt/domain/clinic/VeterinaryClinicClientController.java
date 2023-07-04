@@ -14,9 +14,6 @@ public class VeterinaryClinicClientController {
 
     private final VeterinaryClinicService clinicService;
 
-    /**
-     * for client
-     * */
     @GetMapping
     public ResponseEntity<VeterinaryClinicVO> findByIdAndStatus(@RequestParam String id){
         VeterinaryClinicVO find = new VeterinaryClinicVO().id(Long.parseLong(id)).status("Y");
