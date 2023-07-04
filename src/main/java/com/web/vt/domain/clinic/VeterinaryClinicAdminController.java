@@ -17,11 +17,14 @@ import static org.springframework.data.domain.Sort.by;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/rest/clinic")
-public class VeterinaryClinicController {
+@RequestMapping("/v1/admin/clinic")
+public class VeterinaryClinicAdminController {
 
     private final VeterinaryClinicService clinicService;
 
+    /**
+     * for admin
+     * */
     @PostMapping("save")
     public ResponseEntity<VeterinaryClinicVO> save(@RequestBody VeterinaryClinicVO body){
         if(ObjectUtil.isNotEmpty(body.id())){
@@ -29,13 +32,6 @@ public class VeterinaryClinicController {
         }
         VeterinaryClinicVO result = clinicService.save(body);
         return ResponseEntity.created(URI.create("/v1/rest/clinic")).body(result);
-    }
-
-    @GetMapping
-    public ResponseEntity<VeterinaryClinicVO> findByIdAnsStatus(@RequestParam String id){
-        VeterinaryClinicVO find = new VeterinaryClinicVO().id(Long.parseLong(id)).status("Y");
-        VeterinaryClinicVO result = clinicService.findByIdAndStatus(find);
-        return ResponseEntity.ok().body(result);
     }
 
     @PostMapping("update")
@@ -62,7 +58,7 @@ public class VeterinaryClinicController {
             throw new ValidationException("PAGINATION INFO IS EMPTY");
         }
         Pageable pageable = PageRequest.of(vo.getPage(), vo.getSize(), by(desc("createdAt")));
-        Page<VeterinaryClinicVO> result = clinicService.findAllByStatus(pageable);
+        Page<VeterinaryClinicVO> result = clinicService.findAll(pageable);
         return ResponseEntity.ok().body(result);
     }
 
