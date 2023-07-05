@@ -1,7 +1,10 @@
 package com.web.vt.domain.animal;
 
 import com.web.vt.domain.clinic.VeterinaryClinic;
+import com.web.vt.domain.clinic.VeterinaryClinicVO;
 import com.web.vt.domain.common.BaseEntity;
+import com.web.vt.domain.guardian.AnimalGuardian;
+import com.web.vt.domain.guardian.AnimalGuardianVO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,6 +33,10 @@ public class Animal extends BaseEntity {
     private String remark;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "guardian_id")
+    private AnimalGuardian guardian;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "clinic_id", updatable = false)
     private VeterinaryClinic clinic;
 
@@ -41,9 +48,13 @@ public class Animal extends BaseEntity {
         remark = vo.remark();
     }
 
-    //    public Animal addClinic(VeterinaryClinic clinic){
-//        this.clinic = clinic;
-//        return this;
-//    }
+    public Animal addClinic(VeterinaryClinicVO vo) {
+        clinic = new VeterinaryClinic(vo);
+        return this;
+    }
 
+    public Animal addGuardian(AnimalGuardianVO vo) {
+        guardian = new AnimalGuardian(vo);
+        return this;
+    }
 }
