@@ -1,5 +1,6 @@
 package com.web.vt.domain.clinic;
 
+import com.web.vt.domain.common.enums.UsageStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface VeterinaryClinicRepository extends JpaRepository<VeterinaryClinic, Long> {
 
-    Optional<VeterinaryClinic> findByIdAndStatus(Long aLong, String status);
+    Optional<VeterinaryClinic> findByIdAndStatus(Long aLong, UsageStatus status);
 
-    Page<VeterinaryClinic> findAllByStatus(String status, Pageable pageable);
+    Page<VeterinaryClinic> findAllByStatus(UsageStatus status, Pageable pageable);
 }

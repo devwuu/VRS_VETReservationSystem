@@ -1,6 +1,8 @@
 package com.web.vt.domain.guardian;
 
 import com.web.vt.domain.common.BaseEntity;
+import com.web.vt.domain.common.enums.UsageStatus;
+import com.web.vt.domain.common.enums.UsageStatusConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +27,10 @@ public class AnimalGuardian extends BaseEntity {
     @Column(name = "address")
     private String address;
 
+    @Convert(converter = UsageStatusConverter.class)
+    @Column(name = "status")
+    private UsageStatus status;
+
     @Column(name = "remark")
     private String remark;
 
@@ -33,6 +39,7 @@ public class AnimalGuardian extends BaseEntity {
         name = vo.name();
         contact = vo.contact();
         address = vo.address();
+        status = vo.status();
         remark = vo.remark();
     }
 }

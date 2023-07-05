@@ -1,5 +1,6 @@
 package com.web.vt.domain.clinic;
 
+import com.web.vt.domain.common.enums.UsageStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ class VeterinaryClinicServiceTest {
 
         VeterinaryClinicVO vo = new VeterinaryClinicVO()
                 .id(52L)
-                .status("Y");
+                .status(UsageStatus.USE);
         VeterinaryClinicVO find = service.findByIdAndStatus(vo);
         assertThat(find.id()).isEqualTo(vo.id());
 

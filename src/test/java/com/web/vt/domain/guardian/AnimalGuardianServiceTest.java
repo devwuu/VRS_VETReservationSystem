@@ -1,5 +1,6 @@
 package com.web.vt.domain.guardian;
 
+import com.web.vt.domain.common.enums.UsageStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,8 @@ class AnimalGuardianServiceTest {
 
         AnimalGuardianVO vo = new AnimalGuardianVO()
                 .name("devwuu")
-                .contact("123-123");
+                .contact("123-123")
+                .status(UsageStatus.USE);
 
         AnimalGuardianVO saved = service.save(vo);
         assertThat(saved.id()).isNotNull();
@@ -36,7 +38,7 @@ class AnimalGuardianServiceTest {
 
     @Test @DisplayName("등록된 보호자를 조회합니다")
     public void findByIdTest() {
-        AnimalGuardianVO vo = new AnimalGuardianVO().id(52L);
+        AnimalGuardianVO vo = new AnimalGuardianVO().id(152L);
         AnimalGuardianVO find = service.findById(vo);
         assertThat(find.id()).isEqualTo(vo.id());
     }

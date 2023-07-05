@@ -1,6 +1,8 @@
 package com.web.vt.domain.clinic;
 
 import com.web.vt.domain.common.BaseEntity;
+import com.web.vt.domain.common.enums.UsageStatus;
+import com.web.vt.domain.common.enums.UsageStatusConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,8 +29,9 @@ public class VeterinaryClinic extends BaseEntity {
     @Column(name = "remark")
     private String remark;
 
+    @Convert(converter = UsageStatusConverter.class)
     @Column(name = "status")
-    private String status;
+    private UsageStatus status;
 
     public VeterinaryClinic(VeterinaryClinicVO vo){
         id = vo.id();

@@ -2,6 +2,7 @@ package com.web.vt.domain.guardian;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.web.vt.domain.common.BaseVO;
+import com.web.vt.domain.common.enums.UsageStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,7 +21,9 @@ public class AnimalGuardianVO extends BaseVO implements Serializable {
     private String name;
     private String contact;
     private String address;
+    private UsageStatus status;
     private String remark;
+
 
     public AnimalGuardianVO(AnimalGuardian entity) {
         id = entity.id();
@@ -28,6 +31,7 @@ public class AnimalGuardianVO extends BaseVO implements Serializable {
         contact = entity.contact();
         address = entity.address();
         remark = entity.remark();
+        status = entity.status();
         createBy(entity.createdBy());
         createdAt(entity.createdAt());
         updatedBy(updatedBy());

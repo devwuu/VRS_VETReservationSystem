@@ -3,6 +3,8 @@ package com.web.vt.domain.reservation;
 import com.web.vt.domain.animal.Animal;
 import com.web.vt.domain.clinic.VeterinaryClinic;
 import com.web.vt.domain.common.BaseEntity;
+import com.web.vt.domain.common.enums.ReservationStatus;
+import com.web.vt.domain.common.enums.ReservationStatusConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,8 +25,9 @@ public class Reservation extends BaseEntity {
     @Column(name = "reservation_date_time")
     private Instant reservationDateTime;
 
+    @Convert(converter = ReservationStatusConverter.class)
     @Column(name = "status")
-    private String status; // Cancel, Confirm
+    private ReservationStatus status;
 
     @Column(name = "remark")
     private String remark;

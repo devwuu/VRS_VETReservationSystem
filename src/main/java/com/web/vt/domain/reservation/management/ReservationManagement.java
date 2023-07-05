@@ -3,6 +3,8 @@ package com.web.vt.domain.reservation.management;
 import com.web.vt.domain.clinic.VeterinaryClinic;
 import com.web.vt.domain.clinic.VeterinaryClinicVO;
 import com.web.vt.domain.common.BaseEntity;
+import com.web.vt.domain.common.enums.UsageStatus;
+import com.web.vt.domain.common.enums.UsageStatusConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +27,10 @@ public class ReservationManagement extends BaseEntity {
     @JoinColumn(name = "clinic_id", updatable = false)
     private VeterinaryClinic clinic;
 
+    @Convert(converter = UsageStatusConverter.class)
+    @Column(name = "status")
+    private UsageStatus status;
+
     @Column(name = "start_date_time")
     private Instant startDateTime;
 
@@ -35,6 +41,7 @@ public class ReservationManagement extends BaseEntity {
         id = vo.id();
         startDateTime = vo.startDateTime();
         endDateTime = vo.endDateTime();
+        status = vo.status();
     }
 
     public ReservationManagement addClinic(VeterinaryClinicVO vo) {

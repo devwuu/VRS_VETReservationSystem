@@ -1,5 +1,6 @@
 package com.web.vt.domain.clinic;
 
+import com.web.vt.domain.common.enums.UsageStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +17,7 @@ public class VeterinaryClinicClientController {
 
     @GetMapping
     public ResponseEntity<VeterinaryClinicVO> findByIdAndStatus(@RequestParam String id){
-        VeterinaryClinicVO find = new VeterinaryClinicVO().id(Long.parseLong(id)).status("Y");
+        VeterinaryClinicVO find = new VeterinaryClinicVO().id(Long.parseLong(id)).status(UsageStatus.USE);
         VeterinaryClinicVO result = clinicService.findByIdAndStatus(find);
         return ResponseEntity.ok().body(result);
     }

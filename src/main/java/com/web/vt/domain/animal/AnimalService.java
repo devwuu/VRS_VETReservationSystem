@@ -2,6 +2,7 @@ package com.web.vt.domain.animal;
 
 import com.web.vt.domain.clinic.VeterinaryClinicService;
 import com.web.vt.domain.clinic.VeterinaryClinicVO;
+import com.web.vt.domain.common.enums.UsageStatus;
 import com.web.vt.domain.guardian.AnimalGuardianService;
 import com.web.vt.domain.guardian.AnimalGuardianVO;
 import com.web.vt.exceptions.NotFoundException;
@@ -22,7 +23,7 @@ public class AnimalService {
     private final AnimalGuardianService guardianService;
 
     public AnimalVO save(AnimalVO vo){
-        VeterinaryClinicVO clinic = new VeterinaryClinicVO().id(vo.clinicId()).status("Y");
+        VeterinaryClinicVO clinic = new VeterinaryClinicVO().id(vo.clinicId()).status(UsageStatus.USE);
         VeterinaryClinicVO findClinic = clinicService.findByIdAndStatus(clinic);
         Animal animal = new Animal(vo).addClinic(findClinic);
 

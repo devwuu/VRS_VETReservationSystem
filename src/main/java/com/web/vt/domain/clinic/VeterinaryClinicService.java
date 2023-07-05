@@ -1,5 +1,6 @@
 package com.web.vt.domain.clinic;
 
+import com.web.vt.domain.common.enums.UsageStatus;
 import com.web.vt.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -41,7 +42,7 @@ public class VeterinaryClinicService {
         if(find.isEmpty()){
             throw new NotFoundException("NOT EXIST ID");
         }
-        VeterinaryClinic saved = find.get().name(null).contact(null).remark(null).status("D");//deleted
+        VeterinaryClinic saved = find.get().name(null).contact(null).remark(null).status(UsageStatus.DELETE);//deleted
         return new VeterinaryClinicVO().id(saved.id()).status(saved.status());
     }
 

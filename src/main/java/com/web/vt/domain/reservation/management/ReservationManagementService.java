@@ -2,6 +2,7 @@ package com.web.vt.domain.reservation.management;
 
 import com.web.vt.domain.clinic.VeterinaryClinicService;
 import com.web.vt.domain.clinic.VeterinaryClinicVO;
+import com.web.vt.domain.common.enums.UsageStatus;
 import com.web.vt.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ public class ReservationManagementService {
 
     public ReservationManagementVO save(ReservationManagementVO vo){
 
-        VeterinaryClinicVO clinic = new VeterinaryClinicVO().id(vo.clinicId()).status("Y");
+        VeterinaryClinicVO clinic = new VeterinaryClinicVO().id(vo.clinicId()).status(UsageStatus.USE);
         VeterinaryClinicVO findClinic = clinicService.findByIdAndStatus(clinic);
 
         ReservationManagement management = new ReservationManagement(vo)

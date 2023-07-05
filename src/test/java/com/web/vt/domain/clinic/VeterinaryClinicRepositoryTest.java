@@ -1,5 +1,6 @@
 package com.web.vt.domain.clinic;
 
+import com.web.vt.domain.common.enums.UsageStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ class VeterinaryClinicRepositoryTest {
         VeterinaryClinic clinic = new VeterinaryClinic()
                 .name("TEST")
                 .contact("0211112222")
-                .status("Y")
+                .status(UsageStatus.USE)
                 .remark("병아리 전문");
 
         VeterinaryClinic save = repository.save(clinic);

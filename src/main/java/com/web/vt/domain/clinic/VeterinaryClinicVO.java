@@ -2,6 +2,7 @@ package com.web.vt.domain.clinic;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.web.vt.domain.common.BaseVO;
+import com.web.vt.domain.common.enums.UsageStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,7 +22,7 @@ public class VeterinaryClinicVO extends BaseVO implements Serializable {
     private String name;
     private String contact;
     private String remark;
-    private String status;
+    private UsageStatus status;
 
     public VeterinaryClinicVO(VeterinaryClinic entity){
         id = entity.id();

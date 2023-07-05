@@ -2,6 +2,7 @@ package com.web.vt.domain.reservation.management;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.web.vt.domain.common.BaseVO;
+import com.web.vt.domain.common.enums.UsageStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +21,8 @@ public class ReservationManagementVO extends BaseVO implements Serializable {
 
     private Long id;
     private Long clinicId;
+
+    private UsageStatus status;
     private Instant startDateTime;
     private Instant endDateTime;
 
@@ -27,6 +30,7 @@ public class ReservationManagementVO extends BaseVO implements Serializable {
         id = entity.id();
         startDateTime = entity.startDateTime();
         endDateTime = entity.endDateTime();
+        status = entity.status();
         createBy(entity.createdBy());
         createdAt(entity.createdAt());
         updatedBy(entity.updatedBy());

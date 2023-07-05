@@ -2,6 +2,7 @@ package com.web.vt.domain.reservation;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.web.vt.domain.common.BaseVO;
+import com.web.vt.domain.common.enums.ReservationStatus;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -20,7 +21,7 @@ public class ReservationVO extends BaseVO implements Serializable {
     private Long clinicId;
     private Long animalId;
     private Instant reservationDateTime;
-    private String status; // Cancel, Confirm
+    private ReservationStatus status;
     private String remark;
 
 /*    public ReservationVO addClinic(){
