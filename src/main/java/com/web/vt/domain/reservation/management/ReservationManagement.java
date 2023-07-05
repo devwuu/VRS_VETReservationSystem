@@ -1,6 +1,7 @@
 package com.web.vt.domain.reservation.management;
 
 import com.web.vt.domain.clinic.VeterinaryClinic;
+import com.web.vt.domain.clinic.VeterinaryClinicVO;
 import com.web.vt.domain.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -36,9 +37,9 @@ public class ReservationManagement extends BaseEntity {
         endDateTime = vo.endDateTime();
     }
 
-//    public ReservationManagement addClinic(VeterinaryClinic clinic){
-//        this.clinic = clinic;
-//        return this;
-//    }
+    public ReservationManagement addClinic(VeterinaryClinicVO vo) {
+        clinic = new VeterinaryClinic(vo);
+        return this;
+    }
 
 }

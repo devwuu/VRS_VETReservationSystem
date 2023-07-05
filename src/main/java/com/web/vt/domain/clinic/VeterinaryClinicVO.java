@@ -32,7 +32,7 @@ public class VeterinaryClinicVO extends BaseVO implements Serializable {
         updatedAt(entity.updatedAt());
         updatedBy(entity.updatedBy());
         createdAt(entity.createdAt());
-        createBy(entity.createBy());
+        createBy(entity.createdBy());
     }
 
 }

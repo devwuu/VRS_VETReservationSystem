@@ -16,8 +16,9 @@ class VeterinaryClinicRepositoryTest {
     @Test @DisplayName("새로운 동물병원을 등록한다.")
     public void save() {
         VeterinaryClinic clinic = new VeterinaryClinic()
-                .name("병아리 동물병원")
+                .name("TEST")
                 .contact("0211112222")
+                .status("Y")
                 .remark("병아리 전문");
 
         VeterinaryClinic save = repository.save(clinic);

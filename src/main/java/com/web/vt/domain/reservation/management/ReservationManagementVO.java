@@ -27,7 +27,7 @@ public class ReservationManagementVO extends BaseVO implements Serializable {
         id = entity.id();
         startDateTime = entity.startDateTime();
         endDateTime = entity.endDateTime();
-        createBy(entity.createBy());
+        createBy(entity.createdBy());
         createdAt(entity.createdAt());
         updatedBy(entity.updatedBy());
         updatedAt(entity.updatedAt());

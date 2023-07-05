@@ -1,6 +1,5 @@
 package com.web.vt.domain.reservation.management;
 
-import com.web.vt.domain.clinic.VeterinaryClinic;
 import com.web.vt.domain.clinic.VeterinaryClinicService;
 import com.web.vt.domain.clinic.VeterinaryClinicVO;
 import com.web.vt.exceptions.NotFoundException;
@@ -24,7 +23,7 @@ public class ReservationManagementService {
         VeterinaryClinicVO findClinic = clinicService.findByIdAndStatus(clinic);
 
         ReservationManagement management = new ReservationManagement(vo)
-                .clinic(new VeterinaryClinic(findClinic));
+                .addClinic(findClinic);
 
         ReservationManagement saved = reservationManagementRepository.save(management);
 
