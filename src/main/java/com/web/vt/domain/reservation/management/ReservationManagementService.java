@@ -39,6 +39,7 @@ public class ReservationManagementService {
             throw new NotFoundException("NOT EXIST MANAGEMENT");
         }
         ReservationManagement saved = find.get()
+                .status(vo.status())
                 .endDateTime(vo.endDateTime())
                 .startDateTime(vo.startDateTime());
 

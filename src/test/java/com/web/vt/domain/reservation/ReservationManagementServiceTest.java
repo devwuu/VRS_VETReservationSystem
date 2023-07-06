@@ -1,5 +1,6 @@
 package com.web.vt.domain.reservation;
 
+import com.web.vt.domain.common.enums.UsageStatus;
 import com.web.vt.domain.reservation.management.ReservationManagementService;
 import com.web.vt.domain.reservation.management.ReservationManagementVO;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,8 @@ class ReservationManagementServiceTest {
     public void saveTest() {
 
         ReservationManagementVO vo = new ReservationManagementVO()
-                .clinicId(102L)
+                .clinicId(2L)
+                .status(UsageStatus.USE)
                 .startDateTime(START.toInstant())
                 .endDateTime(END.toInstant());
 
@@ -37,8 +39,9 @@ class ReservationManagementServiceTest {
     public void updateTest() {
 
         ReservationManagementVO vo = new ReservationManagementVO()
-                .id(102L)
-                .clinicId(102L)
+                .id(1L)
+                .clinicId(2L)
+                .status(UsageStatus.NOT_USE)
                 .endDateTime(END.toInstant());
 
         ReservationManagementVO saved = service.update(vo);
