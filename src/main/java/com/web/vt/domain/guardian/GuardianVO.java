@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Getter @Setter @NoArgsConstructor
 @Accessors(fluent = true, chain = true)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class AnimalGuardianVO extends BaseVO implements Serializable {
+public class GuardianVO extends BaseVO implements Serializable {
 
     private static final long serialVersionUID = -2010468697125940197L;
 
@@ -25,7 +25,7 @@ public class AnimalGuardianVO extends BaseVO implements Serializable {
     private String remark;
 
 
-    public AnimalGuardianVO(AnimalGuardian entity) {
+    public GuardianVO(Guardian entity) {
         id = entity.id();
         name = entity.name();
         contact = entity.contact();

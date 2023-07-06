@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
 @Table(name = "animal_guardian")
 @Getter @Setter @NoArgsConstructor
 @Accessors(fluent = true, chain = true)
-public class AnimalGuardian extends BaseEntity {
+public class Guardian extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
@@ -34,7 +34,7 @@ public class AnimalGuardian extends BaseEntity {
     @Column(name = "remark")
     private String remark;
 
-    public AnimalGuardian(AnimalGuardianVO vo) {
+    public Guardian(GuardianVO vo) {
         id = vo.id();
         name = vo.name();
         contact = vo.contact();

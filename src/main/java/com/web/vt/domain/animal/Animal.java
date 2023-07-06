@@ -5,8 +5,8 @@ import com.web.vt.domain.clinic.VeterinaryClinicVO;
 import com.web.vt.domain.common.BaseEntity;
 import com.web.vt.domain.common.enums.UsageStatus;
 import com.web.vt.domain.common.enums.UsageStatusConverter;
-import com.web.vt.domain.guardian.AnimalGuardian;
-import com.web.vt.domain.guardian.AnimalGuardianVO;
+import com.web.vt.domain.guardian.Guardian;
+import com.web.vt.domain.guardian.GuardianVO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,7 +39,7 @@ public class Animal extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "guardian_id")
-    private AnimalGuardian guardian;
+    private Guardian guardian;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "clinic_id", updatable = false)
@@ -59,8 +59,8 @@ public class Animal extends BaseEntity {
         return this;
     }
 
-    public Animal addGuardian(AnimalGuardianVO vo) {
-        guardian = new AnimalGuardian(vo);
+    public Animal addGuardian(GuardianVO vo) {
+        guardian = new Guardian(vo);
         return this;
     }
 }

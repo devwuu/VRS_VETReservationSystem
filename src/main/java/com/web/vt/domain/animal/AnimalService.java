@@ -2,9 +2,10 @@ package com.web.vt.domain.animal;
 
 import com.web.vt.domain.clinic.VeterinaryClinicService;
 import com.web.vt.domain.clinic.VeterinaryClinicVO;
+import com.web.vt.domain.common.dto.AnimalGuardianDTO;
 import com.web.vt.domain.common.enums.UsageStatus;
-import com.web.vt.domain.guardian.AnimalGuardianService;
-import com.web.vt.domain.guardian.AnimalGuardianVO;
+import com.web.vt.domain.guardian.GuardianService;
+import com.web.vt.domain.guardian.GuardianVO;
 import com.web.vt.exceptions.NotFoundException;
 import com.web.vt.utils.ObjectUtil;
 import lombok.RequiredArgsConstructor;
@@ -20,14 +21,14 @@ public class AnimalService {
 
     private final AnimalRepository animalRepository;
     private final VeterinaryClinicService clinicService;
-    private final AnimalGuardianService guardianService;
+    private final GuardianService guardianService;
 
     public AnimalVO save(AnimalVO vo){
         VeterinaryClinicVO clinic = new VeterinaryClinicVO().id(vo.clinicId()).status(UsageStatus.USE);
         VeterinaryClinicVO findClinic = clinicService.findByIdAndStatus(clinic);
         Animal animal = new Animal(vo).addClinic(findClinic);
 
-        AnimalGuardianVO findGuardian = null;
+        GuardianVO findGuardian = null;
         if(ObjectUtil.isNotEmpty(vo.guardian())){
             findGuardian = guardianService.findById(vo.guardian());
             animal.addGuardian(findGuardian);
@@ -82,12 +83,19 @@ public class AnimalService {
         return new AnimalVO(deleted);
     }
 
+    @Transactional(readOnly = true)
     public AnimalVO findByIdAndStatus(AnimalVO vo){
         Optional<Animal> find = animalRepository.findByIdAndStatus(vo.id(), vo.status());
         if(find.isEmpty()){
             throw new NotFoundException("NOT EXIST ANIMAL");
         }
         return find.map(AnimalVO::new).get();
+    }
+
+    @Transactional(readOnly = true)
+    public AnimalGuardianDTO findByIdWithGuardian(AnimalVO vo){
+        AnimalGuardianDTO find = animalRepository.findByIdWithGuardian(vo);
+        return find;
     }
 
 

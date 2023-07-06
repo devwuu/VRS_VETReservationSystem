@@ -10,50 +10,50 @@ import java.util.Optional;
 
 @Service @Transactional
 @RequiredArgsConstructor
-public class AnimalGuardianService {
+public class GuardianService {
 
-    private final AnimalGuardianRepository guardianRepository;
+    private final GuardianRepository guardianRepository;
 
-    public AnimalGuardianVO save(AnimalGuardianVO vo){
-        AnimalGuardian saved = guardianRepository.save(new AnimalGuardian(vo));
-        return new AnimalGuardianVO(saved);
+    public GuardianVO save(GuardianVO vo){
+        Guardian saved = guardianRepository.save(new Guardian(vo));
+        return new GuardianVO(saved);
     }
 
-    public AnimalGuardianVO update(AnimalGuardianVO vo){
-        Optional<AnimalGuardian> find = guardianRepository.findById(vo.id());
+    public GuardianVO update(GuardianVO vo){
+        Optional<Guardian> find = guardianRepository.findById(vo.id());
         if(find.isEmpty()){
             throw new NotFoundException("NOT EXIST GUARDIAN");
         }
-        AnimalGuardian saved = find.get().name(vo.name())
+        Guardian saved = find.get().name(vo.name())
                 .contact(vo.contact())
                 .address(vo.address())
                 .remark(vo.remark());
 
-        return new AnimalGuardianVO(saved);
+        return new GuardianVO(saved);
     }
 
     @Transactional(readOnly = true)
-    public AnimalGuardianVO findById(AnimalGuardianVO vo){
-        Optional<AnimalGuardian> find = guardianRepository.findById(vo.id());
+    public GuardianVO findById(GuardianVO vo){
+        Optional<Guardian> find = guardianRepository.findById(vo.id());
         if(find.isEmpty()){
             throw new NotFoundException("NOT EXIST GUARDIAN");
         }
-        return find.map(AnimalGuardianVO::new).get();
+        return find.map(GuardianVO::new).get();
     }
 
-    public AnimalGuardianVO delete(AnimalGuardianVO vo){
-        Optional<AnimalGuardian> find = guardianRepository.findById(vo.id());
+    public GuardianVO delete(GuardianVO vo){
+        Optional<Guardian> find = guardianRepository.findById(vo.id());
         if(find.isEmpty()){
             throw new NotFoundException("NOT EXIST GUARDIAN");
         }
-        AnimalGuardian deleted = find.get()
+        Guardian deleted = find.get()
                 .status(UsageStatus.DELETE)
                 .name(null)
                 .contact(null)
                 .address(null)
                 .remark(null);
 
-        return new AnimalGuardianVO(deleted);
+        return new GuardianVO(deleted);
     }
 
 }

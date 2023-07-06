@@ -1,7 +1,8 @@
 package com.web.vt.domain.animal;
 
+import com.web.vt.domain.common.dto.AnimalGuardianDTO;
 import com.web.vt.domain.common.enums.UsageStatus;
-import com.web.vt.domain.guardian.AnimalGuardianVO;
+import com.web.vt.domain.guardian.GuardianVO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ class AnimalServiceTest {
                 .age(10L)
                 .species("강아지")
                 .name("달이")
-                .guardian(new AnimalGuardianVO().id(1L));
+                .guardian(new GuardianVO().id(1L));
         AnimalVO saved = service.save(vo);
         assertThat(saved.id()).isNotNull();
     }
@@ -49,6 +50,13 @@ class AnimalServiceTest {
         AnimalVO vo = new AnimalVO().id(2L);
         AnimalVO find = service.delete(vo);
         assertThat(find.status()).isEqualTo(UsageStatus.DELETE);
+    }
+    
+    @Test @DisplayName("특정 반려동물의 정보와 보호자 정보를 가져옵니다.")
+    public void findByIdWithGuardianTest() {
+        AnimalVO vo = new AnimalVO().id(1L);
+        AnimalGuardianDTO find = service.findByIdWithGuardian(vo);
+        assertThat(find.animalId()).isEqualTo(1L);
     }
 
 }

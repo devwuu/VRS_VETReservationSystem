@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface AnimalRepository extends JpaRepository<Animal, Long> {
+public interface AnimalRepository extends JpaRepository<Animal, Long>, AnimalQuerydslRepository {
     Optional<Animal> findByIdAndStatus(Long id, UsageStatus status);
 
 }

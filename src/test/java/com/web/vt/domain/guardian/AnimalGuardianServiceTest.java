@@ -12,17 +12,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 class AnimalGuardianServiceTest {
 
     @Autowired
-    private AnimalGuardianService service;
+    private GuardianService service;
 
     @Test @DisplayName("새로운 보호자를 등록합니다.")
     public void saveTest() {
 
-        AnimalGuardianVO vo = new AnimalGuardianVO()
+        GuardianVO vo = new GuardianVO()
                 .name("devwuu")
                 .contact("123-123")
                 .status(UsageStatus.USE);
 
-        AnimalGuardianVO saved = service.save(vo);
+        GuardianVO saved = service.save(vo);
         assertThat(saved.id()).isNotNull();
 
     }
@@ -30,24 +30,24 @@ class AnimalGuardianServiceTest {
     @Test @DisplayName("등록된 보호자를 수정합니다.")
     public void updateTest() {
 
-        AnimalGuardianVO vo = new AnimalGuardianVO()
+        GuardianVO vo = new GuardianVO()
                 .id(52L).address("서울시");
-        AnimalGuardianVO updated = service.update(vo);
+        GuardianVO updated = service.update(vo);
         assertThat(vo.id()).isEqualTo(updated.id());
     }
 
     @Test @DisplayName("등록된 보호자를 조회합니다")
     public void findByIdTest() {
-        AnimalGuardianVO vo = new AnimalGuardianVO().id(152L);
-        AnimalGuardianVO find = service.findById(vo);
+        GuardianVO vo = new GuardianVO().id(152L);
+        GuardianVO find = service.findById(vo);
         assertThat(find.id()).isEqualTo(vo.id());
     }
 
     @Test @DisplayName("등록된 보호자를 삭제합니다")
     public void deleteTest() {
 
-        AnimalGuardianVO vo = new AnimalGuardianVO().id(202L);
-        AnimalGuardianVO delete = service.delete(vo);
+        GuardianVO vo = new GuardianVO().id(202L);
+        GuardianVO delete = service.delete(vo);
         assertThat(delete.status()).isEqualTo(UsageStatus.DELETE);
 
     }

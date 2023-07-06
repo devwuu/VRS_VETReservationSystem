@@ -3,8 +3,8 @@ package com.web.vt.domain.animal;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.web.vt.domain.common.BaseVO;
 import com.web.vt.domain.common.enums.UsageStatus;
-import com.web.vt.domain.guardian.AnimalGuardian;
-import com.web.vt.domain.guardian.AnimalGuardianVO;
+import com.web.vt.domain.guardian.Guardian;
+import com.web.vt.domain.guardian.GuardianVO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,7 +28,7 @@ public class AnimalVO extends BaseVO implements Serializable {
     private UsageStatus status;
 
     private Long clinicId;
-    private AnimalGuardianVO guardian;
+    private GuardianVO guardian;
 
     public AnimalVO(Animal entity) {
         id = entity.id();
@@ -43,8 +43,8 @@ public class AnimalVO extends BaseVO implements Serializable {
         createdAt(entity.createdAt());
     }
 
-    public AnimalVO addGuardian(AnimalGuardian guardian){
-        this.guardian = new AnimalGuardianVO(guardian);
+    public AnimalVO addGuardian(Guardian guardian){
+        this.guardian = new GuardianVO(guardian);
         return this;
     }
 
