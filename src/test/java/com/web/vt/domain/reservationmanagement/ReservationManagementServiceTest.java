@@ -1,8 +1,6 @@
-package com.web.vt.domain.reservation;
+package com.web.vt.domain.reservationmanagement;
 
 import com.web.vt.domain.common.enums.UsageStatus;
-import com.web.vt.domain.reservation.management.ReservationManagementService;
-import com.web.vt.domain.reservation.management.ReservationManagementVO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

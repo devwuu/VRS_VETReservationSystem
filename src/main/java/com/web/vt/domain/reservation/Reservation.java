@@ -1,7 +1,9 @@
 package com.web.vt.domain.reservation;
 
 import com.web.vt.domain.animal.Animal;
+import com.web.vt.domain.animal.AnimalVO;
 import com.web.vt.domain.clinic.VeterinaryClinic;
+import com.web.vt.domain.clinic.VeterinaryClinicVO;
 import com.web.vt.domain.common.BaseEntity;
 import com.web.vt.domain.common.enums.ReservationStatus;
 import com.web.vt.domain.common.enums.ReservationStatusConverter;
@@ -32,12 +34,28 @@ public class Reservation extends BaseEntity {
     @Column(name = "remark")
     private String remark;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "clinic_id")
     private VeterinaryClinic clinic;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "animal_id")
     private Animal animal;
 
+    public Reservation(ReservationVO vo) {
+        id = vo.id();
+        reservationDateTime = vo.reservationDateTime();
+        status = vo.status();
+        remark = vo.remark();
+    }
+
+    public Reservation addClinic(VeterinaryClinicVO vo) {
+        clinic = new VeterinaryClinic(vo);
+        return this;
+    }
+
+    public Reservation addAnimal(AnimalVO vo) {
+        animal = new Animal(vo);
+        return this;
+    }
 }

@@ -1,4 +1,4 @@
-package com.web.vt.domain.reservation.management;
+package com.web.vt.domain.reservationmanagement;
 
 import com.web.vt.domain.clinic.VeterinaryClinicService;
 import com.web.vt.domain.clinic.VeterinaryClinicVO;

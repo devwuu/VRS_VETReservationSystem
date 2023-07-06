@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.web.vt.domain.common.BaseVO;
 import com.web.vt.domain.common.enums.ReservationStatus;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
@@ -12,6 +13,7 @@ import java.time.Instant;
 
 @Getter @Setter
 @Accessors(fluent = true, chain = true)
+@NoArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class ReservationVO extends BaseVO implements Serializable {
 
@@ -24,13 +26,12 @@ public class ReservationVO extends BaseVO implements Serializable {
     private ReservationStatus status;
     private String remark;
 
-/*    public ReservationVO addClinic(){
-
+    public ReservationVO(Reservation entity) {
+        id = entity.id();
+        reservationDateTime = entity.reservationDateTime();
+        status = entity.status();
+        remark = entity.remark();
     }
-
-    public ReservationVO addAnimal(){
-
-    }*/
 
 
 }
