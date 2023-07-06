@@ -67,4 +67,28 @@ public class AnimalService {
         return saved;
     }
 
+    // 기능 유지 검토
+    public AnimalVO delete(AnimalVO vo){
+        Optional<Animal> find = animalRepository.findById(vo.id());
+        if(find.isEmpty()){
+            throw new NotFoundException("NOT EXIST ANIMAL");
+        }
+        Animal deleted = find.get().status(UsageStatus.DELETE)
+                .name(null)
+                .age(0L)
+                .species(null)
+                .remark(null);
+
+        return new AnimalVO(deleted);
+    }
+
+    public AnimalVO findByIdAndStatus(AnimalVO vo){
+        Optional<Animal> find = animalRepository.findByIdAndStatus(vo.id(), vo.status());
+        if(find.isEmpty()){
+            throw new NotFoundException("NOT EXIST ANIMAL");
+        }
+        return find.map(AnimalVO::new).get();
+    }
+
+
 }

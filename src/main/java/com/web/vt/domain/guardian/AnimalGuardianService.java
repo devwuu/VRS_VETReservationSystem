@@ -1,5 +1,6 @@
 package com.web.vt.domain.guardian;
 
+import com.web.vt.domain.common.enums.UsageStatus;
 import com.web.vt.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,21 @@ public class AnimalGuardianService {
             throw new NotFoundException("NOT EXIST GUARDIAN");
         }
         return find.map(AnimalGuardianVO::new).get();
+    }
+
+    public AnimalGuardianVO delete(AnimalGuardianVO vo){
+        Optional<AnimalGuardian> find = guardianRepository.findById(vo.id());
+        if(find.isEmpty()){
+            throw new NotFoundException("NOT EXIST GUARDIAN");
+        }
+        AnimalGuardian deleted = find.get()
+                .status(UsageStatus.DELETE)
+                .name(null)
+                .contact(null)
+                .address(null)
+                .remark(null);
+
+        return new AnimalGuardianVO(deleted);
     }
 
 }

@@ -3,6 +3,8 @@ package com.web.vt.domain.animal;
 import com.web.vt.domain.clinic.VeterinaryClinic;
 import com.web.vt.domain.clinic.VeterinaryClinicVO;
 import com.web.vt.domain.common.BaseEntity;
+import com.web.vt.domain.common.enums.UsageStatus;
+import com.web.vt.domain.common.enums.UsageStatusConverter;
 import com.web.vt.domain.guardian.AnimalGuardian;
 import com.web.vt.domain.guardian.AnimalGuardianVO;
 import jakarta.persistence.*;
@@ -32,6 +34,9 @@ public class Animal extends BaseEntity {
     @Column(name = "remark")
     private String remark;
 
+    @Convert(converter = UsageStatusConverter.class)
+    private UsageStatus status;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "guardian_id")
     private AnimalGuardian guardian;
@@ -45,6 +50,7 @@ public class Animal extends BaseEntity {
         name = vo.name();
         species = vo.species();
         age = vo.age();
+        status = vo.status();
         remark = vo.remark();
     }
 

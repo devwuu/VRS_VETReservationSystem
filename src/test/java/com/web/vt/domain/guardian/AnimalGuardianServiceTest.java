@@ -43,4 +43,13 @@ class AnimalGuardianServiceTest {
         assertThat(find.id()).isEqualTo(vo.id());
     }
 
+    @Test @DisplayName("등록된 보호자를 삭제합니다")
+    public void deleteTest() {
+
+        AnimalGuardianVO vo = new AnimalGuardianVO().id(202L);
+        AnimalGuardianVO delete = service.delete(vo);
+        assertThat(delete.status()).isEqualTo(UsageStatus.DELETE);
+
+    }
+
 }

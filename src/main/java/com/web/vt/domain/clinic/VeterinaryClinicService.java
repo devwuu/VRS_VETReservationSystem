@@ -42,8 +42,12 @@ public class VeterinaryClinicService {
         if(find.isEmpty()){
             throw new NotFoundException("NOT EXIST ID");
         }
-        VeterinaryClinic saved = find.get().name(null).contact(null).remark(null).status(UsageStatus.DELETE);//deleted
-        return new VeterinaryClinicVO().id(saved.id()).status(saved.status());
+        VeterinaryClinic saved = find.get()
+                .status(UsageStatus.DELETE)
+                .name(null)
+                .contact(null)
+                .remark(null);
+        return new VeterinaryClinicVO(saved);
     }
 
     @Transactional(readOnly = true)

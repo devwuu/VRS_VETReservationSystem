@@ -1,5 +1,6 @@
 package com.web.vt.domain.animal;
 
+import com.web.vt.domain.common.enums.UsageStatus;
 import com.web.vt.domain.guardian.AnimalGuardianVO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,6 +42,13 @@ class AnimalServiceTest {
         AnimalVO vo = new AnimalVO().id(1L).name("샛별");
         AnimalVO updated = service.update(vo);
         assertThat(vo.id()).isEqualTo(updated.id());
+    }
+
+    @Test @DisplayName("반려동물의 정보를 삭제합니다")
+    public void deleteTest() {
+        AnimalVO vo = new AnimalVO().id(2L);
+        AnimalVO find = service.delete(vo);
+        assertThat(find.status()).isEqualTo(UsageStatus.DELETE);
     }
 
 }
