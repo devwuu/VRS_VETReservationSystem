@@ -68,7 +68,6 @@ public class AnimalService {
         return saved;
     }
 
-    // 기능 유지 검토
     public AnimalVO delete(AnimalVO vo){
         Optional<Animal> find = animalRepository.findById(vo.id());
         if(find.isEmpty()){

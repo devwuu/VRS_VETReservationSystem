@@ -32,6 +32,7 @@ public class GuardianService {
         return new GuardianVO(saved);
     }
 
+    // todo 상태값에 따른 보호자 조회 조건 추
     @Transactional(readOnly = true)
     public GuardianVO findById(GuardianVO vo){
         Optional<Guardian> find = guardianRepository.findById(vo.id());

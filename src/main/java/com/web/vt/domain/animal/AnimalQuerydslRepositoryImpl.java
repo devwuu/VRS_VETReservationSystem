@@ -3,6 +3,7 @@ package com.web.vt.domain.animal;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.web.vt.domain.common.dto.AnimalGuardianDTO;
 import com.web.vt.domain.common.dto.QAnimalGuardianDTO;
+import com.web.vt.domain.common.enums.UsageStatus;
 import com.web.vt.exceptions.NotFoundException;
 import com.web.vt.utils.ObjectUtil;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +36,7 @@ public class AnimalQuerydslRepositoryImpl implements AnimalQuerydslRepository{
                 .from(animal)
                 .innerJoin(guardian)
                 .on(animal.guardian.id.eq(guardian.id))
-                .where(animal.id.eq(vo.id()))
+                .where(animal.id.eq(vo.id()).and(animal.status.eq(UsageStatus.USE)))
                 .fetchOne();
 
         if(ObjectUtil.isEmpty(find)){

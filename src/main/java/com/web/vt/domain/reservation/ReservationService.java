@@ -21,6 +21,7 @@ public class ReservationService {
     private final VeterinaryClinicService clinicService;
     private final AnimalService animalService;
 
+    // todo 동물 정보와 보호자 정보 추가 필요
     @Transactional(readOnly = true)
     public ReservationVO findById(ReservationVO vo){
 
