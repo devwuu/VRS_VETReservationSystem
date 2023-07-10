@@ -17,8 +17,6 @@ domains
 * reservation management
 <br/>
 
-- [x]
-
 feature
 ---
 * **VET**
@@ -28,29 +26,33 @@ feature
   - [x] 수정
   - [x] 삭제   
 <br/>
+
 * **animal**
   - [x] 등록
   - [x] 단건 조회
   - [x] 다건 조회
-  - [ ] 검색
+  - [x] 검색
   - [x] 수정
   - [x] 삭제  
 <br/>
+
 * **guardian**
   - [x] 등록
   - [x] 단건 조회
   - [x] 수정
   - [x] 삭제  
 <br/>
+
 * **reservation**
   - [ ] 예약 가능 날짜 조회
   - [ ] 예약 가능 시간 조회
   - [x] 등록
-  - [ ] 단건 조회
-  - [ ] 다건 조회
+  - [x] 단건 조회
+  - [x] 다건 조회
   - [ ] 검색
-  - [ ] 수정   
+  - [x] 수정   
 <br/>
+
 * **reservation management**
   - [x] 등록
   - [x] 수정
