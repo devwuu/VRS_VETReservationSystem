@@ -1,7 +1,7 @@
 package com.web.vt.domain.animal;
 
-import com.querydsl.jpa.impl.JPAQuery;
 import com.web.vt.domain.common.dto.AnimalGuardianDTO;
+import com.web.vt.domain.common.dto.AnimalSearchCondition;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -11,5 +11,6 @@ public interface AnimalQuerydslRepository {
 
     Page<AnimalGuardianDTO> findAllWithGuardian(Long clinicId, Pageable pageable);
 
-    JPAQuery<Long> countAllWithGuardian(Long clinicId);
+    Page<AnimalGuardianDTO> searchAllWithGuardian(Long clinicId, AnimalSearchCondition condition, Pageable pageable);
+
 }

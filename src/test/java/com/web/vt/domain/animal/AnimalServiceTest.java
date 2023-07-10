@@ -1,6 +1,7 @@
 package com.web.vt.domain.animal;
 
 import com.web.vt.domain.common.dto.AnimalGuardianDTO;
+import com.web.vt.domain.common.dto.AnimalSearchCondition;
 import com.web.vt.domain.common.enums.UsageStatus;
 import com.web.vt.domain.guardian.GuardianVO;
 import org.junit.jupiter.api.DisplayName;
@@ -70,6 +71,15 @@ class AnimalServiceTest {
         Pageable pageable = PageRequest.of(0, 1, by(desc("createdAt")));
         Page<AnimalGuardianDTO> find = service.findAllWithGuardian(clinicId, pageable);
         assertThat(find.getSize()).isEqualTo(1);
+    }
+
+    @Test @DisplayName("반려동물 리스트에서 보호자 정보로 검색합니다.")
+    public void searchAllTest() {
+        Long clinicId = 1L;
+        Pageable pageable = PageRequest.of(0, 2, by(desc("createdAt")));
+        AnimalSearchCondition condition = new AnimalSearchCondition().guardianName("vw");
+        Page<AnimalGuardianDTO> find = service.searchAllWithGuardian(clinicId, condition, pageable);
+        assertThat(find.getSize()).isEqualTo(2);
     }
 
 }

@@ -3,6 +3,7 @@ package com.web.vt.domain.animal;
 import com.web.vt.domain.clinic.VeterinaryClinicService;
 import com.web.vt.domain.clinic.VeterinaryClinicVO;
 import com.web.vt.domain.common.dto.AnimalGuardianDTO;
+import com.web.vt.domain.common.dto.AnimalSearchCondition;
 import com.web.vt.domain.common.enums.UsageStatus;
 import com.web.vt.domain.guardian.GuardianService;
 import com.web.vt.domain.guardian.GuardianVO;
@@ -104,6 +105,13 @@ public class AnimalService {
         Page<AnimalGuardianDTO> all = animalRepository.findAllWithGuardian(clinicId, pageable);
         return all;
     }
+
+    @Transactional(readOnly = true)
+    public Page<AnimalGuardianDTO> searchAllWithGuardian(Long clinicId, AnimalSearchCondition condition, Pageable pageable){
+        Page<AnimalGuardianDTO> all = animalRepository.searchAllWithGuardian(clinicId, condition, pageable);
+        return all;
+    }
+
 
 
 }
