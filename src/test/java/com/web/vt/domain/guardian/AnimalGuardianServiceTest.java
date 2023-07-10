@@ -50,8 +50,8 @@ class AnimalGuardianServiceTest {
 
     @Test @DisplayName("등록된 보호자를 조회합니다")
     public void findByIdTest() {
-        GuardianVO vo = new GuardianVO().id(152L);
-        GuardianVO find = service.findById(vo);
+        GuardianVO vo = new GuardianVO().id(152L).status(UsageStatus.USE);
+        GuardianVO find = service.findByIdAndStatus(vo);
         assertThat(find.id()).isEqualTo(vo.id());
     }
 

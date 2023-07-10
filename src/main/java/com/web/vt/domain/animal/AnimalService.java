@@ -9,6 +9,8 @@ import com.web.vt.domain.guardian.GuardianVO;
 import com.web.vt.exceptions.NotFoundException;
 import com.web.vt.utils.ObjectUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +32,7 @@ public class AnimalService {
 
         GuardianVO findGuardian = null;
         if(ObjectUtil.isNotEmpty(vo.guardian())){
-            findGuardian = guardianService.findById(vo.guardian());
+            findGuardian = guardianService.findByIdAndStatus(vo.guardian());
             animal.addGuardian(findGuardian);
         }
 
@@ -95,6 +97,12 @@ public class AnimalService {
     public AnimalGuardianDTO findByIdWithGuardian(AnimalVO vo){
         AnimalGuardianDTO find = animalRepository.findByIdWithGuardian(vo);
         return find;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<AnimalGuardianDTO> findAllWithGuardian(Long clinicId, Pageable pageable){
+        Page<AnimalGuardianDTO> all = animalRepository.findAllWithGuardian(clinicId, pageable);
+        return all;
     }
 
 

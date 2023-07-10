@@ -7,8 +7,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.data.domain.Sort.Order.desc;
+import static org.springframework.data.domain.Sort.by;
 
 @SpringBootTest
 class AnimalServiceTest {
@@ -57,6 +62,14 @@ class AnimalServiceTest {
         AnimalVO vo = new AnimalVO().id(1L);
         AnimalGuardianDTO find = service.findByIdWithGuardian(vo);
         assertThat(find.animalId()).isEqualTo(1L);
+    }
+
+    @Test @DisplayName("등록된 반려동물 리스트를 보호자 정보화 함께 가져옵니다.")
+    public void findAllWithGuardian() {
+        Long clinicId = 1L;
+        Pageable pageable = PageRequest.of(0, 1, by(desc("createdAt")));
+        Page<AnimalGuardianDTO> find = service.findAllWithGuardian(clinicId, pageable);
+        assertThat(find.getSize()).isEqualTo(1);
     }
 
 }

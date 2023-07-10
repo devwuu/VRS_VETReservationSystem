@@ -32,10 +32,9 @@ public class GuardianService {
         return new GuardianVO(saved);
     }
 
-    // todo 상태값에 따른 보호자 조회 조건 추
     @Transactional(readOnly = true)
-    public GuardianVO findById(GuardianVO vo){
-        Optional<Guardian> find = guardianRepository.findById(vo.id());
+    public GuardianVO findByIdAndStatus(GuardianVO vo){
+        Optional<Guardian> find = guardianRepository.findByIdAndStatus(vo.id(), vo.status());
         if(find.isEmpty()){
             throw new NotFoundException("NOT EXIST GUARDIAN");
         }
