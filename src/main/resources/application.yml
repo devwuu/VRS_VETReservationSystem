@@ -9,6 +9,10 @@ spring:
       ddl-auto: update
     open-in-view: false
     show-sql: off
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
   jackson:
     serialization:
       indent-output: true
@@ -17,7 +21,13 @@ logging:
     jdbc:
       audit: off
       resultset: off
-      resulttable: debug
+      resultsettable: debug
       connection: off
       sqlonly: off
       sqltimming: debug
+    org:
+      hibernate:
+        orm:
+          jdbc:
+            bind: trace
+

@@ -5,6 +5,7 @@ import com.web.vt.domain.animal.AnimalVO;
 import com.web.vt.domain.clinic.VeterinaryClinicService;
 import com.web.vt.domain.clinic.VeterinaryClinicVO;
 import com.web.vt.domain.common.dto.ReservationAnimalGuardianDTO;
+import com.web.vt.domain.common.dto.ReservationSearchCondition;
 import com.web.vt.domain.common.enums.UsageStatus;
 import com.web.vt.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,11 @@ public class ReservationService {
     @Transactional(readOnly = true)
     public Page<ReservationAnimalGuardianDTO> findAllWithAnimalAndGuardian(Long clinicId, Pageable pageable){
         return reservationRepository.findAllWithAnimalAndGuardian(clinicId, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ReservationAnimalGuardianDTO> searchAllWithAnimalAndGuardian(Long clinicId, ReservationSearchCondition condition, Pageable pageable){
+        return reservationRepository.searchAllWithAnimalAndGuardian(clinicId, condition, pageable);
     }
 
     // todo save하기 위한 정보를 조회할 수 있는 api가 필요

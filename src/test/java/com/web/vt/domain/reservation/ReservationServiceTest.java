@@ -1,6 +1,7 @@
 package com.web.vt.domain.reservation;
 
 import com.web.vt.domain.common.dto.ReservationAnimalGuardianDTO;
+import com.web.vt.domain.common.dto.ReservationSearchCondition;
 import com.web.vt.domain.common.enums.ReservationStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,7 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import java.time.Instant;
+import java.time.*;
+import java.time.temporal.TemporalAdjusters;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.data.domain.Sort.Order.desc;
@@ -54,6 +56,18 @@ class ReservationServiceTest {
         ReservationVO vo = new ReservationVO().id(102L).status(ReservationStatus.REVOKED);
         ReservationVO update = service.update(vo);
         assertThat(vo.status()).isEqualTo(update.status());
+    }
+
+    @Test @DisplayName("예약을 검색합니다.")
+    public void searchTest() {
+        LocalDate criteria = LocalDate.of(2023, Month.JULY, 1);
+        Instant from = criteria.atStartOfDay().toInstant(ZoneOffset.of("+09:00"));
+        Instant to = criteria.with(TemporalAdjusters.lastDayOfMonth()).atTime(LocalTime.MAX).toInstant(ZoneOffset.of("+09:00"));
+
+        ReservationSearchCondition condition = new ReservationSearchCondition().from(from).to(to);
+        Pageable pageable = PageRequest.of(0, 1, by(desc("createdAt")));
+        Page<ReservationAnimalGuardianDTO> search = service.searchAllWithAnimalAndGuardian(202L, condition, pageable);
+        assertThat(search.getSize()).isEqualTo(pageable.getPageSize());
     }
 
 }
