@@ -6,6 +6,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.web.vt.domain.common.dto.QReservationAnimalGuardianDTO;
 import com.web.vt.domain.common.dto.ReservationAnimalGuardianDTO;
 import com.web.vt.domain.common.dto.ReservationSearchCondition;
+import com.web.vt.domain.common.enums.ReservationStatus;
 import com.web.vt.domain.common.enums.UsageStatus;
 import com.web.vt.exceptions.NotFoundException;
 import com.web.vt.utils.ObjectUtil;
@@ -131,6 +132,25 @@ public class ReservationQuerydslRepositoryImpl implements ReservationQuerydslRep
                     reservationDateBetween(condition.from(), condition.to())
                 ).fetchOne()
         );
+    }
+
+    @Override
+    public List<ReservationSlotDTO> findAllByReservationTime(Long clinicId, ReservationSearchCondition condition) {
+
+        BooleanExpression conditions = reservation.clinic.id.eq(clinicId)
+                .and(reservation.status.eq(ReservationStatus.APPROVED));
+
+        List<Instant> reserved = query.select(reservation.reservationDateTime)
+                .from(reservation)
+                .where(conditions,
+                        reservationDateBetween(condition.from(), condition.to())
+                ).fetch();
+
+        List<ReservationSlotDTO> slots = reserved.stream()
+                .map(t -> new ReservationSlotDTO().slotTime(t).available(false))
+                .toList();
+
+        return slots;
     }
 
     private BooleanExpression reservationDateBetween(Instant from, Instant to) {

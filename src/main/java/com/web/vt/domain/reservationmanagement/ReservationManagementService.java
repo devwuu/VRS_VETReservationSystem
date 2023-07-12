@@ -18,6 +18,25 @@ public class ReservationManagementService {
     private final ReservationManagementRepository reservationManagementRepository;
     private final VeterinaryClinicService clinicService;
 
+    @Transactional(readOnly = true)
+    public ReservationManagementVO findByClinicId(ReservationManagementVO vo){
+        Optional<ReservationManagement> find = reservationManagementRepository.findByClinicId(vo.clinicId());
+        if(find.isEmpty()){
+            throw new NotFoundException("NOT EXIST CLINIC ID");
+        }
+        return find.map(m -> new ReservationManagementVO(m).clinicId(vo.clinicId())).get();
+    }
+
+
+    @Transactional(readOnly = true)
+    public ReservationManagementVO findById(ReservationManagementVO vo){
+        Optional<ReservationManagement> find = reservationManagementRepository.findById(vo.id());
+        if(find.isEmpty()){
+            throw new NotFoundException("NOT EXIST MANAGEMENT ID");
+        }
+        return find.map(ReservationManagementVO::new).get();
+    }
+
     public ReservationManagementVO save(ReservationManagementVO vo){
 
         VeterinaryClinicVO clinic = new VeterinaryClinicVO().id(vo.clinicId()).status(UsageStatus.USE);

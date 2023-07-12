@@ -7,6 +7,8 @@ import com.web.vt.domain.clinic.VeterinaryClinicVO;
 import com.web.vt.domain.common.dto.ReservationAnimalGuardianDTO;
 import com.web.vt.domain.common.dto.ReservationSearchCondition;
 import com.web.vt.domain.common.enums.UsageStatus;
+import com.web.vt.domain.reservationmanagement.ReservationManagementService;
+import com.web.vt.domain.reservationmanagement.ReservationManagementVO;
 import com.web.vt.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,6 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,8 +27,51 @@ import java.util.Optional;
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
+    private final ReservationManagementService managementService;
     private final VeterinaryClinicService clinicService;
     private final AnimalService animalService;
+
+
+    @Transactional(readOnly = true)
+    public List<ReservationSlotDTO> findAllReservationSlots(ReservationVO vo){
+        LocalDate criteriaDate = LocalDate.ofInstant(vo.reservationDateTime(), ZoneId.of("UTC"));
+
+        Instant from = criteriaDate.atStartOfDay().toInstant(ZoneOffset.UTC);
+        Instant to = criteriaDate.atTime(OffsetTime.MAX).toInstant();
+        ReservationSearchCondition condition = new ReservationSearchCondition().from(from).to(to);
+
+        // 기예약건
+        List<ReservationSlotDTO> existSlots = reservationRepository.findAllByReservationTime(vo.clinicId(), condition);
+        // 예약 관리 정보
+        ReservationManagementVO managementInfo = managementService.findByClinicId(new ReservationManagementVO().clinicId(vo.clinicId()));
+
+        // todo 고려사항
+        //  예약 관리 정보가 front에 이미 있을 것이기 때문에 비즈니스 로직을 front로 이동시켜도 무방하지 않을까?
+
+        LocalTime startTime = LocalTime.ofInstant(managementInfo.startDateTime(), ZoneOffset.UTC);
+        LocalTime endTime = LocalTime.ofInstant(managementInfo.endDateTime(), ZoneOffset.UTC);
+        LocalTime currentSlotTime = startTime;
+        List<ReservationSlotDTO> allSlots = new ArrayList<>();
+
+        while (!currentSlotTime.isAfter(endTime)){
+            Instant parsedSlotTime = Instant.ofEpochSecond(currentSlotTime.toEpochSecond(criteriaDate, ZoneOffset.UTC));
+
+            Optional<ReservationSlotDTO> existSlot = existSlots.stream()
+                    .filter(s -> parsedSlotTime.equals(s.slotTime()))
+                    .findAny();
+
+            if(existSlot.isPresent()){
+                allSlots.add(existSlot.get());
+            }else{
+                allSlots.add(new ReservationSlotDTO().slotTime(parsedSlotTime).available(true));
+            }
+
+            currentSlotTime = currentSlotTime.plusMinutes(30);
+        }
+
+        return allSlots;
+    }
+
 
     @Transactional(readOnly = true)
     public ReservationAnimalGuardianDTO findByIdWithAnimalAndGuardian(ReservationVO vo){

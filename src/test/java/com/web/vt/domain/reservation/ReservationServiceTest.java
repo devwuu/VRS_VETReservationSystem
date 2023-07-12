@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 
 import java.time.*;
 import java.time.temporal.TemporalAdjusters;
+import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.data.domain.Sort.Order.desc;
@@ -26,11 +28,14 @@ class ReservationServiceTest {
 
     @Test @DisplayName("새로운 예약을 등록합니다")
     public void saveReservationTest() {
+
+        LocalDateTime reservationDate = LocalDateTime.of(2023, 07, 12, 10, 00);
+
         ReservationVO vo = new ReservationVO()
                 .clinicId(202L)
                 .animalId(1L)
                 .status(ReservationStatus.APPROVED)
-                .reservationDateTime(Instant.now());
+                .reservationDateTime(reservationDate.toInstant(ZoneOffset.UTC));
         ReservationVO saved = service.save(vo);
         assertThat(saved.id()).isNotNull();
     }
@@ -68,6 +73,15 @@ class ReservationServiceTest {
         Pageable pageable = PageRequest.of(0, 1, by(desc("createdAt")));
         Page<ReservationAnimalGuardianDTO> search = service.searchAllWithAnimalAndGuardian(202L, condition, pageable);
         assertThat(search.getSize()).isEqualTo(pageable.getPageSize());
+    }
+
+    @Test @DisplayName("예약 가능한 시간을 확인합니다")
+    public void findReservationSlots() {
+        LocalDateTime reservationDate = LocalDateTime.of(2023, 07, 12, 10, 00);
+        ReservationVO vo = new ReservationVO().reservationDateTime(Instant.now()).clinicId(202L);
+        List<ReservationSlotDTO> findslots = service.findAllReservationSlots(vo);
+        Optional<ReservationSlotDTO> exist = findslots.stream().filter(s -> s.slotTime().equals(reservationDate.toInstant(ZoneOffset.UTC))).findAny();
+        assertThat(exist.get().available()).isFalse();
     }
 
 }
