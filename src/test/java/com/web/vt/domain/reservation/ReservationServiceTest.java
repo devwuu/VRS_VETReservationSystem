@@ -58,7 +58,7 @@ class ReservationServiceTest {
 
     @Test @DisplayName("에약을 수정합니다.")
     public void updateReservation() {
-        ReservationVO vo = new ReservationVO().id(102L).status(ReservationStatus.REVOKED);
+        ReservationVO vo = new ReservationVO().id(152L).status(ReservationStatus.REVOKED);
         ReservationVO update = service.update(vo);
         assertThat(vo.status()).isEqualTo(update.status());
     }

@@ -21,8 +21,9 @@ class AnimalGuardianServiceTest {
 
         GuardianVO vo = new GuardianVO()
                 .name("devwuu")
-                .contact("123-123")
-                .status(UsageStatus.USE);
+                .contact("03111112222")
+                .status(UsageStatus.USE)
+                .remark("달이 보호자님");
 
         GuardianVO saved = service.save(vo);
         assertThat(saved.id()).isNotNull();
@@ -33,7 +34,11 @@ class AnimalGuardianServiceTest {
     public void updateTest() {
 
         GuardianVO vo = new GuardianVO()
-                .id(52L).address("서울시");
+                .id(352L)
+                .name("devwuu")
+                .contact("03111112222")
+                .address("서울시")
+                .status(UsageStatus.USE);
         GuardianVO updated = service.update(vo);
         assertThat(vo.id()).isEqualTo(updated.id());
     }
@@ -48,7 +53,7 @@ class AnimalGuardianServiceTest {
         }, "예외가 발생하지 않았습니다,");
     }
 
-    @Test @DisplayName("등록된 보호자를 조회합니다")
+    @Test @DisplayName("사용중이면서 등록된 특정 보호자를 조회합니다")
     public void findByIdTest() {
         GuardianVO vo = new GuardianVO().id(152L).status(UsageStatus.USE);
         GuardianVO find = service.findByIdAndStatus(vo);
@@ -58,7 +63,7 @@ class AnimalGuardianServiceTest {
     @Test @DisplayName("등록된 보호자를 삭제합니다")
     public void deleteTest() {
 
-        GuardianVO vo = new GuardianVO().id(202L);
+        GuardianVO vo = new GuardianVO().id(352L);
         GuardianVO delete = service.delete(vo);
         assertThat(delete.status()).isEqualTo(UsageStatus.DELETE);
 

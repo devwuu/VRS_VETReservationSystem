@@ -13,5 +13,5 @@ public interface VeterinaryClinicRepository extends JpaRepository<VeterinaryClin
 
     Optional<VeterinaryClinic> findByIdAndStatus(Long aLong, UsageStatus status);
 
-    Page<VeterinaryClinic> findAllByStatus(UsageStatus status, Pageable pageable);
+    Page<VeterinaryClinic> findAllByStatusIn(Pageable pageable, UsageStatus ...statuses);
 }

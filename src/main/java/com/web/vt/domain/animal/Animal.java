@@ -3,6 +3,8 @@ package com.web.vt.domain.animal;
 import com.web.vt.domain.clinic.VeterinaryClinic;
 import com.web.vt.domain.clinic.VeterinaryClinicVO;
 import com.web.vt.domain.common.BaseEntity;
+import com.web.vt.domain.common.enums.Gender;
+import com.web.vt.domain.common.enums.GenderConverter;
 import com.web.vt.domain.common.enums.UsageStatus;
 import com.web.vt.domain.common.enums.UsageStatusConverter;
 import com.web.vt.domain.guardian.Guardian;
@@ -34,6 +36,9 @@ public class Animal extends BaseEntity {
     @Column(name = "remark")
     private String remark;
 
+    @Convert(converter = GenderConverter.class)
+    private Gender gender;
+
     @Convert(converter = UsageStatusConverter.class)
     private UsageStatus status;
 
@@ -52,6 +57,7 @@ public class Animal extends BaseEntity {
         age = vo.age();
         status = vo.status();
         remark = vo.remark();
+        gender = vo.gender();
     }
 
     public Animal addClinic(VeterinaryClinicVO vo) {

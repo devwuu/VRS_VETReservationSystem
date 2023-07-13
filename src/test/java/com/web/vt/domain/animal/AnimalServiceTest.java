@@ -2,6 +2,7 @@ package com.web.vt.domain.animal;
 
 import com.web.vt.domain.common.dto.AnimalGuardianDTO;
 import com.web.vt.domain.common.dto.AnimalSearchCondition;
+import com.web.vt.domain.common.enums.Gender;
 import com.web.vt.domain.common.enums.UsageStatus;
 import com.web.vt.domain.guardian.GuardianVO;
 import org.junit.jupiter.api.DisplayName;
@@ -28,7 +29,9 @@ class AnimalServiceTest {
                 .age(10L)
                 .species("강아지")
                 .name("달이")
-                .guardian(new GuardianVO().id(1L));
+                .guardian(new GuardianVO().id(1L))
+                .gender(Gender.Female)
+                .status(UsageStatus.USE);
         AnimalVO saved = service.save(vo);
         assertThat(saved.id()).isNotNull();
     }
@@ -46,14 +49,14 @@ class AnimalServiceTest {
 
     @Test @DisplayName("반려동물의 정보를 업데이트 합니다.")
     public void updateTest() {
-        AnimalVO vo = new AnimalVO().id(1L).name("샛별");
+        AnimalVO vo = new AnimalVO().id(1L).name("샛별").age(12L);
         AnimalVO updated = service.update(vo);
         assertThat(vo.id()).isEqualTo(updated.id());
     }
 
     @Test @DisplayName("반려동물의 정보를 삭제합니다")
     public void deleteTest() {
-        AnimalVO vo = new AnimalVO().id(2L);
+        AnimalVO vo = new AnimalVO().id(202L);
         AnimalVO find = service.delete(vo);
         assertThat(find.status()).isEqualTo(UsageStatus.DELETE);
     }

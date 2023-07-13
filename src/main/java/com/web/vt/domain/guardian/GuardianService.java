@@ -27,7 +27,8 @@ public class GuardianService {
         Guardian saved = find.get().name(vo.name())
                 .contact(vo.contact())
                 .address(vo.address())
-                .remark(vo.remark());
+                .remark(vo.remark())
+                .status(vo.status());
 
         return new GuardianVO(saved);
     }

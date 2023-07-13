@@ -21,6 +21,13 @@ class ReservationManagementServiceTest {
     private final ZonedDateTime START = LocalDateTime.now().atZone(ZoneOffset.UTC);
     private final ZonedDateTime END = START.plusDays(1);
 
+    @Test @DisplayName("예약 관리 id로 예약 관리 정보를 가져옵니다")
+    public void findByIdTest() {
+        ReservationManagementVO vo = new ReservationManagementVO().id(152L);
+        ReservationManagementVO find = service.findById(vo);
+        assertThat(find.id()).isEqualTo(vo.id());
+    }
+
     @Test @DisplayName("병원 id로 예약 관리 정보를 가져옵니다")
     public void findByClinicId() {
         ReservationManagementVO vo = new ReservationManagementVO().clinicId(2L);
@@ -28,11 +35,11 @@ class ReservationManagementServiceTest {
         assertThat(vo.clinicId()).isEqualTo(find.clinicId());
     }
 
-    @Test
+    @Test @DisplayName("예약 관리 정보를 신규 등록합니다.")
     public void saveTest() {
 
         ReservationManagementVO vo = new ReservationManagementVO()
-                .clinicId(202L)
+                .clinicId(102L)
                 .status(UsageStatus.USE)
                 .startDateTime(START.toInstant())
                 .endDateTime(END.toInstant());
@@ -41,14 +48,13 @@ class ReservationManagementServiceTest {
         assertThat(save.id()).isNotNull();
     }
 
-    @Test
+    @Test @DisplayName("예약 관리 정보를 수정합니다.")
     public void updateTest() {
 
         ReservationManagementVO vo = new ReservationManagementVO()
-                .id(1L)
-                .clinicId(2L)
-                .status(UsageStatus.NOT_USE)
-                .endDateTime(END.toInstant());
+                .id(152L)
+                .clinicId(102L)
+                .status(UsageStatus.NOT_USE);
 
         ReservationManagementVO saved = service.update(vo);
         assertThat(saved.clinicId()).isEqualTo(vo.clinicId());

@@ -2,6 +2,7 @@ package com.web.vt.domain.animal;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.web.vt.domain.common.BaseVO;
+import com.web.vt.domain.common.enums.Gender;
 import com.web.vt.domain.common.enums.UsageStatus;
 import com.web.vt.domain.guardian.Guardian;
 import com.web.vt.domain.guardian.GuardianVO;
@@ -25,6 +26,7 @@ public class AnimalVO extends BaseVO implements Serializable {
     private String species;
     private Long age;
     private String remark;
+    private Gender gender;
     private UsageStatus status;
 
     private Long clinicId;
@@ -37,6 +39,7 @@ public class AnimalVO extends BaseVO implements Serializable {
         age = entity.age();
         status = entity.status();
         remark = entity.remark();
+        gender = entity.gender();
         updatedBy(entity.updatedBy());
         updatedAt(entity.updatedAt());
         createBy(entity.createdBy());

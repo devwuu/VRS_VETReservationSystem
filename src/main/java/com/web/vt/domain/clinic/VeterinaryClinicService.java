@@ -32,7 +32,8 @@ public class VeterinaryClinicService {
         // update method 고려
         VeterinaryClinic saved = find.get().name(vo.name())
                 .contact(vo.contact())
-                .remark(vo.remark());
+                .remark(vo.remark())
+                .status(vo.status());
 
         return new VeterinaryClinicVO(saved);
     }
@@ -51,8 +52,8 @@ public class VeterinaryClinicService {
     }
 
     @Transactional(readOnly = true)
-    public Page<VeterinaryClinicVO> findAll(Pageable pageable){
-        Page<VeterinaryClinic> find = clinicRepository.findAll(pageable);
+    public Page<VeterinaryClinicVO> findAllByStatusIn(Pageable pageable, UsageStatus ...statuses){
+        Page<VeterinaryClinic> find = clinicRepository.findAllByStatusIn(pageable, statuses);
         return find.map(VeterinaryClinicVO::new);
     }
 

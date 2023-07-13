@@ -1,6 +1,7 @@
 package com.web.vt.domain.clinic;
 
 import com.web.vt.domain.common.PageVO;
+import com.web.vt.domain.common.enums.UsageStatus;
 import com.web.vt.exceptions.ValidationException;
 import com.web.vt.utils.ObjectUtil;
 import lombok.RequiredArgsConstructor;
@@ -55,7 +56,7 @@ public class VeterinaryClinicAdminController {
             throw new ValidationException("PAGINATION INFO IS EMPTY");
         }
         Pageable pageable = PageRequest.of(vo.getPage(), vo.getSize(), by(desc("createdAt")));
-        Page<VeterinaryClinicVO> result = clinicService.findAll(pageable);
+        Page<VeterinaryClinicVO> result = clinicService.findAllByStatusIn(pageable, UsageStatus.USE, UsageStatus.NOT_USE);
         return ResponseEntity.ok().body(result);
     }
 

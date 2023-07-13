@@ -4,6 +4,7 @@ import com.web.vt.domain.clinic.VeterinaryClinicService;
 import com.web.vt.domain.clinic.VeterinaryClinicVO;
 import com.web.vt.domain.common.dto.AnimalGuardianDTO;
 import com.web.vt.domain.common.dto.AnimalSearchCondition;
+import com.web.vt.domain.common.enums.Gender;
 import com.web.vt.domain.common.enums.UsageStatus;
 import com.web.vt.domain.guardian.GuardianService;
 import com.web.vt.domain.guardian.GuardianVO;
@@ -33,7 +34,7 @@ public class AnimalService {
 
         GuardianVO findGuardian = null;
         if(ObjectUtil.isNotEmpty(vo.guardian())){
-            findGuardian = guardianService.findByIdAndStatus(vo.guardian());
+            findGuardian = guardianService.findByIdAndStatus(vo.guardian().status(UsageStatus.USE));
             animal.addGuardian(findGuardian);
         }
 
@@ -80,7 +81,8 @@ public class AnimalService {
                 .name(null)
                 .age(0L)
                 .species(null)
-                .remark(null);
+                .remark(null)
+                .gender(Gender.ETC);
 
         return new AnimalVO(deleted);
     }

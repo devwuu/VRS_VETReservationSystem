@@ -19,13 +19,26 @@ class VeterinaryClinicServiceTest {
     @Autowired
     VeterinaryClinicService service;
 
+    @Test @DisplayName("새로운 동물병원을 등록합니다.")
+    public void saveTest() {
+        VeterinaryClinicVO vo = new VeterinaryClinicVO()
+                .name("고양이 동물병원")
+                .contact("0211112222")
+                .remark("고양이 전문")
+                .status(UsageStatus.USE);
+        VeterinaryClinicVO saved = service.save(vo);
+        assertThat(saved.id()).isNotNull();
+    }
+
     @Test @DisplayName("동물병원 정보를 수정합니다.")
     public void updateTest() {
 
         VeterinaryClinicVO vo = new VeterinaryClinicVO()
-                .id(2L)
-                .name("수정된 동물병원")
-                .remark("updated");
+                .id(302L)
+                .name("수정된 고양이 동물병원")
+                .status(UsageStatus.USE)
+                .contact("03111112222")
+                .remark("수정됨");
         VeterinaryClinicVO update = service.update(vo);
 
         assertThat(vo.id()).isEqualTo(update.id());
@@ -35,28 +48,29 @@ class VeterinaryClinicServiceTest {
     public void deleteTest() {
 
         VeterinaryClinicVO vo = new VeterinaryClinicVO()
-                .id(2L);
+                .id(302L);
         VeterinaryClinicVO delete = service.delete(vo);
 
-        assertThat(delete.status()).isEqualTo("D");
+        assertThat(delete.status()).isEqualTo(UsageStatus.DELETE);
 
     }
 
     @Test @DisplayName("영업중인 특정 동물병원을 찾습니다.")
-    public void findTest() {
+    public void findByIdTest() {
 
         VeterinaryClinicVO vo = new VeterinaryClinicVO()
-                .id(52L)
+                .id(202L)
                 .status(UsageStatus.USE);
         VeterinaryClinicVO find = service.findByIdAndStatus(vo);
         assertThat(find.id()).isEqualTo(vo.id());
 
     }
 
-    @Test @DisplayName("영업 중인 모든 동물병원을 가져옵니다.")
-    public void findAllTest() {
+    @Test @DisplayName("삭제되지 않은 모든 동물병원을 가져옵니다.")
+    public void findAllByStatusInTest() {
         Pageable pageable = PageRequest.of(0, 2, by(Order.desc("createdAt")));
-        Page<VeterinaryClinicVO> result = service.findAll(pageable);
+        Page<VeterinaryClinicVO> result = service.findAllByStatusIn(pageable, UsageStatus.USE, UsageStatus.NOT_USE);
+        assertThat(result.getSize()).isEqualTo(pageable.getPageSize());
     }
 
 
