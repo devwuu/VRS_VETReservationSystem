@@ -26,25 +26,16 @@ public class VeterinaryClinicAdminController {
     @PostMapping("save")
     public ResponseEntity<VeterinaryClinicVO> save(@RequestBody VeterinaryClinicVO body){
         if(ObjectUtil.isNotEmpty(body.id())){
-            throw new ValidationException("ID SHOULD BE NULL");
+            throw new ValidationException("ID SHOULD BE EMPTY");
         }
         VeterinaryClinicVO result = clinicService.save(body);
         return ResponseEntity.created(URI.create("/v1/rest/clinic")).body(result);
     }
 
-    @PostMapping("update")
-    public ResponseEntity<VeterinaryClinicVO> update(@RequestBody VeterinaryClinicVO body){
-        if(ObjectUtil.isEmpty(body.id())){
-            throw new ValidationException("ID SHOULD NOT BE NULL");
-        }
-        VeterinaryClinicVO update = clinicService.update(body);
-        return ResponseEntity.ok().body(update);
-    }
-
     @PostMapping("delete")
     public ResponseEntity<VeterinaryClinicVO> delete(@RequestBody VeterinaryClinicVO body){
         if(ObjectUtil.isEmpty(body.id())){
-            throw new ValidationException("ID SHOULD NOT BE NULL");
+            throw new ValidationException("ID SHOULD NOT BE EMPTY");
         }
         VeterinaryClinicVO result = clinicService.delete(body);
         return ResponseEntity.ok().body(result);
@@ -58,6 +49,15 @@ public class VeterinaryClinicAdminController {
         Pageable pageable = PageRequest.of(vo.getPage(), vo.getSize(), by(desc("createdAt")));
         Page<VeterinaryClinicVO> result = clinicService.findAllByStatusIn(pageable, UsageStatus.USE, UsageStatus.NOT_USE);
         return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<VeterinaryClinicVO> findById(@PathVariable String id){
+        if(ObjectUtil.isEmpty(id)){
+            throw new ValidationException("CLINIC ID CANNOT BE EMPTY");
+        }
+        VeterinaryClinicVO find = clinicService.findById(new VeterinaryClinicVO().id(Long.parseLong(id)));
+        return ResponseEntity.ok().body(find);
     }
 
 }

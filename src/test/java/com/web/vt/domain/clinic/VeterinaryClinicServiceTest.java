@@ -56,7 +56,7 @@ class VeterinaryClinicServiceTest {
     }
 
     @Test @DisplayName("영업중인 특정 동물병원을 찾습니다.")
-    public void findByIdTest() {
+    public void findByIdAnsStatusTest() {
 
         VeterinaryClinicVO vo = new VeterinaryClinicVO()
                 .id(202L)
@@ -64,6 +64,14 @@ class VeterinaryClinicServiceTest {
         VeterinaryClinicVO find = service.findByIdAndStatus(vo);
         assertThat(find.id()).isEqualTo(vo.id());
 
+    }
+
+    @Test @DisplayName("특정 동물병원을 찾습니다.")
+    public void findByIdTest() {
+        VeterinaryClinicVO vo = new VeterinaryClinicVO()
+                .id(202L);
+        VeterinaryClinicVO find = service.findById(vo);
+        assertThat(find.id()).isEqualTo(vo.id());
     }
 
     @Test @DisplayName("삭제되지 않은 모든 동물병원을 가져옵니다.")

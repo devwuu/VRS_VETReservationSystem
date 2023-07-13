@@ -60,6 +60,18 @@ asciidoctor {
     inputs.dir snippetsDir
     configurations 'asciidoctorExt'
     dependsOn test
+    sourceDir 'src/docs'
+    outputDir 'src/main/resources/static'
+}
+
+asciidoctor.doFirst {
+    delete file('src/main/resources/static/docs')
+}
+
+task copyDocument(type: Copy) {
+    dependsOn asciidoctor
+    from file("build/docs/asciidoc")
+    into file("src/main/resources/static/docs")
 }
 
 // Querydsl 설정부
@@ -87,4 +99,8 @@ clean {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+build {
+    dependsOn copyDocument
 }

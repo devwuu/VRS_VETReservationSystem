@@ -57,7 +57,6 @@ public class VeterinaryClinicService {
         return find.map(VeterinaryClinicVO::new);
     }
 
-    // 공통화 검토
     @Transactional(readOnly = true)
     public VeterinaryClinicVO findById(VeterinaryClinicVO vo){
         Optional<VeterinaryClinic> find = clinicRepository.findById(vo.id());
@@ -67,6 +66,7 @@ public class VeterinaryClinicService {
         return find.map(VeterinaryClinicVO::new).get();
     }
 
+    // todo 제거 검토
     @Transactional(readOnly = true)
     public VeterinaryClinicVO findByIdAndStatus(VeterinaryClinicVO vo){
         Optional<VeterinaryClinic> find = clinicRepository.findByIdAndStatus(vo.id(), vo.status());
