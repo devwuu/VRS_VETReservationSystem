@@ -78,7 +78,7 @@ class ReservationServiceTest {
     @Test @DisplayName("예약 가능한 시간을 확인합니다")
     public void findReservationSlots() {
         LocalDateTime reservationDate = LocalDateTime.of(2023, 07, 12, 10, 00);
-        ReservationVO vo = new ReservationVO().reservationDateTime(Instant.now()).clinicId(202L);
+        ReservationVO vo = new ReservationVO().reservationDateTime(reservationDate.toInstant(ZoneOffset.UTC)).clinicId(202L);
         List<ReservationSlotDTO> findslots = service.findAllReservationSlots(vo);
         Optional<ReservationSlotDTO> exist = findslots.stream().filter(s -> s.slotTime().equals(reservationDate.toInstant(ZoneOffset.UTC))).findAny();
         assertThat(exist.get().available()).isFalse();

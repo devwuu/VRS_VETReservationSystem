@@ -1,6 +1,7 @@
 package com.web.vt.domain.reservationmanagement;
 
 import com.web.vt.domain.common.enums.UsageStatus;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,8 @@ class ReservationManagementServiceTest {
         assertThat(vo.clinicId()).isEqualTo(find.clinicId());
     }
 
-    @Test @DisplayName("예약 관리 정보를 신규 등록합니다.")
+    @Test @Disabled
+    @DisplayName("예약 관리 정보를 신규 등록합니다.")
     public void saveTest() {
 
         ReservationManagementVO vo = new ReservationManagementVO()

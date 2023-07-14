@@ -36,8 +36,7 @@ public class RestDocsTestSupport {
     protected RestDocumentationResultHandler docs;
 
     @BeforeEach
-    void setUp(final WebApplicationContext context,
-               final RestDocumentationContextProvider provider) {
+    void setUp(WebApplicationContext context, RestDocumentationContextProvider provider) {
         mvc = MockMvcBuilders.webAppContextSetup(context)
                 .apply(MockMvcRestDocumentation.documentationConfiguration(provider))
                 .alwaysDo(MockMvcResultHandlers.print())

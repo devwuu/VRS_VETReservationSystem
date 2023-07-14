@@ -1,0 +1,22 @@
+= Veterinary Clinic API 문서
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+
+== 동물병원 수정하기
+
+=== Request field
+
+include::{snippets}/veterinary-clinic-client-controller-test/update/request-fields.adoc[]
+
+
+=== Request example
+
+include::{snippets}/veterinary-clinic-client-controller-test/update/http-request.adoc[]
+
+=== Response example
+
+include::{snippets}/veterinary-clinic-client-controller-test/update/http-response.adoc[]
+

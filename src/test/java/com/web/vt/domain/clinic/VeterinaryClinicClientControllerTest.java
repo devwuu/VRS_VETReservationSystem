@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class VeterinaryClinicClientControllerTest extends RestDocsTestSupport {
 
     @Test @DisplayName("영업 중인 특정 동물병원을 찾습니다.")
-    public void findTest() throws Exception {
+    public void find() throws Exception {
         String id = "202";
         mvc.perform(get("/v1/clinic/"+id))
                 .andDo(document("clinic/findByIdAndStatus",
@@ -42,7 +42,7 @@ class VeterinaryClinicClientControllerTest extends RestDocsTestSupport {
     }
 
     @Test @DisplayName("동물병원 정보를 수정합니다.")
-    public void updateTest() throws Exception {
+    public void update() throws Exception {
 
         VeterinaryClinicVO vo = new VeterinaryClinicVO()
                 .id(352L)

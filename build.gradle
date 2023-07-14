@@ -54,25 +54,36 @@ ext {
 
 test {
     outputs.dir snippetsDir
+    useJUnitPlatform()
 }
 
+// build/asciidoc/html5/*.html가 아니라 build/docs/asciidoc 하위에 바로 html 파일 생성
+// src 경로와 같은 경로로 잡히는 거 같다.
 asciidoctor {
     inputs.dir snippetsDir
     configurations 'asciidoctorExt'
     dependsOn test
-    sourceDir 'src/docs'
-    outputDir 'src/main/resources/static'
+//    baseDirFollowsSourceFile()
 }
 
+// static/docs 폴더 비우기
 asciidoctor.doFirst {
     delete file('src/main/resources/static/docs')
 }
 
+// asccidoctor 작업 이후 생성된 HTML 파일을 static/docs 로 copy
 task copyDocument(type: Copy) {
     dependsOn asciidoctor
     from file("build/docs/asciidoc")
     into file("src/main/resources/static/docs")
 }
+
+
+//// build 의 의존작업 명시
+build {
+    dependsOn copyDocument
+}
+
 
 // Querydsl 설정부
 def generated = 'src/main/generated'
@@ -96,11 +107,10 @@ clean {
     delete file(generated)
 }
 
-
-tasks.named('test') {
-    useJUnitPlatform()
-}
-
-build {
-    dependsOn copyDocument
-}
+// 배포에 rest docs 문서 포함
+//bootJar {
+//    dependsOn asciidoctor
+//    from ("${asciidoctor.outputDir}") {
+//        into 'static/docs'
+//    }
+//}

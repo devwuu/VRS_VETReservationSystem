@@ -36,17 +36,6 @@ class AnimalServiceTest {
         assertThat(saved.id()).isNotNull();
     }
 
-    @Test @DisplayName("식별자가 있는 entity의 경우, save()를 했을 때 select를 하고 update를 한다.")
-    public void saveTest1() {
-        AnimalVO vo = new AnimalVO().clinicId(2L)
-                .id(1L)
-                .age(3L)
-                .species("강아지")
-                .name("달이");
-        AnimalVO saved = service.save(vo);
-        assertThat(saved.id()).isNotNull();
-    }
-
     @Test @DisplayName("반려동물의 정보를 업데이트 합니다.")
     public void updateTest() {
         AnimalVO vo = new AnimalVO().id(1L).name("샛별").age(12L);

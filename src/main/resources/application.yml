@@ -7,12 +7,12 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+
     open-in-view: false
     show-sql: off
-#    properties:
-#      hibernate:
-#        jdbc:
-#          time_zone: UTC
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
   jackson:
     serialization:
       indent-output: true
@@ -25,9 +25,3 @@ logging:
       connection: off
       sqlonly: off
       sqltimming: debug
-#    org:
-#      hibernate:
-#        orm:
-#          jdbc:
-#            bind: trace
-
