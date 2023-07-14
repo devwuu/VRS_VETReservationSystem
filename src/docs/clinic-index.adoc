@@ -1,0 +1,12 @@
+= Clinic API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+
+NOTE: 동물병원과 관련된 api 입니다.
+
+== 1. update
+
+include::src/docs/clinic-update.adoc[]
