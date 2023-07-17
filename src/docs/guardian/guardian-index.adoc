@@ -1,0 +1,37 @@
+= Guardian API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+
+NOTE: 반려동물 보호자와 관련된 api 입니다.
+
+== 1. Client API
+
+=== 1.1 save
+신규 보호자를 등록합니다
+
+operation::guardian-client-controller-test/save[snippets='request-fields,http-request,http-response']
+
+
+'''
+
+=== 1.2 find
+등록된 사용중인 보호자 정보를 조회합니다
+
+operation::guardian-client-controller-test/find[snippets='path-parameters,http-request,http-response']
+
+'''
+
+=== 1.3 update
+동물병원 정보를 수정합니다
+
+operation::guardian-client-controller-test/update[snippets='request-fields,http-request,http-response']
+
+'''
+
+=== 1.4 delete
+보호자를 삭제 처리 합니다
+
+operation::guardian-client-controller-test/delete[snippets='request-fields,http-request,http-response']

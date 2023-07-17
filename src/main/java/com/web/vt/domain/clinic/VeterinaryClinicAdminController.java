@@ -28,8 +28,11 @@ public class VeterinaryClinicAdminController {
         if(ObjectUtil.isNotEmpty(body.id())){
             throw new ValidationException("ID SHOULD BE EMPTY");
         }
+        if(ObjectUtil.isEmpty(body.status())){
+            throw new ValidationException("STATUS SHOULD BE EMPTY");
+        }
         VeterinaryClinicVO result = clinicService.save(body);
-        return ResponseEntity.created(URI.create("/v1/rest/clinic")).body(result);
+        return ResponseEntity.created(URI.create("/v1/admin/clinic/"+result.id())).body(result);
     }
 
     @PostMapping("delete")
@@ -51,7 +54,7 @@ public class VeterinaryClinicAdminController {
         return ResponseEntity.ok().body(result);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<VeterinaryClinicVO> findById(@PathVariable String id){
         if(ObjectUtil.isEmpty(id)){
             throw new ValidationException("CLINIC ID CANNOT BE EMPTY");

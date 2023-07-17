@@ -8,3 +8,7 @@
 == Clinic API
 
 * link:clinic/clinic-index.html[동물병원 API, window=_blank]
+
+== Guardian API
+
+* link:guardian/guardian-index.html[보호자 API, window=_blank]
