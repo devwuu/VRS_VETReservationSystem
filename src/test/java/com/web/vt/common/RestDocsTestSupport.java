@@ -16,6 +16,7 @@ import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
@@ -24,6 +25,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 @Import(RestDocsConfiguration.class)
 @ExtendWith(RestDocumentationExtension.class)
 @Disabled
+@Transactional
 public class RestDocsTestSupport {
 
     @Autowired

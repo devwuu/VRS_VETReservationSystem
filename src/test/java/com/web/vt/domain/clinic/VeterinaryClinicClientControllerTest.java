@@ -5,14 +5,14 @@ import com.web.vt.domain.common.enums.UsageStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 
 import static com.web.vt.common.RestDocsConfiguration.field;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -22,21 +22,29 @@ class VeterinaryClinicClientControllerTest extends RestDocsTestSupport {
     @Test @DisplayName("영업 중인 특정 동물병원을 찾습니다.")
     public void find() throws Exception {
         String id = "202";
-        mvc.perform(get("/v1/clinic/"+id))
-                .andDo(document("clinic/findByIdAndStatus",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())))
+        mvc.perform(RestDocumentationRequestBuilders.get("/v1/clinic/{id}", id))
+                .andDo(
+                        docs.document(
+                                pathParameters(
+                                        parameterWithName("id").attributes(field("type", "Number")).description("동물병원 id")
+                                )
+                        )
+                )
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test @DisplayName("영업 중이지 않은 동물병원을 찾으면 not found로 응답받습니다")
-    public void findTest2() throws Exception {
+    public void notFound() throws Exception {
         String id = "2";
-        mvc.perform(get("/v1/clinic/"+id))
-                .andDo(document("clinic/findByIdAndStatus",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())))
+        mvc.perform(RestDocumentationRequestBuilders.get("/v1/clinic/{id}", id))
+                .andDo(
+                        docs.document(
+                                pathParameters(
+                                        parameterWithName("id").attributes(field("type", "Number")).description("동물병원 id")
+                                )
+                        )
+                )
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
@@ -66,9 +74,6 @@ class VeterinaryClinicClientControllerTest extends RestDocsTestSupport {
                                     fieldWithPath("createBy").ignored(),
                                     fieldWithPath("updatedBy").ignored()
                             )
-//                            responseFields(
-//                                    fieldWithPath("code").type(JsonFieldType.STRING).description("결과코드"),
-//                            )
                         )
                 )
                 .andDo(print())

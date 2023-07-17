@@ -7,6 +7,42 @@
 
 NOTE: 동물병원과 관련된 api 입니다.
 
-== 1. update
+== 1. Admin API
+
+=== 1.1 find by id
+특정 동물병원을 조회합니다
+
+include::src/docs/clinic-find-by-id.adoc[]
+
+'''
+
+=== 1.2 find all
+동물병원을 리스트를 조회합니다
+
+include::src/docs/clinic-find-all.adoc[]
+
+'''
+
+=== 1.3 save
+신규 동물병원을 등록합니다
+
+include::src/docs/clinic-save.adoc[]
+
+=== 1.4 delete
+동물병원을 삭제(영업중지)합니다.
+
+include::src/docs/clinic-delete.adoc[]
+
+== 2. Client API
+
+=== 2.1 find
+영업 중인 특정 동물병원을 찾습니다
+
+include::src/docs/clinic-find.adoc[]
+
+'''
+
+=== 2.2 update
+동물병원 정보를 수정합니다
 
 include::src/docs/clinic-update.adoc[]

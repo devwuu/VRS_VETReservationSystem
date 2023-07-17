@@ -1,0 +1,13 @@
+
+==== 1.4.1 Request fields
+
+include::{snippets}/veterinary-clinic-admin-controller-test/delete/request-fields.adoc[]
+
+==== 1.4.2 Request example
+
+include::{snippets}/veterinary-clinic-admin-controller-test/delete/http-request.adoc[]
+
+==== 1.4.3 Response example
+
+include::{snippets}/veterinary-clinic-admin-controller-test/delete/http-response.adoc[]
+
