@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.18">
-<title>VET 2023 reservation APP API</title>
+<title>Reservation Management API</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -440,85 +440,342 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="book toc2 toc-left">
 <div id="header">
-<h1>VET 2023 reservation APP API</h1>
+<h1>Reservation Management API</h1>
 <div class="details">
 <span id="revnumber">version 0.0.1-SNAPSHOT</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_clinic_api">Clinic API</a></li>
-<li><a href="#_guardian_api">Guardian API</a></li>
-<li><a href="#_animal_api_working">Animal API (Working)</a></li>
-<li><a href="#_reservation_management_api">Reservation Management API</a></li>
-<li><a href="#_reservation_api_working">Reservation API (Working)</a></li>
+<li><a href="#_1_admin_api">1. Admin API</a>
+<ul class="sectlevel2">
+<li><a href="#_1_1_save">1.1 save</a>
+<ul class="sectlevel3">
+<li><a href="#_1_1_save_request_fields">Request fields</a></li>
+<li><a href="#_1_1_save_http_request">HTTP request</a></li>
+<li><a href="#_1_1_save_http_response">HTTP response</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_2_client_api">2. Client API</a>
+<ul class="sectlevel2">
+<li><a href="#_2_1_find_by_clinic_id">2.1 find by clinic id</a>
+<ul class="sectlevel3">
+<li><a href="#_2_1_find_by_clinic_id_path_parameters">Path parameters</a></li>
+<li><a href="#_2_1_find_by_clinic_id_http_request">HTTP request</a></li>
+<li><a href="#_2_1_find_by_clinic_id_http_response">HTTP response</a></li>
+</ul>
+</li>
+<li><a href="#_2_2_update">2.2 update</a>
+<ul class="sectlevel3">
+<li><a href="#_2_2_update_request_fields">Request fields</a></li>
+<li><a href="#_2_2_update_http_request">HTTP request</a></li>
+<li><a href="#_2_2_update_http_response">HTTP response</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="_clinic_api">Clinic API</h2>
+<div id="preamble">
 <div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p><a href="clinic/clinic-index.html" target="_blank" rel="noopener">동물병원 API</a></p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_guardian_api">Guardian API</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p><a href="guardian/guardian-index.html" target="_blank" rel="noopener">보호자 API</a></p>
-</li>
-</ul>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+예약 관리 정보와 관련된 api 입니다.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_animal_api_working">Animal API (Working)</h2>
+<h2 id="_1_admin_api">1. Admin API</h2>
 <div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p><a href="guardian/guardian-index.html" target="_blank" rel="noopener">동물 API</a></p>
-</li>
-<li>
-<p><a href="guardian/guardian-index.html" target="_blank" rel="noopener">동물 검색 API</a></p>
-</li>
-</ul>
+<div class="sect2">
+<h3 id="_1_1_save">1.1 save</h3>
+<div class="paragraph">
+<p>새로운 예약 관리 정보를 등록합니다</p>
+</div>
+<div class="sect3">
+<h4 id="_1_1_save_request_fields">Request fields</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">필드명</th>
+<th class="tableblock halign-left valign-top">타입</th>
+<th class="tableblock halign-left valign-top">필수값</th>
+<th class="tableblock halign-left valign-top">필드설명</th>
+<th class="tableblock halign-left valign-top">제약사항</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>clinicId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">병원 id</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>status</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상태(사용, 미사용, 삭제)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[ Y | N | D ]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>startDateTime</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">예약시작일시</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">YYYY-MM-DDTMM:mm:ss.sssZ</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>endDateTime</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">예약종료일시</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">YYYY-MM-DDTMM:mm:ss.sssZ</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_1_1_save_http_request">HTTP request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /v1/admin/reservation-management/save HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 248
+Host: localhost:8080
+
+{
+  "createdAt" : null,
+  "updatedAt" : null,
+  "createBy" : null,
+  "updatedBy" : null,
+  "id" : null,
+  "clinicId" : 352,
+  "status" : "NOT_USE",
+  "startDateTime" : "2023-07-17T06:23:10.105482Z",
+  "endDateTime" : "2023-07-18T06:23:10.105482Z"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_1_1_save_http_response">HTTP response</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
+Location: /v1/reservation-management/352
+Content-Type: application/json;charset=UTF-8
+Content-Length: 297
+
+{
+  "createdAt" : "2023-07-17T06:23:10.116382Z",
+  "updatedAt" : "2023-07-17T06:23:10.116382Z",
+  "createBy" : null,
+  "updatedBy" : null,
+  "id" : 502,
+  "clinicId" : 352,
+  "status" : "NOT_USE",
+  "startDateTime" : "2023-07-17T06:23:10.105482Z",
+  "endDateTime" : "2023-07-18T06:23:10.105482Z"
+}</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_reservation_management_api">Reservation Management API</h2>
+<h2 id="_2_client_api">2. Client API</h2>
 <div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p><a href="reservation-management/reservation-management-index.html" target="_blank" rel="noopener">예약 관리 API</a></p>
-</li>
-</ul>
+<div class="sect2">
+<h3 id="_2_1_find_by_clinic_id">2.1 find by clinic id</h3>
+<div class="paragraph">
+<p>동물병원 id로 예약관리 정보를 조회합니다</p>
+</div>
+<div class="sect3">
+<h4 id="_2_1_find_by_clinic_id_path_parameters">Path parameters</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">필드명</th>
+<th class="tableblock halign-left valign-top">타입</th>
+<th class="tableblock halign-left valign-top">필수값</th>
+<th class="tableblock halign-left valign-top">필드설명</th>
+<th class="tableblock halign-left valign-top">제약사항</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">동물병원 id</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_2_1_find_by_clinic_id_http_request">HTTP request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/reservation-management/202 HTTP/1.1
+Host: localhost:8080</code></pre>
 </div>
 </div>
 </div>
-<div class="sect1">
-<h2 id="_reservation_api_working">Reservation API (Working)</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p><a href="guardian/guardian-index.html" target="_blank" rel="noopener">예약 API</a></p>
-</li>
-<li>
-<p><a href="guardian/guardian-index.html" target="_blank" rel="noopener">예약 검색 API</a></p>
-</li>
-</ul>
+<div class="sect3">
+<h4 id="_2_1_find_by_clinic_id_http_response">HTTP response</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 285
+
+{
+  "createdAt" : "2023-07-12T05:05:47.973423Z",
+  "updatedAt" : "2023-07-12T05:05:47.973423Z",
+  "createBy" : null,
+  "updatedBy" : null,
+  "id" : 2,
+  "clinicId" : 202,
+  "status" : "USE",
+  "startDateTime" : "2023-07-01T00:00:00.500Z",
+  "endDateTime" : "2023-07-31T12:00:00.500Z"
+}</code></pre>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div class="sect2">
+<h3 id="_2_2_update">2.2 update</h3>
+<div class="paragraph">
+<p>예약관리 정보를 수정합니다</p>
+</div>
+<div class="sect3">
+<h4 id="_2_2_update_request_fields">Request fields</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">필드명</th>
+<th class="tableblock halign-left valign-top">타입</th>
+<th class="tableblock halign-left valign-top">필수값</th>
+<th class="tableblock halign-left valign-top">필드설명</th>
+<th class="tableblock halign-left valign-top">제약사항</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">예약 관리 정보 id</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>status</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상태(사용, 미사용, 삭제)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[ Y | N | D ]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>startDateTime</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">예약시작일시</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">YYYY-MM-DDTMM:mm:ss.sssZ</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>endDateTime</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">예약종료일시</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">YYYY-MM-DDTMM:mm:ss.sssZ</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_2_2_update_http_request">HTTP request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /v1/reservation-management/update HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 246
+Host: localhost:8080
+
+{
+  "createdAt" : null,
+  "updatedAt" : null,
+  "createBy" : null,
+  "updatedBy" : null,
+  "id" : 2,
+  "clinicId" : null,
+  "status" : "NOT_USE",
+  "startDateTime" : "2023-07-17T06:23:10.143768Z",
+  "endDateTime" : "2023-07-18T06:23:10.143768Z"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_2_2_update_http_response">HTTP response</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 296
+
+{
+  "createdAt" : "2023-07-12T05:05:47.973423Z",
+  "updatedAt" : "2023-07-12T05:05:47.973423Z",
+  "createBy" : null,
+  "updatedBy" : null,
+  "id" : 2,
+  "clinicId" : null,
+  "status" : "NOT_USE",
+  "startDateTime" : "2023-07-17T06:23:10.143768Z",
+  "endDateTime" : "2023-07-18T06:23:10.143768Z"
+}</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -526,7 +783,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-07-17 15:23:00 +0900
+Last updated 2023-07-17 15:19:47 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

@@ -1,0 +1,30 @@
+= Reservation Management API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+
+NOTE: 예약 관리 정보와 관련된 api 입니다.
+
+== 1. Admin API
+
+=== 1.1 save
+새로운 예약 관리 정보를 등록합니다
+
+operation::reservation-management-admin-controller-test/save[snippets='request-fields,http-request,http-response']
+
+== 2. Client API
+
+=== 2.1 find by clinic id
+동물병원 id로 예약관리 정보를 조회합니다
+
+operation::reservation-management-client-controller-test/find-by-clinic-id[snippets='path-parameters,http-request,http-response']
+
+
+'''
+
+=== 2.2 update
+예약관리 정보를 수정합니다
+
+operation::reservation-management-client-controller-test/update[snippets='request-fields,http-request,http-response']
