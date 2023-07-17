@@ -7,4 +7,4 @@
 
 == Clinic API
 
-* link:clinic-index.html[동물병원 API, window=_blank]
+* link:clinic/clinic-index.html[동물병원 API, window=_blank]
