@@ -5,7 +5,8 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 @Getter @Setter
-@Accessors(fluent = true, chain = true)
+@Accessors(chain = true)
+//@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class AnimalSearchCondition {
 
     private String animalName;

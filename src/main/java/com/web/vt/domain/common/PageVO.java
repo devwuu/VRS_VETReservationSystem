@@ -2,9 +2,10 @@ package com.web.vt.domain.common;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 @Getter @Setter
-//@Accessors(fluent = true, chain = true)
+@Accessors(chain = true)
 //@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class PageVO {
     private int page;

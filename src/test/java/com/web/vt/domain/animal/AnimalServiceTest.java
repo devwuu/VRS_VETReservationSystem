@@ -69,10 +69,19 @@ class AnimalServiceTest {
     }
 
     @Test @DisplayName("반려동물 리스트에서 보호자 정보로 검색합니다.")
-    public void searchAllTest() {
+    public void searchAllByGuardianName() {
         Long clinicId = 1L;
         Pageable pageable = PageRequest.of(0, 2, by(desc("createdAt")));
-        AnimalSearchCondition condition = new AnimalSearchCondition().guardianName("vw");
+        AnimalSearchCondition condition = new AnimalSearchCondition().setGuardianName("vw");
+        Page<AnimalGuardianDTO> find = service.searchAllWithGuardian(clinicId, condition, pageable);
+        assertThat(find.getSize()).isEqualTo(2);
+    }
+
+    @Test @DisplayName("반려동물 리스트에서 반려동물 정보로 검색합니다.")
+    public void searchAllByAnimalName() {
+        Long clinicId = 1L;
+        Pageable pageable = PageRequest.of(0, 2, by(desc("createdAt")));
+        AnimalSearchCondition condition = new AnimalSearchCondition().setAnimalName("달");
         Page<AnimalGuardianDTO> find = service.searchAllWithGuardian(clinicId, condition, pageable);
         assertThat(find.getSize()).isEqualTo(2);
     }

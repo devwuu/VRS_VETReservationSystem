@@ -78,9 +78,9 @@ public class AnimalQuerydslRepositoryImpl implements AnimalQuerydslRepository{
                 .and(animal.status.eq(UsageStatus.USE))
                 .and(guardian.status.eq(UsageStatus.USE));
 
-        List<AnimalGuardianDTO> contents = findPageableContents(pageable, conditions, animalNameLike(condition.animalName()), guardianNameLike(condition.guardianName()));
+        List<AnimalGuardianDTO> contents = findPageableContents(pageable, conditions, animalNameLike(condition.getAnimalName()), guardianNameLike(condition.getGuardianName()));
 
-        return PageableExecutionUtils.getPage(contents, pageable, () -> countAllWithGuardian(clinicId, conditions, animalNameLike(condition.animalName()), guardianNameLike(condition.guardianName())).fetchOne() );
+        return PageableExecutionUtils.getPage(contents, pageable, () -> countAllWithGuardian(clinicId, conditions, animalNameLike(condition.getAnimalName()), guardianNameLike(condition.getGuardianName())).fetchOne() );
     }
 
     public JPAQuery<Long> countAllWithGuardian(Long clinicId, BooleanExpression ...conditions) {

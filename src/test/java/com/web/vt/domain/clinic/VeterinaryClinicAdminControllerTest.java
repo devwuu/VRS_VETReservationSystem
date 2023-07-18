@@ -103,7 +103,7 @@ class VeterinaryClinicAdminControllerTest extends RestDocsTestSupport {
                         docs.document(
                                 queryParameters(
                                         parameterWithName("page").attributes(field("type", "Number")).description("현재 페이지(index)"),
-                                        parameterWithName("size").description("한 번에 보여줄 content 갯수")
+                                        parameterWithName("size").attributes(field("type", "Number")).description("한 번에 보여줄 content 갯수")
                                 )
                         )
                 )

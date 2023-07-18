@@ -6,11 +6,13 @@ import com.web.vt.domain.common.enums.UsageStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 
 import static com.web.vt.common.RestDocsConfiguration.field;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -116,6 +118,89 @@ class AnimalClientControllerTest extends RestDocsTestSupport {
                                 )
                         )
                 ).andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test @DisplayName("등록된 반려동물과 반려동물 보호자 리스트를 조회합니다")
+    public void findAll() throws Exception {
+
+        mvc.perform(
+                RestDocumentationRequestBuilders.get("/v1/animal/all")
+                    .param("page", "0")
+                    .param("size", "2")
+                    .param("clinicId", "1")
+                )
+                .andDo(
+                        docs.document(
+                                queryParameters(
+                                        parameterWithName("page").attributes(field("type", "Number")).description("현재 페이지(index)"),
+                                        parameterWithName("size").attributes(field("type", "Number")).description("한 번에 보여줄 content 갯수"),
+                                        parameterWithName("clinicId").attributes(field("type", "Number")).description("동물병원 id")
+                                )
+                        )
+                )
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test @DisplayName("등록된 특정 반려동물과 반려동물 보호자를 조회합니다")
+    public void findById() throws Exception {
+
+        mvc.perform(RestDocumentationRequestBuilders.get("/v1/animal/{id}", "252"))
+                .andDo(
+                        docs.document(
+                                pathParameters(
+                                        parameterWithName("id").attributes(field("type", "Number")).description("반려동물 id")
+                                )
+                        )
+                )
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test @DisplayName("등록된 반려동물과 보호자 리스트에서 반려동물의 이름으로 검색합니다")
+    public void searchByAnimalName() throws Exception {
+        mvc.perform(
+                        RestDocumentationRequestBuilders.get("/v1/animal/search")
+                                .param("page", "0")
+                                .param("size", "2")
+                                .param("clinicId", "1")
+                                .param("animalName", "달")
+                )
+                .andDo(
+                        docs.document(
+                                queryParameters(
+                                        parameterWithName("page").attributes(field("type", "Number")).description("현재 페이지(index)"),
+                                        parameterWithName("size").attributes(field("type", "Number")).description("한 번에 보여줄 content 갯수"),
+                                        parameterWithName("clinicId").attributes(field("type", "Number")).description("동물병원 id"),
+                                        parameterWithName("animalName").attributes(field("type", "String")).description("반려동물 이름")
+                                )
+                        )
+                )
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test @DisplayName("등록된 반려동물과 보호자 리스트에서 보호자 이름으로 검색합니다")
+    public void searchByGuardianName() throws Exception {
+        mvc.perform(
+                        RestDocumentationRequestBuilders.get("/v1/animal/search")
+                                .param("page", "0")
+                                .param("size", "2")
+                                .param("clinicId", "1")
+                                .param("guardianName", "abc")
+                )
+                .andDo(
+                        docs.document(
+                                queryParameters(
+                                        parameterWithName("page").attributes(field("type", "Number")).description("현재 페이지(index)"),
+                                        parameterWithName("size").attributes(field("type", "Number")).description("한 번에 보여줄 content 갯수"),
+                                        parameterWithName("clinicId").attributes(field("type", "Number")).description("동물병원 id"),
+                                        parameterWithName("guardianName").attributes(field("type", "String")).description("보호자 이름")
+                                )
+                        )
+                )
+                .andDo(print())
                 .andExpect(status().isOk());
     }
 

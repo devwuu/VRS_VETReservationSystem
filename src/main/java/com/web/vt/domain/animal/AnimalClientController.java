@@ -1,15 +1,22 @@
 package com.web.vt.domain.animal;
 
+import com.web.vt.domain.common.PageVO;
+import com.web.vt.domain.common.dto.AnimalGuardianDTO;
+import com.web.vt.domain.common.dto.AnimalSearchCondition;
 import com.web.vt.exceptions.ValidationException;
 import com.web.vt.utils.ObjectUtil;
+import com.web.vt.utils.StringUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+
+import static org.springframework.data.domain.Sort.Order.desc;
+import static org.springframework.data.domain.Sort.by;
 
 @RestController
 @RequiredArgsConstructor
@@ -53,6 +60,44 @@ public class AnimalClientController {
         }
         AnimalVO delete = animalService.delete(vo);
         return ResponseEntity.ok().body(delete);
+    }
+
+    @GetMapping("all")
+    public ResponseEntity<Page<AnimalGuardianDTO>> findAll(@RequestParam String clinicId, PageVO vo){
+        if(vo.getSize() == 0){
+            throw new ValidationException("PAGINATION INFO SHOULD NOT BE EMPTY");
+        }
+        if(StringUtil.isEmpty(clinicId)){
+            throw new ValidationException("CLINIC ID SHOULD NOT BE EMPTY");
+        }
+        Pageable pageable = PageRequest.of(vo.getPage(), vo.getSize(), by(desc("createdAt")));
+        Page<AnimalGuardianDTO> result = animalService.findAllWithGuardian(Long.parseLong(clinicId), pageable);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<AnimalGuardianDTO> findById(@PathVariable String id){
+        if(StringUtil.isEmpty(id)){
+            throw new ValidationException("ANIMAL ID SHOULD NOT BE EMPTY");
+        }
+        AnimalGuardianDTO find = animalService.findByIdWithGuardian(
+                new AnimalVO().id(Long.parseLong(id))
+        );
+        return ResponseEntity.ok().body(find);
+    }
+
+    @GetMapping("search")
+    public ResponseEntity<Page<AnimalGuardianDTO>> searchAll(@RequestParam String clinicId, AnimalSearchCondition condition, PageVO vo) {
+        if(vo.getSize() == 0){
+            throw new ValidationException("PAGINATION INFO SHOULD NOT BE EMPTY");
+        }
+       Pageable pageable = PageRequest.of(vo.getPage(), vo.getSize(), by(desc("createdAt")));
+        Page<AnimalGuardianDTO> search = animalService.searchAllWithGuardian(
+                Long.parseLong(clinicId),
+                condition,
+                pageable
+        );
+        return ResponseEntity.ok().body(search);
     }
 
 

@@ -1,5 +1,6 @@
 package com.web.vt.domain.common.dto;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.querydsl.core.annotations.QueryProjection;
 import com.web.vt.domain.common.enums.UsageStatus;
 import lombok.Getter;
@@ -7,10 +8,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+
 @Getter @Setter
 @Accessors(fluent = true, chain = true)
 @NoArgsConstructor
-public class AnimalGuardianDTO {
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+public class AnimalGuardianDTO implements Serializable {
+
+    private static final long serialVersionUID = -7307651688691114160L;
 
     // animal
     private Long animalId;
