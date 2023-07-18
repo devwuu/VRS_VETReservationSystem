@@ -27,7 +27,7 @@ public class VeterinaryClinicClientController {
             throw new ValidationException("ID SHOULD NOT BE EMPTY");
         }
         if(ObjectUtil.isEmpty(body.status())){
-            throw new ValidationException("STATUS SHOULD BE EMPTY");
+            throw new ValidationException("STATUS SHOULD NOT BE EMPTY");
         }
         VeterinaryClinicVO update = clinicService.update(body);
         return ResponseEntity.ok().body(update);
