@@ -552,8 +552,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>status</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상태(사용, 미사용, 삭제)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">[ Y | N | D ]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상태</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[ Use | NotUse | Deleted ]</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>remark</code></p></td>
@@ -594,16 +594,16 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
-Location: /v1/guardian/3852
+Location: /v1/guardian/4152
 Content-Type: application/json;charset=UTF-8
 Content-Length: 270
 
 {
-  "createdAt" : "2023-07-17T06:23:10.011702Z",
-  "updatedAt" : "2023-07-17T06:23:10.011702Z",
+  "createdAt" : "2023-07-18T05:59:40.670021Z",
+  "updatedAt" : "2023-07-18T05:59:40.670021Z",
   "createBy" : null,
   "updatedBy" : null,
-  "id" : 3852,
+  "id" : 4152,
   "name" : "달이 언니",
   "contact" : "01011112222",
   "address" : null,
@@ -741,8 +741,8 @@ Content-Length: 258
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>status</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상태(사용, 미사용, 삭제)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">[ Y | N | D ]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상태</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[ Use | NotUse | Deleted ]</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>remark</code></p></td>

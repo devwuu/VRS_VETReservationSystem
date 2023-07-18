@@ -13,10 +13,10 @@
 
 * link:guardian/guardian-index.html[보호자 API, window=_blank]
 
-== Animal API (Working)
+== Animal API
 
-* link:guardian/guardian-index.html[동물 API, window=_blank]
-* link:guardian/guardian-index.html[동물 검색 API, window=_blank]
+* link:animal/animal-index.html[동물 API, window=_blank]
+* link:animal/animal-search-index.html[동물 검색 API, window=_blank]
 
 == Reservation Management API
 

@@ -623,7 +623,7 @@ Content-Length: 251
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
-<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">한 번에 보여줄 content 갯수</p></td>
 <td class="tableblock halign-left valign-top"></td>
@@ -673,12 +673,12 @@ Content-Length: 1064
   "pageable" : {
     "sort" : {
       "empty" : false,
-      "unsorted" : false,
-      "sorted" : true
+      "sorted" : true,
+      "unsorted" : false
     },
     "offset" : 0,
-    "pageSize" : 2,
     "pageNumber" : 0,
+    "pageSize" : 2,
     "paged" : true,
     "unpaged" : false
   },
@@ -690,8 +690,8 @@ Content-Length: 1064
   "number" : 0,
   "sort" : {
     "empty" : false,
-    "unsorted" : false,
-    "sorted" : true
+    "sorted" : true,
+    "unsorted" : false
   },
   "numberOfElements" : 2,
   "empty" : false
@@ -751,8 +751,8 @@ Content-Length: 1064
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>status</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상태(사용, 미사용, 삭제)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">[ Y | N | D ]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상태</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[ Use | NotUse | Deleted ]</p></td>
 </tr>
 </tbody>
 </table>
@@ -785,16 +785,16 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
-Location: /v1/admin/clinic/5802
+Location: /v1/admin/clinic/6052
 Content-Type: application/json;charset=UTF-8
 Content-Length: 272
 
 {
-  "createdAt" : "2023-07-17T06:23:09.778848Z",
-  "updatedAt" : "2023-07-17T06:23:09.778848Z",
+  "createdAt" : "2023-07-18T05:59:40.481861Z",
+  "updatedAt" : "2023-07-18T05:59:40.481861Z",
   "createBy" : null,
   "updatedBy" : null,
-  "id" : 5802,
+  "id" : 6052,
   "name" : "고양이 동물병원",
   "contact" : "0211112222",
   "remark" : "고양이 전문",
@@ -1030,8 +1030,8 @@ Content-Length: 62
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>status</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">상태(사용, 미사용, 삭제)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">[ Y | N | D ]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상태</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[ Use | NotUse | Deleted ]</p></td>
 </tr>
 </tbody>
 </table>

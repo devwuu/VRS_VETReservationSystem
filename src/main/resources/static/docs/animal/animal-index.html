@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.18">
-<title>VET 2023 reservation APP API</title>
+<title>Animal API</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -440,85 +440,630 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="book toc2 toc-left">
 <div id="header">
-<h1>VET 2023 reservation APP API</h1>
+<h1>Animal API</h1>
 <div class="details">
 <span id="revnumber">version 0.0.1-SNAPSHOT</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_clinic_api">Clinic API</a></li>
-<li><a href="#_guardian_api">Guardian API</a></li>
-<li><a href="#_animal_api">Animal API</a></li>
-<li><a href="#_reservation_management_api">Reservation Management API</a></li>
-<li><a href="#_reservation_api_working">Reservation API (Working)</a></li>
+<li><a href="#_1_client_api">1. Client API</a>
+<ul class="sectlevel2">
+<li><a href="#_1_1_save">1.1 save</a>
+<ul class="sectlevel3">
+<li><a href="#_1_1_save_request_fields">Request fields</a></li>
+<li><a href="#_1_1_save_http_request">HTTP request</a></li>
+<li><a href="#_1_1_save_http_response">HTTP response</a></li>
+</ul>
+</li>
+<li><a href="#_1_2_find_by_id">1.2 find by id</a>
+<ul class="sectlevel3">
+<li><a href="#_1_2_find_by_id_path_parameters">Path parameters</a></li>
+<li><a href="#_1_2_find_by_id_http_request">HTTP request</a></li>
+<li><a href="#_1_2_find_by_id_http_response">HTTP response</a></li>
+</ul>
+</li>
+<li><a href="#_1_3_find_all">1.3 find all</a>
+<ul class="sectlevel3">
+<li><a href="#_1_3_find_all_query_parameters">Query parameters</a></li>
+<li><a href="#_1_3_find_all_http_request">HTTP request</a></li>
+<li><a href="#_1_3_find_all_http_response">HTTP response</a></li>
+</ul>
+</li>
+<li><a href="#_1_4_update">1.4 update</a>
+<ul class="sectlevel3">
+<li><a href="#_1_4_update_request_fields">Request fields</a></li>
+<li><a href="#_1_4_update_http_request">HTTP request</a></li>
+<li><a href="#_1_4_update_http_response">HTTP response</a></li>
+</ul>
+</li>
+<li><a href="#_1_5_delete">1.5 delete</a>
+<ul class="sectlevel3">
+<li><a href="#_1_5_delete_request_fields">Request fields</a></li>
+<li><a href="#_1_5_delete_http_request">HTTP request</a></li>
+<li><a href="#_1_5_delete_http_response">HTTP response</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="_clinic_api">Clinic API</h2>
+<div id="preamble">
 <div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p><a href="clinic/clinic-index.html" target="_blank" rel="noopener">동물병원 API</a></p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_guardian_api">Guardian API</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p><a href="guardian/guardian-index.html" target="_blank" rel="noopener">보호자 API</a></p>
-</li>
-</ul>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+반려동물과 관련된 api 입니다
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_animal_api">Animal API</h2>
+<h2 id="_1_client_api">1. Client API</h2>
 <div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p><a href="animal/animal-index.html" target="_blank" rel="noopener">동물 API</a></p>
-</li>
-<li>
-<p><a href="animal/animal-search-index.html" target="_blank" rel="noopener">동물 검색 API</a></p>
-</li>
-</ul>
+<div class="sect2">
+<h3 id="_1_1_save">1.1 save</h3>
+<div class="paragraph">
+<p>새로운 반려동물을 등록합니다</p>
+</div>
+<div class="sect3">
+<h4 id="_1_1_save_request_fields">Request fields</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">필드명</th>
+<th class="tableblock halign-left valign-top">타입</th>
+<th class="tableblock halign-left valign-top">필수값</th>
+<th class="tableblock halign-left valign-top">필드설명</th>
+<th class="tableblock halign-left valign-top">제약사항</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">반려동물 이름</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>species</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">반려동물 종</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>age</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">반려동물 나이</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>remark</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">비고</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>gender</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">반려동물 성별</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[ Female | Male | ETC ]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>status</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상태</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[ Use | NotUse | Deleted ]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>clinicId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">동물병원 id</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>guardianId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">반려동물 보호자 id</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_1_1_save_http_request">HTTP request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /v1/animal/save HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 266
+Host: localhost:8080
+
+{
+  "createdAt" : null,
+  "updatedAt" : null,
+  "createBy" : null,
+  "updatedBy" : null,
+  "id" : null,
+  "name" : "달이",
+  "species" : "강아지",
+  "age" : 10,
+  "remark" : null,
+  "gender" : "Female",
+  "status" : "USE",
+  "clinicId" : 1,
+  "guardianId" : 1
+}</code></pre>
 </div>
 </div>
 </div>
-<div class="sect1">
-<h2 id="_reservation_management_api">Reservation Management API</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p><a href="reservation-management/reservation-management-index.html" target="_blank" rel="noopener">예약 관리 API</a></p>
-</li>
-</ul>
+<div class="sect3">
+<h4 id="_1_1_save_http_response">HTTP response</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
+Location: /v1/animal/3652
+Content-Type: application/json;charset=UTF-8
+Content-Length: 316
+
+{
+  "createdAt" : "2023-07-18T05:59:40.261739Z",
+  "updatedAt" : "2023-07-18T05:59:40.261739Z",
+  "createBy" : null,
+  "updatedBy" : null,
+  "id" : 3652,
+  "name" : "달이",
+  "species" : "강아지",
+  "age" : 10,
+  "remark" : null,
+  "gender" : "Female",
+  "status" : "USE",
+  "clinicId" : 1,
+  "guardianId" : 1
+}</code></pre>
 </div>
 </div>
 </div>
-<div class="sect1">
-<h2 id="_reservation_api_working">Reservation API (Working)</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p><a href="guardian/guardian-index.html" target="_blank" rel="noopener">예약 API</a></p>
-</li>
-<li>
-<p><a href="guardian/guardian-index.html" target="_blank" rel="noopener">예약 검색 API</a></p>
-</li>
-</ul>
+<hr>
+</div>
+<div class="sect2">
+<h3 id="_1_2_find_by_id">1.2 find by id</h3>
+<div class="paragraph">
+<p>특정 반려동물의 정보와 보호자 정보를 가져옵니다</p>
+</div>
+<div class="sect3">
+<h4 id="_1_2_find_by_id_path_parameters">Path parameters</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">필드명</th>
+<th class="tableblock halign-left valign-top">타입</th>
+<th class="tableblock halign-left valign-top">필수값</th>
+<th class="tableblock halign-left valign-top">필드설명</th>
+<th class="tableblock halign-left valign-top">제약사항</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">반려동물 id</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_1_2_find_by_id_http_request">HTTP request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/animal/252 HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_1_2_find_by_id_http_response">HTTP response</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 318
+
+{
+  "animalId" : 252,
+  "animalName" : "달이",
+  "animalSpecies" : "강아지",
+  "animalAge" : 10,
+  "animalRemark" : null,
+  "animalStatus" : "USE",
+  "guardianId" : 1,
+  "guardianName" : "devwuu",
+  "guardianContact" : "123-123",
+  "guardianAddress" : null,
+  "guardianStatus" : "USE",
+  "guardianRemark" : null
+}</code></pre>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div class="sect2">
+<h3 id="_1_3_find_all">1.3 find all</h3>
+<div class="paragraph">
+<p>등록된 반려동물 리스트를 보호자 정보화 함께 가져옵니다</p>
+</div>
+<div class="sect3">
+<h4 id="_1_3_find_all_query_parameters">Query parameters</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">필드명</th>
+<th class="tableblock halign-left valign-top">타입</th>
+<th class="tableblock halign-left valign-top">필수값</th>
+<th class="tableblock halign-left valign-top">필드설명</th>
+<th class="tableblock halign-left valign-top">제약사항</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>page</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">현재 페이지(index)</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">한 번에 보여줄 content 갯수</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>clinicId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">동물병원 id</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_1_3_find_all_http_request">HTTP request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/animal/all?page=0&amp;size=2&amp;clinicId=1 HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_1_3_find_all_http_response">HTTP response</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 1163
+
+{
+  "content" : [ {
+    "animalId" : 1,
+    "animalName" : "샛별이",
+    "animalSpecies" : null,
+    "animalAge" : 12,
+    "animalRemark" : null,
+    "animalStatus" : "USE",
+    "guardianId" : 1,
+    "guardianName" : "devwuu",
+    "guardianContact" : "123-123",
+    "guardianAddress" : null,
+    "guardianStatus" : "USE",
+    "guardianRemark" : null
+  }, {
+    "animalId" : 3202,
+    "animalName" : "달이",
+    "animalSpecies" : "강아지",
+    "animalAge" : 10,
+    "animalRemark" : null,
+    "animalStatus" : "USE",
+    "guardianId" : 1,
+    "guardianName" : "devwuu",
+    "guardianContact" : "123-123",
+    "guardianAddress" : null,
+    "guardianStatus" : "USE",
+    "guardianRemark" : null
+  } ],
+  "pageable" : {
+    "sort" : {
+      "empty" : false,
+      "sorted" : true,
+      "unsorted" : false
+    },
+    "offset" : 0,
+    "pageNumber" : 0,
+    "pageSize" : 2,
+    "paged" : true,
+    "unpaged" : false
+  },
+  "last" : false,
+  "totalPages" : 14,
+  "totalElements" : 27,
+  "first" : true,
+  "size" : 2,
+  "number" : 0,
+  "sort" : {
+    "empty" : false,
+    "sorted" : true,
+    "unsorted" : false
+  },
+  "numberOfElements" : 2,
+  "empty" : false
+}</code></pre>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div class="sect2">
+<h3 id="_1_4_update">1.4 update</h3>
+<div class="paragraph">
+<p>반려동물의 정보를 업데이트 합니다</p>
+</div>
+<div class="sect3">
+<h4 id="_1_4_update_request_fields">Request fields</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">필드명</th>
+<th class="tableblock halign-left valign-top">타입</th>
+<th class="tableblock halign-left valign-top">필수값</th>
+<th class="tableblock halign-left valign-top">필드설명</th>
+<th class="tableblock halign-left valign-top">제약사항</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">반려동물 id</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">반려동물 이름</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>species</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">반려동물 종</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>age</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">반려동물 나이</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>remark</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">비고</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>gender</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">반려동물 성별</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[ Female | Male | ETC ]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>status</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">상태</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[ Use | NotUse | Deleted ]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>guardianId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">반려동물 보호자 id</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_1_4_update_http_request">HTTP request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /v1/animal/update HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 260
+Host: localhost:8080
+
+{
+  "createdAt" : null,
+  "updatedAt" : null,
+  "createBy" : null,
+  "updatedBy" : null,
+  "id" : 1,
+  "name" : "샛별",
+  "species" : null,
+  "age" : null,
+  "remark" : null,
+  "gender" : null,
+  "status" : "USE",
+  "clinicId" : null,
+  "guardianId" : null
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_1_4_update_http_response">HTTP response</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 310
+
+{
+  "createdAt" : "2023-07-05T07:28:07.899674Z",
+  "updatedAt" : "2023-07-18T01:29:19.440465Z",
+  "createBy" : null,
+  "updatedBy" : null,
+  "id" : 1,
+  "name" : "샛별",
+  "species" : null,
+  "age" : null,
+  "remark" : null,
+  "gender" : null,
+  "status" : "USE",
+  "clinicId" : null,
+  "guardianId" : null
+}</code></pre>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div class="sect2">
+<h3 id="_1_5_delete">1.5 delete</h3>
+<div class="paragraph">
+<p>동물병원을 삭제(영업중지)합니다.</p>
+</div>
+<div class="sect3">
+<h4 id="_1_5_delete_request_fields">Request fields</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">필드명</th>
+<th class="tableblock halign-left valign-top">타입</th>
+<th class="tableblock halign-left valign-top">필수값</th>
+<th class="tableblock halign-left valign-top">필드설명</th>
+<th class="tableblock halign-left valign-top">제약사항</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">동물병원 id</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_1_5_delete_http_request">HTTP request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /v1/admin/clinic/delete HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 178
+Host: localhost:8080
+
+{
+  "createdAt" : null,
+  "updatedAt" : null,
+  "createBy" : null,
+  "updatedBy" : null,
+  "id" : 352,
+  "name" : null,
+  "contact" : null,
+  "remark" : null,
+  "status" : null
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_1_5_delete_http_response">HTTP response</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 232
+
+{
+  "createdAt" : "2023-07-13T03:53:35.995594Z",
+  "updatedAt" : "2023-07-14T05:55:43.157623Z",
+  "createBy" : null,
+  "updatedBy" : null,
+  "id" : 352,
+  "name" : null,
+  "contact" : null,
+  "remark" : null,
+  "status" : "DELETE"
+}</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -526,7 +1071,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-07-18 14:59:33 +0900
+Last updated 2023-07-18 14:55:59 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
