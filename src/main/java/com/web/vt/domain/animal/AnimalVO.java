@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.web.vt.domain.common.BaseVO;
 import com.web.vt.domain.common.enums.Gender;
 import com.web.vt.domain.common.enums.UsageStatus;
-import com.web.vt.domain.guardian.Guardian;
 import com.web.vt.domain.guardian.GuardianVO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,7 +29,7 @@ public class AnimalVO extends BaseVO implements Serializable {
     private UsageStatus status;
 
     private Long clinicId;
-    private GuardianVO guardian;
+    private Long guardianId;
 
     public AnimalVO(Animal entity) {
         id = entity.id();
@@ -46,8 +45,9 @@ public class AnimalVO extends BaseVO implements Serializable {
         createdAt(entity.createdAt());
     }
 
-    public AnimalVO addGuardian(Guardian guardian){
-        this.guardian = new GuardianVO(guardian);
+    // 메서드 유지 검토
+    public AnimalVO addGuardianId(GuardianVO vo){
+        this.guardianId = vo.id();
         return this;
     }
 

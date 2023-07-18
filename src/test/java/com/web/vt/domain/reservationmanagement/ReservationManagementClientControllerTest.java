@@ -57,7 +57,7 @@ class ReservationManagementClientControllerTest extends RestDocsTestSupport {
                                 requestFields(
                                         fieldWithPath("id").type(JsonFieldType.NUMBER).description("예약 관리 정보 id"),
                                         fieldWithPath("clinicId").ignored(),
-                                        fieldWithPath("status").type(JsonFieldType.STRING).attributes(field("constraints", "[ Y | N | D ]")).description("상태(사용, 미사용, 삭제)"),
+                                        fieldWithPath("status").type(JsonFieldType.STRING).attributes(field("constraints", "[ Use | NotUse | Deleted ]")).description("상태"),
                                         fieldWithPath("startDateTime").type(JsonFieldType.STRING).attributes(field("constraints", "YYYY-MM-DDTMM:mm:ss.sssZ")).description("예약시작일시").optional(),
                                         fieldWithPath("endDateTime").type(JsonFieldType.STRING).attributes(field("constraints", "YYYY-MM-DDTMM:mm:ss.sssZ")).description("예약종료일시").optional(),
                                         fieldWithPath("createdAt").ignored(),

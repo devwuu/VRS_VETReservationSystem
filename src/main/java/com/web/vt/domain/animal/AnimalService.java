@@ -28,13 +28,17 @@ public class AnimalService {
     private final GuardianService guardianService;
 
     public AnimalVO save(AnimalVO vo){
+
         VeterinaryClinicVO clinic = new VeterinaryClinicVO().id(vo.clinicId()).status(UsageStatus.USE);
         VeterinaryClinicVO findClinic = clinicService.findByIdAndStatus(clinic);
+
         Animal animal = new Animal(vo).addClinic(findClinic);
 
         GuardianVO findGuardian = null;
-        if(ObjectUtil.isNotEmpty(vo.guardian())){
-            findGuardian = guardianService.findByIdAndStatus(vo.guardian().status(UsageStatus.USE));
+        if(ObjectUtil.isNotEmpty(vo.guardianId())){
+            findGuardian = guardianService.findByIdAndStatus(
+                    new GuardianVO().id(vo.guardianId()).status(UsageStatus.USE)
+            );
             animal.addGuardian(findGuardian);
         }
 
@@ -43,7 +47,7 @@ public class AnimalService {
         AnimalVO saved = new AnimalVO(persist).clinicId(persist.clinic().id());
 
         if(ObjectUtil.isNotEmpty(findGuardian)){
-            saved.guardian(findGuardian);
+            saved.addGuardianId(findGuardian);
         }
 
         return saved;
@@ -60,13 +64,18 @@ public class AnimalService {
         Animal persist = find.get().name(vo.name())
                 .species(vo.species())
                 .age(vo.age())
+                .status(vo.status())
+                .gender(vo.gender())
                 .remark(vo.remark());
 
         AnimalVO saved = new AnimalVO(persist).clinicId(vo.clinicId());
 
-        if(ObjectUtil.isNotEmpty(vo.guardian())){
-            persist.addGuardian(vo.guardian());
-            saved.guardian(vo.guardian());
+        if(ObjectUtil.isNotEmpty(vo.guardianId())){
+            GuardianVO findGuardian = guardianService.findByIdAndStatus(
+                    new GuardianVO().id(vo.guardianId()).status(UsageStatus.USE)
+            );
+            persist.addGuardian(findGuardian);
+            saved.addGuardianId(findGuardian);
         }
 
         return saved;

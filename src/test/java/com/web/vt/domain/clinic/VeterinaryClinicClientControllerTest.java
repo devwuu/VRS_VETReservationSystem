@@ -68,7 +68,7 @@ class VeterinaryClinicClientControllerTest extends RestDocsTestSupport {
                                     fieldWithPath("name").type(JsonFieldType.STRING).description("이름").optional(),
                                     fieldWithPath("contact").type(JsonFieldType.STRING).description("연락처").optional(),
                                     fieldWithPath("remark").type(JsonFieldType.STRING).description("비고").optional(),
-                                    fieldWithPath("status").type(JsonFieldType.STRING).attributes(field("constraints", "[ Y | N | D ]")).description("상태(사용, 미사용, 삭제)"),
+                                    fieldWithPath("status").type(JsonFieldType.STRING).attributes(field("constraints", "[ Use | NotUse | Deleted ]")).description("상태"),
                                     fieldWithPath("createdAt").ignored(),
                                     fieldWithPath("updatedAt").ignored(),
                                     fieldWithPath("createBy").ignored(),
