@@ -14,6 +14,7 @@ public class ReservationManagementClientController {
 
     private final ReservationManagementService managementService;
 
+    // todo clinicId 에 security 적용
     @GetMapping("{clinicId}")
     public ResponseEntity<ReservationManagementVO> findByClinicId(@PathVariable String clinicId){
         if(StringUtil.isEmpty(clinicId)){

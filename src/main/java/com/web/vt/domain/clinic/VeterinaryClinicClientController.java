@@ -14,6 +14,7 @@ public class VeterinaryClinicClientController {
 
     private final VeterinaryClinicService clinicService;
 
+    // todo clinicId 에 security 적용
     @GetMapping("{id}")
     public ResponseEntity<VeterinaryClinicVO> findByIdAndStatus(@PathVariable String id){
         VeterinaryClinicVO find = new VeterinaryClinicVO().id(Long.parseLong(id)).status(UsageStatus.USE);
@@ -21,6 +22,7 @@ public class VeterinaryClinicClientController {
         return ResponseEntity.ok().body(result);
     }
 
+    // todo clinicId 에 security 적용
     @PostMapping("update")
     public ResponseEntity<VeterinaryClinicVO> update(@RequestBody VeterinaryClinicVO body){
         if(ObjectUtil.isEmpty(body.id())){

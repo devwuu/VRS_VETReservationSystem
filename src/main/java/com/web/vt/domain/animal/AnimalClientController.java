@@ -25,6 +25,7 @@ public class AnimalClientController {
 
     private final AnimalService animalService;
 
+    // todo clinicId 에 security 적용
     @PostMapping("save")
     public ResponseEntity<AnimalVO> save(@RequestBody AnimalVO vo){
         if(ObjectUtil.isNotEmpty(vo.id())){
@@ -62,6 +63,7 @@ public class AnimalClientController {
         return ResponseEntity.ok().body(delete);
     }
 
+    // todo clinicId 에 security 적용
     @GetMapping("all")
     public ResponseEntity<Page<AnimalGuardianDTO>> findAll(@RequestParam String clinicId, PageVO vo){
         if(vo.getSize() == 0){
@@ -86,6 +88,7 @@ public class AnimalClientController {
         return ResponseEntity.ok().body(find);
     }
 
+    // todo clinicId 에 security 적용
     @GetMapping("search")
     public ResponseEntity<Page<AnimalGuardianDTO>> searchAll(@RequestParam String clinicId, AnimalSearchCondition condition, PageVO vo) {
         if(vo.getSize() == 0){

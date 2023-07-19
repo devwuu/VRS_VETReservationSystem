@@ -1,5 +1,6 @@
 package com.web.vt.domain.common.dto;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.querydsl.core.annotations.QueryProjection;
 import com.web.vt.domain.common.enums.ReservationStatus;
 import lombok.Getter;
@@ -7,12 +8,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
 import java.time.Instant;
 
 @Getter @Setter
 @NoArgsConstructor
 @Accessors(chain = true, fluent = true)
-public class ReservationAnimalGuardianDTO {
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+public class ReservationAnimalGuardianDTO implements Serializable {
+
+    private static final long serialVersionUID = 4821987143308535602L;
 
     // reservation
     private Long reservationId;
