@@ -1,5 +1,7 @@
 package com.web.vt.domain.animal;
 
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -13,8 +15,11 @@ import com.web.vt.utils.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.support.PageableExecutionUtils;
 
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.web.vt.domain.animal.QAnimal.animal;
@@ -61,53 +66,35 @@ public class AnimalQuerydslRepositoryImpl implements AnimalQuerydslRepository{
     @Override
     public Page<AnimalGuardianDTO> findAllWithGuardian(Long clinicId, Pageable pageable) {
 
-        BooleanExpression conditions = animal.clinic.id.eq(clinicId)
+        BooleanExpression defaultExpression = animal.clinic.id.eq(clinicId)
                 .and(animal.status.eq(UsageStatus.USE))
                 .and(guardian.status.eq(UsageStatus.USE));
 
-        List<AnimalGuardianDTO> contents = findPageableContents(pageable, conditions);
+        List<AnimalGuardianDTO> contents = findPageableContents(pageable, defaultExpression);
 
-        return PageableExecutionUtils.getPage(contents, pageable, () -> countAllWithGuardian(clinicId, conditions).fetchOne() );
+        return PageableExecutionUtils.getPage(
+                contents,
+                pageable,
+                () -> countAllWithGuardian(defaultExpression).fetchOne()
+        );
     }
 
 
     @Override
     public Page<AnimalGuardianDTO> searchAllWithGuardian(Long clinicId, AnimalSearchCondition condition, Pageable pageable) {
 
-        BooleanExpression conditions = animal.clinic.id.eq(clinicId)
+        BooleanExpression defaultExpression = animal.clinic.id.eq(clinicId)
                 .and(animal.status.eq(UsageStatus.USE))
                 .and(guardian.status.eq(UsageStatus.USE));
 
-        List<AnimalGuardianDTO> contents = findPageableContents(pageable, conditions, animalNameLike(condition.getAnimalName()), guardianNameLike(condition.getGuardianName()));
+        BooleanExpression[] booleanExpressions = whereWith(defaultExpression, condition);
 
-        return PageableExecutionUtils.getPage(contents, pageable, () -> countAllWithGuardian(clinicId, conditions, animalNameLike(condition.getAnimalName()), guardianNameLike(condition.getGuardianName())).fetchOne() );
-    }
+        List<AnimalGuardianDTO> contents = findPageableContents(pageable, booleanExpressions);
 
-    public JPAQuery<Long> countAllWithGuardian(Long clinicId, BooleanExpression ...conditions) {
-
-        JPAQuery<Long> countQuery = query.select(animal.count())
-                .from(animal)
-                .innerJoin(guardian)
-                .on(animal.guardian.id.eq(guardian.id))
-                .where(conditions);
-
-        return countQuery;
-    }
-
-    private BooleanExpression animalNameLike(String animalName) {
-        if(StringUtil.isNotEmpty(animalName)){
-            return animal.name.like("%"+ animalName +"%");
-        }else{
-            return null;
-        }
-    }
-
-    private BooleanExpression guardianNameLike(String guardianName) {
-        if(StringUtil.isNotEmpty(guardianName)){
-            return guardian.name.like("%"+ guardianName +"%");
-        }else{
-            return null;
-        }
+        return PageableExecutionUtils.getPage(
+                contents,
+                pageable,
+                () -> countAllWithGuardian(booleanExpressions).fetchOne() );
     }
 
     private List<AnimalGuardianDTO> findPageableContents(Pageable pageable, BooleanExpression ...conditions) {
@@ -129,11 +116,53 @@ public class AnimalQuerydslRepositoryImpl implements AnimalQuerydslRepository{
                 .innerJoin(guardian)
                 .on(animal.guardian.id.eq(guardian.id))
                 .where(conditions)
+                .orderBy(orderByPageable(pageable))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
         return contents;
+    }
+
+    public JPAQuery<Long> countAllWithGuardian(BooleanExpression ...conditions) {
+
+        JPAQuery<Long> countQuery = query.select(animal.count())
+                .from(animal)
+                .innerJoin(guardian)
+                .on(animal.guardian.id.eq(guardian.id))
+                .where(conditions);
+
+        return countQuery;
+    }
+
+    private BooleanExpression[] whereWith(BooleanExpression defaultExpression, AnimalSearchCondition condition){
+        List<BooleanExpression> booleanExpressions = new ArrayList<>();
+
+        booleanExpressions.add(defaultExpression);
+
+        if(StringUtil.isNotEmpty(condition.getAnimalName())){
+            booleanExpressions.add(animal.name.like("%" + condition.getAnimalName() + "%"));
+        }
+        if(StringUtil.isNotEmpty(condition.getGuardianName())){
+            booleanExpressions.add(guardian.name.like("%" + condition.getGuardianName() + "%"));
+        }
+
+        return booleanExpressions.toArray(BooleanExpression[]::new);
+    }
+
+    private OrderSpecifier<?>[] orderByPageable(Pageable pageable) {
+
+        List<OrderSpecifier<?>> orderSpecifiers = new ArrayList<>();
+
+        for(Sort.Order order : pageable.getSort()){
+            Order direction = order.isAscending() ? Order.ASC : Order.DESC;
+            // 확장 가능성을 고려하여 switch문으로 남겨둠
+            switch (order.getProperty()) {
+                case "createdAt" ->
+                        orderSpecifiers.add(new OrderSpecifier<Instant>(direction, animal.createdAt));
+            }
+        }
+        return orderSpecifiers.toArray(OrderSpecifier[]::new);
     }
 
 

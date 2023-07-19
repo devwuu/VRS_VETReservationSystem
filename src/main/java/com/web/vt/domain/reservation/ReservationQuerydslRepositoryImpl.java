@@ -70,27 +70,7 @@ public class ReservationQuerydslRepositoryImpl implements ReservationQuerydslRep
                 .and(animal.status.eq(UsageStatus.USE))
                 .and(guardian.status.eq(UsageStatus.USE));
 
-        List<ReservationAnimalGuardianDTO> content = query.select(new QReservationAnimalGuardianDTO(
-                        reservation.id,
-                        reservation.reservationDateTime,
-                        reservation.status,
-                        animal.id,
-                        animal.name,
-                        animal.species,
-                        animal.age,
-                        guardian.id,
-                        guardian.name,
-                        guardian.contact)
-                ).from(reservation)
-                .innerJoin(animal)
-                .on(reservation.animal.id.eq(animal.id))
-                .innerJoin(guardian)
-                .on(animal.guardian.id.eq(guardian.id))
-                .where(conditions)
-                .orderBy(orderByPageable(pageable))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
+        List<ReservationAnimalGuardianDTO> content = findPageableContents(pageable, conditions);
 
         return PageableExecutionUtils.getPage(content, pageable, () -> countAllWithAnimalAndGuardian(conditions).fetchOne());
     }
@@ -103,6 +83,36 @@ public class ReservationQuerydslRepositoryImpl implements ReservationQuerydslRep
                 .and(guardian.status.eq(UsageStatus.USE));
 
         BooleanExpression[] booleanExpressions = whereWith(defaultExpression, condition);
+
+        List<ReservationAnimalGuardianDTO> content = findPageableContents(pageable, booleanExpressions);
+
+        return PageableExecutionUtils.getPage(
+                content,
+                pageable,
+                () -> countAllWithAnimalAndGuardian(booleanExpressions).fetchOne()
+        );
+    }
+
+
+    @Override
+    public List<ReservationSlotDTO> findAllByReservationTime(Long clinicId, ReservationSearchCondition condition) {
+
+        BooleanExpression defaultExpression = reservation.clinic.id.eq(clinicId)
+                .and(reservation.status.eq(ReservationStatus.APPROVED));
+
+        List<Instant> reserved = query.select(reservation.reservationDateTime)
+                .from(reservation)
+                .where(whereWith(defaultExpression, condition))
+                .fetch();
+
+        List<ReservationSlotDTO> slots = reserved.stream()
+                .map(t -> new ReservationSlotDTO().slotTime(t).available(false))
+                .toList();
+
+        return slots;
+    }
+
+    private List<ReservationAnimalGuardianDTO> findPageableContents(Pageable pageable, BooleanExpression... booleanExpressions) {
 
         List<ReservationAnimalGuardianDTO> content = query.select(new QReservationAnimalGuardianDTO(
                         reservation.id,
@@ -121,58 +131,26 @@ public class ReservationQuerydslRepositoryImpl implements ReservationQuerydslRep
                 .innerJoin(guardian)
                 .on(animal.guardian.id.eq(guardian.id))
                 .where(booleanExpressions)
+                .orderBy(orderByPageable(pageable))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        return PageableExecutionUtils.getPage(
-                content,
-                pageable,
-                () -> countAllWithAnimalAndGuardian(booleanExpressions).fetchOne()
-        );
+        return content;
     }
 
-    @Override
-    public List<ReservationSlotDTO> findAllByReservationTime(Long clinicId, ReservationSearchCondition condition) {
+    private JPAQuery<Long> countAllWithAnimalAndGuardian(BooleanExpression ...booleanExpressions) {
 
-        BooleanExpression defaultExpression = reservation.clinic.id.eq(clinicId)
-                .and(reservation.status.eq(ReservationStatus.APPROVED));
-
-        List<Instant> reserved = query.select(reservation.reservationDateTime)
+        JPAQuery<Long> countQuery = query.select(reservation.count())
                 .from(reservation)
-                .where(whereWith(defaultExpression, condition)
-                ).fetch();
+                .innerJoin(animal)
+                .on(reservation.animal.id.eq(animal.id))
+                .innerJoin(guardian)
+                .on(animal.guardian.id.eq(guardian.id))
+                .where(booleanExpressions);
 
-        List<ReservationSlotDTO> slots = reserved.stream()
-                .map(t -> new ReservationSlotDTO().slotTime(t).available(false))
-                .toList();
-
-        return slots;
+        return countQuery;
     }
-
-//    private BooleanExpression reservationDateBetween(Instant from, Instant to) {
-//        if(ObjectUtil.isNotEmpty(from) && ObjectUtil.isNotEmpty(to)){
-//            return reservation.reservationDateTime.between(from, to);
-//        }else {
-//            return null;
-//        }
-//    }
-//
-//    private BooleanExpression guardianNameLike(String guardianName) {
-//       if(StringUtil.isNotEmpty(guardianName)){
-//           return guardian.name.like("%" + guardianName + "%");
-//       }else{
-//           return null;
-//       }
-//    }
-//
-//    private BooleanExpression animalNameLike(String animalName) {
-//        if(StringUtil.isNotEmpty(animalName)){
-//            return animal.name.like("%" + animalName + "%");
-//        }else{
-//            return null;
-//        }
-//    }
 
     private BooleanExpression[] whereWith(BooleanExpression defaultExpression, ReservationSearchCondition condition){
         List<BooleanExpression> booleanExpressions = new ArrayList<>();
@@ -208,29 +186,5 @@ public class ReservationQuerydslRepositoryImpl implements ReservationQuerydslRep
         return orderSpecifiers.toArray(OrderSpecifier[]::new);
     }
 
-    public JPAQuery<Long> countAllWithAnimalAndGuardian(BooleanExpression[] booleanExpressions) {
 
-        JPAQuery<Long> countQuery = query.select(reservation.count())
-                .from(reservation)
-                .innerJoin(animal)
-                .on(reservation.animal.id.eq(animal.id))
-                .innerJoin(guardian)
-                .on(animal.guardian.id.eq(guardian.id))
-                .where(booleanExpressions);
-
-        return countQuery;
-    }
-
-    public JPAQuery<Long> countAllWithAnimalAndGuardian(BooleanExpression booleanExpressions) {
-
-        JPAQuery<Long> countQuery = query.select(reservation.count())
-                .from(reservation)
-                .innerJoin(animal)
-                .on(reservation.animal.id.eq(animal.id))
-                .innerJoin(guardian)
-                .on(animal.guardian.id.eq(guardian.id))
-                .where(booleanExpressions);
-
-        return countQuery;
-    }
 }
