@@ -157,14 +157,14 @@ public class ReservationQuerydslRepositoryImpl implements ReservationQuerydslRep
 
         booleanExpressions.add(defaultExpression);
 
-        if(StringUtil.isNotEmpty(condition.animalName())){
-            booleanExpressions.add(animal.name.like("%" + condition.animalName() + "%"));
+        if(StringUtil.isNotEmpty(condition.getAnimalName())){
+            booleanExpressions.add(animal.name.like("%" + condition.getAnimalName() + "%"));
         }
-        if(StringUtil.isNotEmpty(condition.guardianName())){
-            booleanExpressions.add(guardian.name.like("%" + condition.guardianName() + "%"));
+        if(StringUtil.isNotEmpty(condition.getGuardianName())){
+            booleanExpressions.add(guardian.name.like("%" + condition.getGuardianName() + "%"));
         }
-        if(ObjectUtil.isNotEmpty(condition.from()) && ObjectUtil.isNotEmpty(condition.to())){
-            booleanExpressions.add(reservation.reservationDateTime.between(condition.from(), condition.to()));
+        if(ObjectUtil.isNotEmpty(condition.getFrom()) && ObjectUtil.isNotEmpty(condition.getTo())){
+            booleanExpressions.add(reservation.reservationDateTime.between(condition.getFrom(), condition.getTo()));
         }
 
         return booleanExpressions.toArray(BooleanExpression[]::new);

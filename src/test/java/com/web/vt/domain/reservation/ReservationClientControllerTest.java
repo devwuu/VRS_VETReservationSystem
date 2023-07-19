@@ -8,9 +8,8 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.*;
+import java.time.temporal.TemporalAdjusters;
 
 import static com.web.vt.common.RestDocsConfiguration.field;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -23,15 +22,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class ReservationClientControllerTest extends RestDocsTestSupport {
 
-    private final Instant RESERVATION_DATE_TIME = LocalDateTime.now().atZone(ZoneOffset.UTC).toInstant();
 
     @Test @DisplayName("새로운 예약을 등록합니다")
     public void save() throws Exception {
+
+        Instant reservationDateTime = LocalDateTime.now().atZone(ZoneOffset.UTC).toInstant();
+
         ReservationVO vo = new ReservationVO()
                 .clinicId(1L)
                 .animalId(1L)
                 .status(ReservationStatus.APPROVED)
-                .reservationDateTime(RESERVATION_DATE_TIME);
+                .reservationDateTime(reservationDateTime);
 
         mvc.perform(
                     post("/v1/reservation/save")
@@ -114,6 +115,77 @@ class ReservationClientControllerTest extends RestDocsTestSupport {
                         docs.document(
                                 queryParameters(
                                         parameterWithName("clinicId").attributes(field("type", "Number")).description("동물병원 id"),
+                                        parameterWithName("page").attributes(field("type", "Number")).description("현재 페이지(index)"),
+                                        parameterWithName("size").attributes(field("type", "Number")).description("한 번에 보여줄 content 갯수")
+                                )
+                        )
+                )
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test @DisplayName("등록된 예약 리스트에서 반려동물 이름으로 검색합니다")
+    public void searchAllByAnimalName() throws Exception {
+        mvc.perform(get("/v1/reservation/search")
+                .param("clinicId", "202")
+                .param("page", "0")
+                .param("size", "5")
+                .param("animalName", "달")
+        ).andDo(
+            docs.document(
+                    queryParameters(
+                            parameterWithName("clinicId").attributes(field("type", "Number")).description("동물병원 id"),
+                            parameterWithName("animalName").attributes(field("type", "String")).description("반려동물 이름"),
+                            parameterWithName("page").attributes(field("type", "Number")).description("현재 페이지(index)"),
+                            parameterWithName("size").attributes(field("type", "Number")).description("한 번에 보여줄 content 갯수")
+                    )
+            )
+        )
+        .andDo(print())
+        .andExpect(status().isOk());
+    }
+
+    @Test @DisplayName("등록된 예약 리스트에서 보호자 이름으로 검색합니다")
+    public void searchAllByGuardianName() throws Exception {
+        mvc.perform(get("/v1/reservation/search")
+                        .param("clinicId", "202")
+                        .param("page", "0")
+                        .param("size", "5")
+                        .param("guardianName", "ab")
+                ).andDo(
+                        docs.document(
+                                queryParameters(
+                                        parameterWithName("clinicId").attributes(field("type", "Number")).description("동물병원 id"),
+                                        parameterWithName("guardianName").attributes(field("type", "String")).description("보호지 이름"),
+                                        parameterWithName("page").attributes(field("type", "Number")).description("현재 페이지(index)"),
+                                        parameterWithName("size").attributes(field("type", "Number")).description("한 번에 보여줄 content 갯수")
+                                )
+                        )
+                )
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test @DisplayName("등록된 예약 리스트에서 예약날짜로 검색합니다")
+    public void searchAllByReservationDate() throws Exception {
+
+        LocalDate criteria = LocalDate.of(2023, Month.JULY, 12);
+        Instant from = criteria.atStartOfDay().toInstant(ZoneOffset.of("+09:00"));
+        Instant to = criteria.with(TemporalAdjusters.lastDayOfMonth()).atTime(LocalTime.MAX).toInstant(ZoneOffset.of("+09:00"));
+
+
+        mvc.perform(get("/v1/reservation/search")
+                        .param("clinicId", "202")
+                        .param("page", "0")
+                        .param("size", "5")
+                        .param("from", from.toString())
+                        .param("to", to.toString())
+                ).andDo(
+                        docs.document(
+                                queryParameters(
+                                        parameterWithName("clinicId").attributes(field("type", "Number")).description("동물병원 id"),
+                                        parameterWithName("from").attributes(field("constraints", "YYYY-MM-DDTMM:mm:ss.sssZ"), field("type", "String")).description("시작 예약일시"),
+                                        parameterWithName("to").attributes(field("constraints", "YYYY-MM-DDTMM:mm:ss.sssZ"), field("type", "String")).description("종료 예약일시"),
                                         parameterWithName("page").attributes(field("type", "Number")).description("현재 페이지(index)"),
                                         parameterWithName("size").attributes(field("type", "Number")).description("한 번에 보여줄 content 갯수")
                                 )

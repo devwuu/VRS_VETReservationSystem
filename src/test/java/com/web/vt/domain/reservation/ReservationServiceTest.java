@@ -71,7 +71,7 @@ class ReservationServiceTest {
         Instant from = criteria.atStartOfDay().toInstant(ZoneOffset.of("+09:00"));
         Instant to = criteria.with(TemporalAdjusters.lastDayOfMonth()).atTime(LocalTime.MAX).toInstant(ZoneOffset.of("+09:00"));
 
-        ReservationSearchCondition condition = new ReservationSearchCondition().from(from).to(to);
+        ReservationSearchCondition condition = new ReservationSearchCondition().setFrom(from).setTo(to);
         Pageable pageable = PageRequest.of(0, 3, by(desc("createdAt")));
         Page<ReservationAnimalGuardianDTO> search = service.searchAllWithAnimalAndGuardian(202L, condition, pageable);
         assertThat(search.getSize()).isEqualTo(pageable.getPageSize());

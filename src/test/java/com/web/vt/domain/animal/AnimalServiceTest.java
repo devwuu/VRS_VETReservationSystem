@@ -57,7 +57,7 @@ class AnimalServiceTest {
     public void findByIdWithGuardianTest() {
         AnimalVO vo = new AnimalVO().id(1L);
         AnimalGuardianDTO find = service.findByIdWithGuardian(vo);
-        assertThat(find.animalId()).isEqualTo(1L);
+        assertThat(find.animalId()).isEqualTo(vo.id());
     }
 
     @Test @DisplayName("등록된 반려동물 리스트를 보호자 정보화 함께 가져옵니다.")
@@ -65,7 +65,7 @@ class AnimalServiceTest {
         Long clinicId = 1L;
         Pageable pageable = PageRequest.of(0, 1, by(desc("createdAt")));
         Page<AnimalGuardianDTO> find = service.findAllWithGuardian(clinicId, pageable);
-        assertThat(find.getSize()).isEqualTo(1);
+        assertThat(find.getSize()).isEqualTo(pageable.getPageSize());
     }
 
     @Test @DisplayName("반려동물 리스트에서 보호자 정보로 검색합니다.")
@@ -74,7 +74,7 @@ class AnimalServiceTest {
         Pageable pageable = PageRequest.of(0, 2, by(desc("createdAt")));
         AnimalSearchCondition condition = new AnimalSearchCondition().setGuardianName("vw");
         Page<AnimalGuardianDTO> find = service.searchAllWithGuardian(clinicId, condition, pageable);
-        assertThat(find.getSize()).isEqualTo(2);
+        assertThat(find.getSize()).isEqualTo(pageable.getPageSize());
     }
 
     @Test @DisplayName("반려동물 리스트에서 반려동물 정보로 검색합니다.")
@@ -83,7 +83,7 @@ class AnimalServiceTest {
         Pageable pageable = PageRequest.of(0, 2, by(desc("createdAt")));
         AnimalSearchCondition condition = new AnimalSearchCondition().setAnimalName("달");
         Page<AnimalGuardianDTO> find = service.searchAllWithGuardian(clinicId, condition, pageable);
-        assertThat(find.getSize()).isEqualTo(2);
+        assertThat(find.getSize()).isEqualTo(pageable.getPageSize());
     }
 
 }

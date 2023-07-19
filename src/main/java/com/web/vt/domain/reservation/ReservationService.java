@@ -38,7 +38,7 @@ public class ReservationService {
 
         Instant from = criteriaDate.atStartOfDay().toInstant(ZoneOffset.UTC);
         Instant to = criteriaDate.atTime(OffsetTime.MAX).toInstant();
-        ReservationSearchCondition condition = new ReservationSearchCondition().from(from).to(to);
+        ReservationSearchCondition condition = new ReservationSearchCondition().setFrom(from).setTo(to);
 
         // 기예약건
         List<ReservationSlotDTO> existSlots = reservationRepository.findAllByReservationTime(vo.clinicId(), condition);

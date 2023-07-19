@@ -2,6 +2,7 @@ package com.web.vt.domain.reservation;
 
 import com.web.vt.domain.common.PageVO;
 import com.web.vt.domain.common.dto.ReservationAnimalGuardianDTO;
+import com.web.vt.domain.common.dto.ReservationSearchCondition;
 import com.web.vt.exceptions.ValidationException;
 import com.web.vt.utils.ObjectUtil;
 import com.web.vt.utils.StringUtil;
@@ -82,6 +83,24 @@ public class ReservationClientController {
                 pageable
         );
         return ResponseEntity.ok().body(all);
+    }
+
+    // todo clinicId 에 security 적용
+    @GetMapping("search")
+    public ResponseEntity<Page<ReservationAnimalGuardianDTO>> searchAll(@RequestParam String clinicId, PageVO pageVO, ReservationSearchCondition condition){
+        if(StringUtil.isEmpty(clinicId)){
+            throw new ValidationException("CLINIC ID SHOULD NOT BE EMPTY");
+        }
+        if(pageVO.getSize() == 0){
+            throw new ValidationException("PAGINATION INFO SHOULD NOT BE EMPTY");
+        }
+        Pageable pageable = PageRequest.of(pageVO.getPage(), pageVO.getSize(), by(desc("reservationDateTime")));
+        Page<ReservationAnimalGuardianDTO> find = reservationService.searchAllWithAnimalAndGuardian(
+                Long.parseLong(clinicId),
+                condition,
+                pageable
+        );
+        return ResponseEntity.ok().body(find);
     }
 
 

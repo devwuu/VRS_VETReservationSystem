@@ -1,0 +1,39 @@
+= Reservation API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+
+NOTE: 진료 예약 관련된 api 입니다
+
+== 1. Client API
+
+=== 1.1 save
+새로운 예약을 등록합니다
+
+operation::reservation-client-controller-test/save[snippets='request-fields,http-request,http-response']
+
+'''
+
+=== 1.2 find by id
+특정 예약의 예약 정보, 반려동물 정보, 보호자 정보를 가져옵니다
+
+operation::reservation-client-controller-test/find-by-id[snippets='path-parameters,http-request,http-response']
+
+'''
+
+=== 1.3 find all
+등록된 예약 리스트를 보호자 정보, 반려동물 정보와 함께 가져옵니다
+
+operation::reservation-client-controller-test/find-all[snippets='query-parameters,http-request,http-response']
+
+'''
+
+=== 1.4 update
+등록된 예약 정보를 수정합니다
+
+operation::reservation-client-controller-test/update[snippets='request-fields,http-request,http-response']
+
+'''
+
