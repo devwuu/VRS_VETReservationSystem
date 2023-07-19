@@ -53,7 +53,7 @@ class ReservationServiceTest {
     @Test @DisplayName("등록된 전체 예약을 조회합니다.")
     public void findAllTest() {
         Long clinicId = 202L;
-        Pageable pageable = PageRequest.of(0, 1, by(desc("createdAt")));
+        Pageable pageable = PageRequest.of(0, 3, by(desc("createdAt")));
         Page<ReservationAnimalGuardianDTO> find = service.findAllWithAnimalAndGuardian(clinicId, pageable);
         assertThat(find.getSize()).isEqualTo(pageable.getPageSize());
     }
@@ -72,7 +72,7 @@ class ReservationServiceTest {
         Instant to = criteria.with(TemporalAdjusters.lastDayOfMonth()).atTime(LocalTime.MAX).toInstant(ZoneOffset.of("+09:00"));
 
         ReservationSearchCondition condition = new ReservationSearchCondition().from(from).to(to);
-        Pageable pageable = PageRequest.of(0, 1, by(desc("createdAt")));
+        Pageable pageable = PageRequest.of(0, 3, by(desc("createdAt")));
         Page<ReservationAnimalGuardianDTO> search = service.searchAllWithAnimalAndGuardian(202L, condition, pageable);
         assertThat(search.getSize()).isEqualTo(pageable.getPageSize());
     }

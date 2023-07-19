@@ -88,7 +88,6 @@ public class ReservationService {
         return reservationRepository.searchAllWithAnimalAndGuardian(clinicId, condition, pageable);
     }
 
-    // todo save하기 위한 정보를 조회할 수 있는 api가 필요
     public ReservationVO save(ReservationVO vo){
         VeterinaryClinicVO clinic = new VeterinaryClinicVO().id(vo.clinicId()).status(UsageStatus.USE);
         AnimalVO animal = new AnimalVO().id(vo.animalId()).status(UsageStatus.USE);
@@ -108,7 +107,8 @@ public class ReservationService {
         if(find.isEmpty()){
             throw new NotFoundException("NOT EXIST RESERVATION");
         }
-        Reservation persist = find.get().reservationDateTime(vo.reservationDateTime())
+        Reservation persist = find.get()
+                .reservationDateTime(vo.reservationDateTime())
                 .status(vo.status())
                 .remark(vo.remark());
         return new ReservationVO(persist);
