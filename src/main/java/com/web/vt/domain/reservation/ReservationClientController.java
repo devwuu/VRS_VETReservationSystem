@@ -14,6 +14,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import static org.springframework.data.domain.Sort.Order.desc;
 import static org.springframework.data.domain.Sort.by;
@@ -101,6 +106,29 @@ public class ReservationClientController {
                 pageable
         );
         return ResponseEntity.ok().body(find);
+    }
+
+    // todo clinicId 에 security 적용
+    @GetMapping("available")
+    public ResponseEntity<List<ReservationSlotDTO>> findAllAvailableSlots(@RequestParam String clinicId, @RequestParam String reservationDateTime){
+       if(StringUtil.isEmpty(clinicId)){
+           throw new ValidationException("CLINIC ID SHOULD NOT BE EMPTY");
+       }
+        if(StringUtil.isEmpty(reservationDateTime)){
+            throw new ValidationException("RESERVATION DATE SHOULD NOT BE EMPTY");
+        }
+
+        Instant parsedReservationDateTime = LocalDateTime
+                .parse(reservationDateTime, DateTimeFormatter.ISO_DATE_TIME)
+                .toInstant(ZoneOffset.UTC);
+
+        ReservationVO vo = new ReservationVO()
+                .clinicId(Long.parseLong(clinicId))
+                .reservationDateTime(parsedReservationDateTime);
+
+        List<ReservationSlotDTO> slots = reservationService.findAllReservationSlots(vo);
+
+        return ResponseEntity.ok().body(slots);
     }
 
 

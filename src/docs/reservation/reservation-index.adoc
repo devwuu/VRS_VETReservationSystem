@@ -16,21 +16,28 @@ operation::reservation-client-controller-test/save[snippets='request-fields,http
 
 '''
 
-=== 1.2 find by id
+=== 1.2 find all available time slots
+예약 가능한 슬롯(시간대)를 모두 구합니다
+
+operation::reservation-client-controller-test/find-all-available-slots[snippets='query-parameters,http-request,http-response']
+
+'''
+
+=== 1.3 find by id
 특정 예약의 예약 정보, 반려동물 정보, 보호자 정보를 가져옵니다
 
 operation::reservation-client-controller-test/find-by-id[snippets='path-parameters,http-request,http-response']
 
 '''
 
-=== 1.3 find all
+=== 1.4 find all
 등록된 예약 리스트를 보호자 정보, 반려동물 정보와 함께 가져옵니다
 
 operation::reservation-client-controller-test/find-all[snippets='query-parameters,http-request,http-response']
 
 '''
 
-=== 1.4 update
+=== 1.5 update
 등록된 예약 정보를 수정합니다
 
 operation::reservation-client-controller-test/update[snippets='request-fields,http-request,http-response']

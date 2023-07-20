@@ -45,7 +45,7 @@ class ReservationClientControllerTest extends RestDocsTestSupport {
                                         fieldWithPath("id").ignored(),
                                         fieldWithPath("clinicId").type(JsonFieldType.NUMBER).description("동물병원 id"),
                                         fieldWithPath("animalId").type(JsonFieldType.NUMBER).description("반려동물 id"),
-                                        fieldWithPath("reservationDateTime").type(JsonFieldType.STRING).attributes(field("constraints", "YYYY-MM-DDTMM:mm:ss.sssZ")).description("예약일시"),
+                                        fieldWithPath("reservationDateTime").type(JsonFieldType.STRING).attributes(field("constraints", "YYYY-MM-DDTMM:mm:ss.sssZ")).description("예약일시 (UTC)"),
                                         fieldWithPath("status").type(JsonFieldType.STRING).attributes(field("constraints", "[Approved | Revoked]")).description("예약 상태(확정, 취소)"),
                                         fieldWithPath("remark").type(JsonFieldType.STRING).description("비고").optional(),
                                         fieldWithPath("createdAt").ignored(),
@@ -76,7 +76,7 @@ class ReservationClientControllerTest extends RestDocsTestSupport {
                                         fieldWithPath("id").type(JsonFieldType.NUMBER).description("예약 id"),
                                         fieldWithPath("clinicId").ignored(),
                                         fieldWithPath("animalId").ignored(),
-                                        fieldWithPath("reservationDateTime").type(JsonFieldType.STRING).attributes(field("constraints", "YYYY-MM-DDTMM:mm:ss.sssZ")).description("예약일시").optional(),
+                                        fieldWithPath("reservationDateTime").type(JsonFieldType.STRING).attributes(field("constraints", "YYYY-MM-DDTMM:mm:ss.sssZ")).description("예약일시 (UTC)").optional(),
                                         fieldWithPath("status").type(JsonFieldType.STRING).attributes(field("constraints", "[Approved | Revoked]")).description("예약 상태(확정, 취소)"),
                                         fieldWithPath("remark").type(JsonFieldType.STRING).description("비고").optional(),
                                         fieldWithPath("createdAt").ignored(),
@@ -184,10 +184,30 @@ class ReservationClientControllerTest extends RestDocsTestSupport {
                         docs.document(
                                 queryParameters(
                                         parameterWithName("clinicId").attributes(field("type", "Number")).description("동물병원 id"),
-                                        parameterWithName("from").attributes(field("constraints", "YYYY-MM-DDTMM:mm:ss.sssZ"), field("type", "String")).description("시작 예약일시"),
-                                        parameterWithName("to").attributes(field("constraints", "YYYY-MM-DDTMM:mm:ss.sssZ"), field("type", "String")).description("종료 예약일시"),
+                                        parameterWithName("from").attributes(field("constraints", "YYYY-MM-DDTMM:mm:ss.sssZ"), field("type", "String")).description("시작 예약일시 (UTC)"),
+                                        parameterWithName("to").attributes(field("constraints", "YYYY-MM-DDTMM:mm:ss.sssZ"), field("type", "String")).description("종료 예약일시 (UTC)"),
                                         parameterWithName("page").attributes(field("type", "Number")).description("현재 페이지(index)"),
                                         parameterWithName("size").attributes(field("type", "Number")).description("한 번에 보여줄 content 갯수")
+                                )
+                        )
+                )
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test @DisplayName("예약 가능한 슬롯(시간대)를 모두 구합니다")
+    public void findAllAvailableSlots() throws Exception {
+
+        String criteriaDate = LocalDateTime.of(2023, 07, 12, 10, 00).toInstant(ZoneOffset.UTC).toString();
+
+        mvc.perform(get("/v1/reservation/available")
+                        .param("clinicId", "202")
+                        .param("reservationDateTime", criteriaDate)
+                ).andDo(
+                        docs.document(
+                                queryParameters(
+                                        parameterWithName("clinicId").attributes(field("type", "Number")).description("동물병원 id"),
+                                        parameterWithName("reservationDateTime").attributes(field("constraints", "YYYY-MM-DDTMM:mm:ss.sssZ"), field("type", "String")).description("예약일 (UTC)")
                                 )
                         )
                 )

@@ -22,7 +22,7 @@
 
 * link:reservation-management/reservation-management-index.html[예약 관리 API, window=_blank]
 
-== Reservation API (Working)
+== Reservation API
 
-* link:guardian/guardian-index.html[예약 API, window=_blank]
-* link:guardian/guardian-index.html[예약 검색 API, window=_blank]
+* link:reservation/reservation-index.html[예약 API, window=_blank]
+* link:reservation/reservation-search-index.html[예약 검색 API, window=_blank]
