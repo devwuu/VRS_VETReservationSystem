@@ -30,7 +30,7 @@ class ReservationManagementClientControllerTest extends RestDocsTestSupport {
     @DisplayName("동물병원 id로 예약관리 정보를 조회합니다")
     public void findByClinicId() throws Exception {
         String id = "202";
-        mvc.perform(RestDocumentationRequestBuilders.get("/v1/reservation-management/{id}", id))
+        mvc.perform(RestDocumentationRequestBuilders.get("/v1/client/reservation-management/{id}", id))
                 .andDo(docs.document(
                                 pathParameters(
                                         parameterWithName("id").attributes(field("type", "Number")).description("동물병원 id")
@@ -50,7 +50,7 @@ class ReservationManagementClientControllerTest extends RestDocsTestSupport {
                 .startDateTime(START.toInstant())
                 .endDateTime(END.toInstant());
 
-        mvc.perform(post("/v1/reservation-management/update")
+        mvc.perform(post("/v1/client/reservation-management/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(vo)))
                 .andDo(docs.document(

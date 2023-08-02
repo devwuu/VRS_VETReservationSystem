@@ -25,7 +25,7 @@ import static org.springframework.data.domain.Sort.by;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/reservation")
+@RequestMapping("/v1/client/reservation")
 public class ReservationClientController {
 
     private final ReservationService reservationService;

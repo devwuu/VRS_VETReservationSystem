@@ -1,7 +1,8 @@
-package com.web.vt.domain.user;
+package com.web.vt.domain.employee;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.web.vt.domain.common.BaseVO;
+import com.web.vt.domain.common.enums.Position;
 import com.web.vt.domain.common.enums.UsageStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,5 +24,13 @@ public class EmployeeVO extends BaseVO implements Serializable {
     private String role;
     private Long clinicId;
     private UsageStatus status;
+    private Position position;
 
+    public EmployeeVO(Employee employee) {
+        id = employee.id();
+        password = employee.password();
+        role = employee.role();
+        status = employee.status();
+        position = employee.position();
+    }
 }

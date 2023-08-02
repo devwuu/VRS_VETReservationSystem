@@ -32,7 +32,7 @@ class AnimalClientControllerTest extends RestDocsTestSupport {
                 .guardianId(1L)
                 .gender(Gender.Female);
 
-        mvc.perform(post("/v1/animal/save")
+        mvc.perform(post("/v1/client/animal/save")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(vo)))
                 .andDo(
@@ -66,7 +66,7 @@ class AnimalClientControllerTest extends RestDocsTestSupport {
                 .name("샛별")
                 .status(UsageStatus.USE);
 
-        mvc.perform(post("/v1/animal/update")
+        mvc.perform(post("/v1/client/animal/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(vo)))
                 .andDo(
@@ -96,7 +96,7 @@ class AnimalClientControllerTest extends RestDocsTestSupport {
         AnimalVO vo = new AnimalVO()
                 .id(252L);
 
-        mvc.perform(post("/v1/animal/delete")
+        mvc.perform(post("/v1/client/animal/delete")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(vo)))
                 .andDo(
@@ -125,7 +125,7 @@ class AnimalClientControllerTest extends RestDocsTestSupport {
     public void findAll() throws Exception {
 
         mvc.perform(
-                RestDocumentationRequestBuilders.get("/v1/animal/all")
+                RestDocumentationRequestBuilders.get("/v1/client/animal/all")
                     .param("page", "0")
                     .param("size", "2")
                     .param("clinicId", "1")
@@ -146,7 +146,7 @@ class AnimalClientControllerTest extends RestDocsTestSupport {
     @Test @DisplayName("등록된 특정 반려동물과 반려동물 보호자를 조회합니다")
     public void findById() throws Exception {
 
-        mvc.perform(RestDocumentationRequestBuilders.get("/v1/animal/{id}", "252"))
+        mvc.perform(RestDocumentationRequestBuilders.get("/v1/client/animal/{id}", "252"))
                 .andDo(
                         docs.document(
                                 pathParameters(
@@ -161,7 +161,7 @@ class AnimalClientControllerTest extends RestDocsTestSupport {
     @Test @DisplayName("등록된 반려동물과 보호자 리스트에서 반려동물의 이름으로 검색합니다")
     public void searchByAnimalName() throws Exception {
         mvc.perform(
-                        RestDocumentationRequestBuilders.get("/v1/animal/search")
+                        RestDocumentationRequestBuilders.get("/v1/client/animal/search")
                                 .param("page", "0")
                                 .param("size", "2")
                                 .param("clinicId", "1")
@@ -184,7 +184,7 @@ class AnimalClientControllerTest extends RestDocsTestSupport {
     @Test @DisplayName("등록된 반려동물과 보호자 리스트에서 보호자 이름으로 검색합니다")
     public void searchByGuardianName() throws Exception {
         mvc.perform(
-                        RestDocumentationRequestBuilders.get("/v1/animal/search")
+                        RestDocumentationRequestBuilders.get("/v1/client/animal/search")
                                 .param("page", "0")
                                 .param("size", "2")
                                 .param("clinicId", "1")

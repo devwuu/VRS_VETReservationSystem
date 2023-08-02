@@ -20,7 +20,7 @@ import static org.springframework.data.domain.Sort.by;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/animal")
+@RequestMapping("/v1/client/animal")
 public class AnimalClientController {
 
     private final AnimalService animalService;

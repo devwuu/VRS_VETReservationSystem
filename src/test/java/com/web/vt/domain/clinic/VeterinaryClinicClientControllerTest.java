@@ -22,7 +22,7 @@ class VeterinaryClinicClientControllerTest extends RestDocsTestSupport {
     @Test @DisplayName("영업 중인 특정 동물병원을 찾습니다.")
     public void find() throws Exception {
         String id = "202";
-        mvc.perform(RestDocumentationRequestBuilders.get("/v1/clinic/{id}", id))
+        mvc.perform(RestDocumentationRequestBuilders.get("/v1/client/clinic/{id}", id))
                 .andDo(
                         docs.document(
                                 pathParameters(
@@ -37,7 +37,7 @@ class VeterinaryClinicClientControllerTest extends RestDocsTestSupport {
     @Test @DisplayName("영업 중이지 않은 동물병원을 찾으면 not found로 응답받습니다")
     public void notFound() throws Exception {
         String id = "2";
-        mvc.perform(RestDocumentationRequestBuilders.get("/v1/clinic/{id}", id))
+        mvc.perform(RestDocumentationRequestBuilders.get("/v1/client/clinic/{id}", id))
                 .andDo(
                         docs.document(
                                 pathParameters(
@@ -58,7 +58,7 @@ class VeterinaryClinicClientControllerTest extends RestDocsTestSupport {
                 .remark("Updated remark")
                 .status(UsageStatus.USE);
 
-        mvc.perform(post("/v1/clinic/update")
+        mvc.perform(post("/v1/client/clinic/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(vo)))
                 .andDo(

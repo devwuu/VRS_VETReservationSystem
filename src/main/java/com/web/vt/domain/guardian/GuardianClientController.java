@@ -12,7 +12,7 @@ import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/guardian")
+@RequestMapping("/v1/client/guardian")
 public class GuardianClientController {
 
     private final GuardianService guardianService;

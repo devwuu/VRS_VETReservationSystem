@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/clinic")
+@RequestMapping("/v1/client/clinic")
 public class VeterinaryClinicClientController {
 
     private final VeterinaryClinicService clinicService;

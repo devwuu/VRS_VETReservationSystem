@@ -25,7 +25,7 @@ class GuardianClientControllerTest extends RestDocsTestSupport {
 
         GuardianVO vo = new GuardianVO().name("달이 언니").contact("01011112222").status(UsageStatus.USE);
 
-        mvc.perform(post("/v1/guardian/save")
+        mvc.perform(post("/v1/client/guardian/save")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(mapper.writeValueAsString(vo)))
                 .andDo(docs.document(
@@ -51,7 +51,7 @@ class GuardianClientControllerTest extends RestDocsTestSupport {
     public void update() throws Exception {
         GuardianVO vo = new GuardianVO().id(152L).name("달이 언니").contact("01111112222").status(UsageStatus.USE);
 
-        mvc.perform(post("/v1/guardian/update")
+        mvc.perform(post("/v1/client/guardian/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(vo)))
                 .andDo(docs.document(
@@ -76,7 +76,7 @@ class GuardianClientControllerTest extends RestDocsTestSupport {
     @Test @DisplayName("등록된 사용중인 보호자 정보를 조회합니다")
     public void find() throws Exception {
         String id = "302";
-        mvc.perform(RestDocumentationRequestBuilders.get("/v1/guardian/{id}", id))
+        mvc.perform(RestDocumentationRequestBuilders.get("/v1/client/guardian/{id}", id))
                 .andDo(docs.document(
                         pathParameters(
                                 parameterWithName("id").attributes(field("type", "Number")).description("보호자 id")
@@ -90,7 +90,7 @@ class GuardianClientControllerTest extends RestDocsTestSupport {
     @Test @DisplayName("보호자를 삭제 처리 합니다")
     public void delete() throws Exception {
         GuardianVO vo = new GuardianVO().id(402L);
-        mvc.perform(post("/v1/guardian/delete")
+        mvc.perform(post("/v1/client/guardian/delete")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(vo)))
                 .andDo(docs.document(

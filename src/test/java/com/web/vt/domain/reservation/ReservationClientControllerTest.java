@@ -35,7 +35,7 @@ class ReservationClientControllerTest extends RestDocsTestSupport {
                 .reservationDateTime(reservationDateTime);
 
         mvc.perform(
-                    post("/v1/reservation/save")
+                    post("/v1/client/reservation/save")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(vo))
                 )
@@ -66,7 +66,7 @@ class ReservationClientControllerTest extends RestDocsTestSupport {
                 .status(ReservationStatus.REVOKED);
 
         mvc.perform(
-                        post("/v1/reservation/update")
+                        post("/v1/client/reservation/update")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(vo))
                 )
@@ -92,7 +92,7 @@ class ReservationClientControllerTest extends RestDocsTestSupport {
 
     @Test @DisplayName("등록된 특정 예약을 조회합니다")
     public void findById() throws Exception {
-        mvc.perform(RestDocumentationRequestBuilders.get("/v1/reservation/{id}", 202))
+        mvc.perform(RestDocumentationRequestBuilders.get("/v1/client/reservation/{id}", 202))
                 .andDo(
                         docs.document(
                                 pathParameters(
@@ -106,7 +106,7 @@ class ReservationClientControllerTest extends RestDocsTestSupport {
 
     @Test @DisplayName("등록된 예약 리스트를 조회합니다")
     public void findAll() throws Exception {
-        mvc.perform(get("/v1/reservation/all")
+        mvc.perform(get("/v1/client/reservation/all")
                         .param("clinicId", "202")
                         .param("page", "0")
                         .param("size", "5")
@@ -126,7 +126,7 @@ class ReservationClientControllerTest extends RestDocsTestSupport {
 
     @Test @DisplayName("등록된 예약 리스트에서 반려동물 이름으로 검색합니다")
     public void searchAllByAnimalName() throws Exception {
-        mvc.perform(get("/v1/reservation/search")
+        mvc.perform(get("/v1/client/reservation/search")
                 .param("clinicId", "202")
                 .param("page", "0")
                 .param("size", "5")
@@ -147,7 +147,7 @@ class ReservationClientControllerTest extends RestDocsTestSupport {
 
     @Test @DisplayName("등록된 예약 리스트에서 보호자 이름으로 검색합니다")
     public void searchAllByGuardianName() throws Exception {
-        mvc.perform(get("/v1/reservation/search")
+        mvc.perform(get("/v1/client/reservation/search")
                         .param("clinicId", "202")
                         .param("page", "0")
                         .param("size", "5")
@@ -174,7 +174,7 @@ class ReservationClientControllerTest extends RestDocsTestSupport {
         Instant to = criteria.with(TemporalAdjusters.lastDayOfMonth()).atTime(LocalTime.MAX).toInstant(ZoneOffset.of("+09:00"));
 
 
-        mvc.perform(get("/v1/reservation/search")
+        mvc.perform(get("/v1/client/reservation/search")
                         .param("clinicId", "202")
                         .param("page", "0")
                         .param("size", "5")
@@ -200,7 +200,7 @@ class ReservationClientControllerTest extends RestDocsTestSupport {
 
         String criteriaDate = LocalDateTime.of(2023, 07, 12, 10, 00).toInstant(ZoneOffset.UTC).toString();
 
-        mvc.perform(get("/v1/reservation/available")
+        mvc.perform(get("/v1/client/reservation/available")
                         .param("clinicId", "202")
                         .param("reservationDateTime", criteriaDate)
                 ).andDo(
