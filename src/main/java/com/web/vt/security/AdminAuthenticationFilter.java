@@ -19,11 +19,13 @@ public class AdminAuthenticationFilter extends UsernamePasswordAuthenticationFil
         this.authenticationManager = authenticationManager;
     }
 
+    // todo 로그인 시도
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         return super.attemptAuthentication(request, response);
     }
 
+    // todo 로그인 완료시 jwt token 발급
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         super.successfulAuthentication(request, response, chain, authResult);
