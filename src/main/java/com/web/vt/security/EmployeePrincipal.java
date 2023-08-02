@@ -1,7 +1,7 @@
 package com.web.vt.security;
 
+import com.web.vt.domain.common.dto.EmployeeClinicDTO;
 import com.web.vt.domain.common.enums.UsageStatus;
-import com.web.vt.domain.employee.EmployeeVO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -10,44 +10,48 @@ import java.util.List;
 
 public class EmployeePrincipal implements UserDetails {
 
-    private final EmployeeVO employee;
+    private final EmployeeClinicDTO employee;
 
-    public EmployeePrincipal(EmployeeVO employee) {
+    public EmployeePrincipal(EmployeeClinicDTO employee) {
         this.employee = employee;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of((GrantedAuthority) employee::role);
+        return List.of((GrantedAuthority) employee::employeeRole);
     }
 
     @Override
     public String getPassword() {
-        return employee.password();
+        return employee.employeePassword();
     }
 
     @Override
     public String getUsername() {
-        return employee.id();
+        return Long.toString(employee.employeeId());
+    }
+
+    public String getLoginId(){
+        return employee.employeeLoginId();
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return employee.status().equals(UsageStatus.USE);
+        return employee.employeeStatus().equals(UsageStatus.USE);
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return employee.status().equals(UsageStatus.USE);
+        return employee.employeeStatus().equals(UsageStatus.USE);
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return employee.status().equals(UsageStatus.USE);
+        return employee.employeeStatus().equals(UsageStatus.USE);
     }
 
     @Override
     public boolean isEnabled() {
-        return employee.status().equals(UsageStatus.USE);
+        return employee.employeeStatus().equals(UsageStatus.USE);
     }
 }

@@ -25,7 +25,7 @@ class EmployeeRepositoryTest {
     public void save() {
 
         EmployeeVO vo = new EmployeeVO()
-                .id("test")
+                .loginId("test")
                 .password(passwordEncoder.encode("1234"))
                 .role("ROLE_ADMIN")
                 .status(UsageStatus.USE)
@@ -35,7 +35,7 @@ class EmployeeRepositoryTest {
 
         EmployeeVO result = new EmployeeVO(save);
 
-        assertThat(result.id()).isEqualTo(vo.id());
+        assertThat(result.loginId()).isEqualTo(vo.loginId());
 
     }
 

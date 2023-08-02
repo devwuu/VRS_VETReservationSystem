@@ -4,6 +4,6 @@ import com.web.vt.domain.common.dto.EmployeeClinicDTO;
 
 public interface EmployeeQuerydslRepository {
 
-   EmployeeClinicDTO findByEmployeeId(String id);
+   EmployeeClinicDTO findByEmployeeId(Long id);
 
 }

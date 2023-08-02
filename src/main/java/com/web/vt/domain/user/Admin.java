@@ -28,4 +28,9 @@ public class Admin extends BaseEntity {
     private UsageStatus status;
 
 
+    public Admin(AdminVO vo) {
+        id = vo.id();
+        password = vo.password();
+        status = vo.status();
+    }
 }

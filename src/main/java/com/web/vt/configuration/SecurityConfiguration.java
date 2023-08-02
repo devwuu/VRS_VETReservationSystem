@@ -1,9 +1,12 @@
 package com.web.vt.configuration;
 
+import com.web.vt.domain.employee.EmployeeService;
+import com.web.vt.domain.user.AdminService;
 import com.web.vt.security.AdminAuthenticationFilter;
 import com.web.vt.security.AdminDetailService;
 import com.web.vt.security.ClientAuthenticationFilter;
 import com.web.vt.security.EmployeeDetailService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.ProviderManager;
@@ -23,7 +26,11 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfiguration {
+
+    private final EmployeeService employeeService;
+    private final AdminService adminService;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -32,12 +39,12 @@ public class SecurityConfiguration {
 
     @Bean
     public AdminDetailService adminDetailService(){
-        return new AdminDetailService();
+        return new AdminDetailService(adminService);
     }
 
     @Bean
     public EmployeeDetailService employeeDetailService(){
-        return new EmployeeDetailService();
+        return new EmployeeDetailService(employeeService);
     }
 
     @Bean

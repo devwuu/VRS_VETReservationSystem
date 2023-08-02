@@ -18,7 +18,8 @@ public class EmployeeClinicDTO implements Serializable {
     private static final long serialVersionUID = 4146695139922760801L;
 
     //employee
-    private String employeeId;
+    private Long employeeId;
+    private String employeeLoginId;
     private String employeePassword;
     private String employeeRole;
     private Position employeePosition;
@@ -30,7 +31,8 @@ public class EmployeeClinicDTO implements Serializable {
 
 
     @QueryProjection
-    public EmployeeClinicDTO(String employeeId,
+    public EmployeeClinicDTO(Long employeeId,
+                             String employeeLoginId,
                              String employeePassword,
                              String employeeRole,
                              Position employeePosition,
@@ -38,6 +40,7 @@ public class EmployeeClinicDTO implements Serializable {
                              Long clinicId,
                              String clinicName) {
         this.employeeId = employeeId;
+        this.employeeLoginId = employeeLoginId;
         this.employeePassword = employeePassword;
         this.employeeRole = employeeRole;
         this.employeePosition = employeePosition;

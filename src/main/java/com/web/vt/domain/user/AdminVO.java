@@ -22,4 +22,9 @@ public class AdminVO extends BaseVO implements Serializable {
     private String password;
     private UsageStatus status;
 
+    public AdminVO(Admin admin) {
+        id = admin.id();
+        password = admin.password();
+        status = admin.status();
+    }
 }
