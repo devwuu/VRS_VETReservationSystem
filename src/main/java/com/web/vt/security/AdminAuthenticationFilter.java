@@ -1,5 +1,6 @@
 package com.web.vt.security;
 
+import com.auth0.jwt.JWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.web.vt.domain.user.AdminVO;
 import jakarta.servlet.FilterChain;
@@ -24,7 +25,6 @@ public class AdminAuthenticationFilter extends UsernamePasswordAuthenticationFil
         this.authenticationManager = authenticationManager;
     }
 
-    // todo 로그인 시도
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
@@ -32,19 +32,24 @@ public class AdminAuthenticationFilter extends UsernamePasswordAuthenticationFil
             AdminVO loginInfo = mapper.readValue(request.getInputStream(), AdminVO.class);
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginInfo.id(), loginInfo.password());
             Authentication authenticate = authenticationManager.authenticate(authenticationToken);
-
-            AdminPrincipal authenticatePrincipal = (AdminPrincipal) authenticate.getPrincipal();
-            log.info("admin principal : {}", authenticatePrincipal.getUsername());
-
             return authenticate;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    // todo 로그인 완료시 jwt token 발급
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        super.successfulAuthentication(request, response, chain, authResult);
+
+        AdminPrincipal principal = (AdminPrincipal) authResult.getPrincipal();
+
+        String token = JWT.create()
+                .withSubject(JwtProperties.ADMIN_TOKEN)
+                .withClaim("id", principal.getUsername())
+                .withExpiresAt(JwtProperties.EXPIRED_TIME)
+                .sign(JwtProperties.SIGN);
+
+        response.addHeader("Authorization", JwtProperties.PRE_FIX + token);
+
     }
 }

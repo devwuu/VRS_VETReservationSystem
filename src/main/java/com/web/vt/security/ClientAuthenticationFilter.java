@@ -1,5 +1,6 @@
 package com.web.vt.security;
 
+import com.auth0.jwt.JWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.web.vt.domain.employee.EmployeeVO;
 import jakarta.servlet.FilterChain;
@@ -31,12 +32,7 @@ public class ClientAuthenticationFilter extends UsernamePasswordAuthenticationFi
             EmployeeVO loginInfo = mapper.readValue(request.getInputStream(), EmployeeVO.class);
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginInfo.id(), loginInfo.password());
             Authentication authentication = authenticationManager.authenticate(authenticationToken);
-
-            EmployeePrincipal principal = (EmployeePrincipal) authentication.getPrincipal();
-            log.info("client principal :: {}, {}", principal.getUsername(), principal.getAuthorities());
-
             return authentication;
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -44,6 +40,16 @@ public class ClientAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        super.successfulAuthentication(request, response, chain, authResult);
+
+        EmployeePrincipal principal = (EmployeePrincipal) authResult.getPrincipal();
+
+        String token = JWT.create()
+                .withSubject(JwtProperties.CLIENT_TOKEN)
+                .withClaim("id", principal.getUsername())
+                .withExpiresAt(JwtProperties.EXPIRED_TIME)
+                .sign(JwtProperties.SIGN);
+
+        response.addHeader("Authorization", JwtProperties.PRE_FIX + token);
+
     }
 }
