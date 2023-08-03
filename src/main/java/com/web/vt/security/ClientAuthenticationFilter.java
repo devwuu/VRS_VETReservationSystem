@@ -4,6 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -11,17 +12,20 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.io.IOException;
 
+@Slf4j
 public class ClientAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
 
     public ClientAuthenticationFilter(AuthenticationManager authenticationManager) {
-        super.setAuthenticationManager(authenticationManager);
+//        super.setAuthenticationManager(authenticationManager);
         this.authenticationManager = authenticationManager;
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+
+        log.info("====================ClientAuthenticationFilter attemptAuthentication============");
         return super.attemptAuthentication(request, response);
     }
 

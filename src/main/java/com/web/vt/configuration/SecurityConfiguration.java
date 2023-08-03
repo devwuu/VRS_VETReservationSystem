@@ -53,7 +53,10 @@ public class SecurityConfiguration {
         authProvider.setUserDetailsService(employeeDetailService());
         authProvider.setPasswordEncoder(passwordEncoder());
         ProviderManager providerManager = new ProviderManager(authProvider);
-        return new ClientAuthenticationFilter(providerManager);
+        ClientAuthenticationFilter clientAuthenticationFilter = new ClientAuthenticationFilter(providerManager);
+        clientAuthenticationFilter.setAuthenticationManager(providerManager);
+        clientAuthenticationFilter.setFilterProcessesUrl("/client/token");
+        return clientAuthenticationFilter;
     }
 
 
@@ -63,7 +66,11 @@ public class SecurityConfiguration {
         authProvider.setUserDetailsService(adminDetailService());
         authProvider.setPasswordEncoder(passwordEncoder());
         ProviderManager providerManager = new ProviderManager(authProvider);
-        return new AdminAuthenticationFilter(providerManager);
+        AdminAuthenticationFilter adminAuthenticationFilter = new AdminAuthenticationFilter(providerManager);
+        adminAuthenticationFilter.setAuthenticationManager(providerManager);
+        adminAuthenticationFilter.setFilterProcessesUrl("/admin/token");
+        adminAuthenticationFilter.setPostOnly(true);
+        return adminAuthenticationFilter;
     }
 
     @Bean
@@ -79,8 +86,12 @@ public class SecurityConfiguration {
     }
 
     @Bean
+//    @Order(1)
     public SecurityFilterChain clientFilterChain(HttpSecurity http) throws Exception {
         http
+                .securityMatchers((matchers) -> matchers
+                        .requestMatchers("client/**", "v1/client/**")
+                )
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(httpSecuritySessionManagementConfigurer ->
                         httpSecuritySessionManagementConfigurer
@@ -88,7 +99,8 @@ public class SecurityConfiguration {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize ->
                         authorize.
-                                requestMatchers("v1/client/**").hasRole("ADMIN"))
+                                requestMatchers("v1/client/**").hasRole("ADMIN")
+                                .requestMatchers("client/token").permitAll())
                 .cors(httpSecurityCorsConfigurer ->
                         httpSecurityCorsConfigurer
                                 .configurationSource(corsConfigurationSource()))
@@ -99,15 +111,21 @@ public class SecurityConfiguration {
     }
 
     @Bean
+//    @Order(2)
     public SecurityFilterChain adminFilterChain(HttpSecurity http) throws Exception {
         http
+                .securityMatchers((matchers) -> matchers
+                        .requestMatchers("admin/**", "v1/admin/**")
+                )
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(httpSecuritySessionManagementConfigurer ->
                         httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize ->
                         authorize
-                                .requestMatchers("v1/admin/**").authenticated())
+                                .requestMatchers("v1/admin/**").authenticated()
+                                .requestMatchers("admin/token").permitAll()
+                                .anyRequest().authenticated())
                 .cors(httpSecurityCorsConfigurer ->
                         httpSecurityCorsConfigurer
                                 .configurationSource(corsConfigurationSource()))
