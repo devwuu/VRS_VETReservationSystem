@@ -2,10 +2,7 @@ package com.web.vt.configuration;
 
 import com.web.vt.domain.employee.EmployeeService;
 import com.web.vt.domain.user.AdminService;
-import com.web.vt.security.AdminAuthenticationFilter;
-import com.web.vt.security.AdminDetailService;
-import com.web.vt.security.ClientAuthenticationFilter;
-import com.web.vt.security.EmployeeDetailService;
+import com.web.vt.security.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -71,6 +69,11 @@ public class SecurityConfiguration {
         return clientAuthenticationFilter;
     }
 
+    @Bean
+    public ClientAuthorizationFilter clientAuthorizationFilter(){
+        return new ClientAuthorizationFilter(employeeDetailService());
+    }
+
 
     @Bean
     public AdminAuthenticationFilter adminAuthenticationFilter(){
@@ -83,6 +86,11 @@ public class SecurityConfiguration {
         adminAuthenticationFilter.setFilterProcessesUrl("/admin/token");
         adminAuthenticationFilter.setPostOnly(true);
         return adminAuthenticationFilter;
+    }
+
+    @Bean
+    public AdminAuthorizationFilter adminAuthorizationFilter(){
+        return new AdminAuthorizationFilter(adminDetailService());
     }
 
     @Bean
@@ -105,7 +113,8 @@ public class SecurityConfiguration {
                         httpSecurityCorsConfigurer
                                 .configurationSource(corsConfigurationSource()))
                 .formLogin(AbstractHttpConfigurer::disable)
-                .addFilter(clientAuthenticationFilter());
+                .addFilter(clientAuthenticationFilter())
+                .addFilterBefore(clientAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -129,7 +138,8 @@ public class SecurityConfiguration {
                         httpSecurityCorsConfigurer
                                 .configurationSource(corsConfigurationSource()))
                 .formLogin(AbstractHttpConfigurer::disable)
-                .addFilter(adminAuthenticationFilter());
+                .addFilter(adminAuthenticationFilter())
+                .addFilterBefore(adminAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
