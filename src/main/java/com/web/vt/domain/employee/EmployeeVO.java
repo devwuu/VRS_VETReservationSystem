@@ -19,17 +19,16 @@ public class EmployeeVO extends BaseVO implements Serializable {
 
     private static final long serialVersionUID = -8910905059888155635L;
 
-    private Long id;
-    private String loginId;
+    private String id;
     private String password;
     private String role;
+
     private Long clinicId;
     private UsageStatus status;
     private Position position;
 
     public EmployeeVO(Employee employee) {
         id = employee.id();
-        loginId = employee.loginId();
         password = employee.password();
         role = employee.role();
         status = employee.status();

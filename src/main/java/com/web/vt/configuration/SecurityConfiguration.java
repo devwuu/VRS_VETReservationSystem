@@ -48,6 +48,18 @@ public class SecurityConfiguration {
     }
 
     @Bean
+    public CorsConfigurationSource corsConfigurationSource(){
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowCredentials(true);
+        configuration.setAllowedOrigins(Arrays.asList("localhost:8080"));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST"));
+        configuration.addAllowedHeader("*");
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+    @Bean
     public ClientAuthenticationFilter clientAuthenticationFilter(){
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(employeeDetailService());
@@ -74,19 +86,6 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource(){
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowCredentials(true);
-        configuration.setAllowedOrigins(Arrays.asList("localhost:8080"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST"));
-        configuration.addAllowedHeader("*");
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
-
-    @Bean
-//    @Order(1)
     public SecurityFilterChain clientFilterChain(HttpSecurity http) throws Exception {
         http
                 .securityMatchers((matchers) -> matchers
@@ -100,7 +99,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize ->
                         authorize.
                                 requestMatchers("v1/client/**").hasRole("ADMIN")
-                                .requestMatchers("client/token").permitAll())
+                                .requestMatchers("client/token").permitAll()
+                                .anyRequest().authenticated())
                 .cors(httpSecurityCorsConfigurer ->
                         httpSecurityCorsConfigurer
                                 .configurationSource(corsConfigurationSource()))
@@ -111,7 +111,6 @@ public class SecurityConfiguration {
     }
 
     @Bean
-//    @Order(2)
     public SecurityFilterChain adminFilterChain(HttpSecurity http) throws Exception {
         http
                 .securityMatchers((matchers) -> matchers

@@ -16,12 +16,11 @@ public class EmployeeQuerydslRepositoryImpl implements EmployeeQuerydslRepositor
     private final JPAQueryFactory query;
 
     @Override
-    public EmployeeClinicDTO findByEmployeeId(Long id) {
+    public EmployeeClinicDTO findByEmployeeId(String id) {
 
         EmployeeClinicDTO find = query.select(
                         new QEmployeeClinicDTO(
                                 employee.id,
-                                employee.loginId,
                                 employee.password,
                                 employee.role,
                                 employee.position,

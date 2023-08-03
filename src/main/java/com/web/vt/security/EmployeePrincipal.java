@@ -2,12 +2,14 @@ package com.web.vt.security;
 
 import com.web.vt.domain.common.dto.EmployeeClinicDTO;
 import com.web.vt.domain.common.enums.UsageStatus;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
 
+@ToString
 public class EmployeePrincipal implements UserDetails {
 
     private final EmployeeClinicDTO employee;
@@ -28,11 +30,7 @@ public class EmployeePrincipal implements UserDetails {
 
     @Override
     public String getUsername() {
-        return Long.toString(employee.employeeId());
-    }
-
-    public String getLoginId(){
-        return employee.employeeLoginId();
+        return employee.employeeId();
     }
 
     @Override

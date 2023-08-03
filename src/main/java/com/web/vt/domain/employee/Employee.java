@@ -20,11 +20,8 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 public class Employee extends BaseEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
-
-    @Column(name = "login_id")
-    private String loginId;
+    @Id @Column(name = "id")
+    private String id;
 
     @Column(name = "password")
     private String password;
@@ -45,7 +42,6 @@ public class Employee extends BaseEntity {
 
     public Employee(EmployeeVO vo) {
         id = vo.id();
-        loginId = vo.loginId();
         password = vo.password();
         role = vo.role();
         position = vo.position();

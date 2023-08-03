@@ -19,7 +19,7 @@ class EmployeeServiceTest {
     @Test
     @DisplayName("직원 id로 등록된 직원을 조회합니다.")
     public void findById() {
-        EmployeeClinicDTO find = service.findById(52L);
+        EmployeeClinicDTO find = service.findById("test");
         assertThat(find).isNotNull();
     }
     

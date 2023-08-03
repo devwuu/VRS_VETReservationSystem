@@ -1,11 +1,14 @@
 package com.web.vt.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.web.vt.domain.employee.EmployeeVO;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -18,15 +21,25 @@ public class ClientAuthenticationFilter extends UsernamePasswordAuthenticationFi
     private final AuthenticationManager authenticationManager;
 
     public ClientAuthenticationFilter(AuthenticationManager authenticationManager) {
-//        super.setAuthenticationManager(authenticationManager);
         this.authenticationManager = authenticationManager;
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            EmployeeVO loginInfo = mapper.readValue(request.getInputStream(), EmployeeVO.class);
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginInfo.id(), loginInfo.password());
+            Authentication authentication = authenticationManager.authenticate(authenticationToken);
 
-        log.info("====================ClientAuthenticationFilter attemptAuthentication============");
-        return super.attemptAuthentication(request, response);
+            EmployeePrincipal principal = (EmployeePrincipal) authentication.getPrincipal();
+            log.info("client principal :: {}, {}", principal.getUsername(), principal.getAuthorities());
+
+            return authentication;
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

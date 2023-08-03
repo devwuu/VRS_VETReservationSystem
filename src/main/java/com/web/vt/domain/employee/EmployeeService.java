@@ -13,7 +13,7 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
 
     @Transactional(readOnly = true)
-    public EmployeeClinicDTO findById(Long id){
+    public EmployeeClinicDTO findById(String id){
         return employeeRepository.findByEmployeeId(id);
     }
 

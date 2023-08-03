@@ -14,7 +14,7 @@ public class EmployeeDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        EmployeeClinicDTO find = service.findById(Long.parseLong(username));
+        EmployeeClinicDTO find = service.findById(username);
         return new EmployeePrincipal(find);
     }
 }
