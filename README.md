@@ -12,17 +12,19 @@
 ---
 ### Specification
 
-* **Backend** : Spring boot + JPA + PostgreSQL  
+* **Backend** : Spring boot  + Spring security + JPA + PostgreSQL  
 * **Frontend** : -
 
 ---
 ### domains
 
-* VET 
+* clinic
+* employee (proto)
 * animal
 * guardian
 * reservation
 * reservation management
+* user (proto)
 
 ---
 ### feature
