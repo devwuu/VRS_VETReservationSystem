@@ -15,9 +15,6 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-  jackson:
-    serialization:
-      indent-output: true
 logging:
   level:
     jdbc:
@@ -30,6 +27,6 @@ logging:
 app:
   security:
     jwt:
-      secret: sample
+      secret: local
       limit: 1440
       issuer: localhost:8080

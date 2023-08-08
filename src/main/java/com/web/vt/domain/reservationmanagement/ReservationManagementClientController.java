@@ -2,7 +2,7 @@ package com.web.vt.domain.reservationmanagement;
 
 import com.web.vt.exceptions.ValidationException;
 import com.web.vt.utils.ObjectUtil;
-import com.web.vt.utils.StringUtil;
+import com.web.vt.utils.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,13 +14,10 @@ public class ReservationManagementClientController {
 
     private final ReservationManagementService managementService;
 
-    // todo clinicId 에 security 적용
-    @GetMapping("{clinicId}")
-    public ResponseEntity<ReservationManagementVO> findByClinicId(@PathVariable String clinicId){
-        if(StringUtil.isEmpty(clinicId)){
-            throw new ValidationException("CLINIC ID SHOULD NOT BE EMPTY");
-        }
-        ReservationManagementVO vo = new ReservationManagementVO().clinicId(Long.parseLong(clinicId));
+    @GetMapping("info")
+    public ResponseEntity<ReservationManagementVO> findByClinicId(){
+        Long clinicId = SecurityUtil.getEmployeePrincipal().getClinicId();
+        ReservationManagementVO vo = new ReservationManagementVO().clinicId(clinicId);
         ReservationManagementVO find = managementService.findByClinicId(vo);
         return ResponseEntity.ok().body(find);
     }

@@ -570,7 +570,16 @@ Host: localhost:8080</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
 Content-Length: 251
 
 {
@@ -645,7 +654,16 @@ Host: localhost:8080</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
 Content-Length: 1064
 
 {
@@ -785,16 +803,25 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
-Location: /v1/admin/clinic/6352
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Location: /v1/admin/clinic/7652
 Content-Type: application/json;charset=UTF-8
-Content-Length: 272
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Length: 276
 
 {
-  "createdAt" : "2023-07-20T03:18:06.332119Z",
-  "updatedAt" : "2023-07-20T03:18:06.332119Z",
-  "createBy" : null,
-  "updatedBy" : null,
-  "id" : 6352,
+  "createdAt" : "2023-08-08T08:23:29.018122Z",
+  "updatedAt" : "2023-08-08T08:23:29.018122Z",
+  "createBy" : "test",
+  "updatedBy" : "test",
+  "id" : 7652,
   "name" : "고양이 동물병원",
   "contact" : "0211112222",
   "remark" : "고양이 전문",
@@ -845,7 +872,7 @@ Content-Length: 272
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /v1/admin/clinic/delete HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Content-Length: 178
+Content-Length: 179
 Host: localhost:8080
 
 {
@@ -853,7 +880,7 @@ Host: localhost:8080
   "updatedAt" : null,
   "createBy" : null,
   "updatedBy" : null,
-  "id" : 352,
+  "id" : 1402,
   "name" : null,
   "contact" : null,
   "remark" : null,
@@ -867,15 +894,24 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 232
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Length: 235
 
 {
-  "createdAt" : "2023-07-13T03:53:35.995594Z",
-  "updatedAt" : "2023-07-14T05:55:43.157623Z",
+  "createdAt" : "2023-07-14T04:42:50.168044Z",
+  "updatedAt" : "2023-08-08T05:41:39.726294Z",
   "createBy" : null,
-  "updatedBy" : null,
-  "id" : 352,
+  "updatedBy" : "test",
+  "id" : 1402,
   "name" : null,
   "contact" : null,
   "remark" : null,
@@ -897,39 +933,15 @@ Content-Length: 232
 </div>
 <div class="sect3">
 <h4 id="_2_1_find_path_parameters">Path parameters</h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-<col style="width: 20%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">필드명</th>
-<th class="tableblock halign-left valign-top">타입</th>
-<th class="tableblock halign-left valign-top">필수값</th>
-<th class="tableblock halign-left valign-top">필드설명</th>
-<th class="tableblock halign-left valign-top">제약사항</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">동물병원 id</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-</tbody>
-</table>
+<div class="paragraph">
+<p>Snippet path-parameters not found for operation::veterinary-clinic-client-controller-test/find</p>
+</div>
 </div>
 <div class="sect3">
 <h4 id="_2_1_find_http_request">HTTP request</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/clinic/202 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/client/clinic/info HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -939,7 +951,16 @@ Host: localhost:8080</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
 Content-Length: 253
 
 {
@@ -958,17 +979,8 @@ Content-Length: 253
 </div>
 <div class="sect3">
 <h4 id="_2_1_find_http_response">HTTP response</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 404 Not Found
-Content-Type: application/json;charset=UTF-8
-Content-Length: 62
-
-{
-  "status" : "NOT_FOUND",
-  "message" : "NOT EXIST CLINIC"
-}</code></pre>
-</div>
+<div class="paragraph">
+<p>Snippet http-response not found for operation::veterinary-clinic-client-controller-test/not-found</p>
 </div>
 </div>
 <hr>
@@ -998,13 +1010,6 @@ Content-Length: 62
 </tr>
 </thead>
 <tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">동물병원 id</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
@@ -1040,9 +1045,9 @@ Content-Length: 62
 <h4 id="_2_2_update_http_request">HTTP request</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /v1/clinic/update HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /v1/client/clinic/update HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Content-Length: 201
+Content-Length: 206
 Host: localhost:8080
 
 {
@@ -1050,8 +1055,8 @@ Host: localhost:8080
   "updatedAt" : null,
   "createBy" : null,
   "updatedBy" : null,
-  "id" : 352,
-  "name" : "Updated name",
+  "id" : null,
+  "name" : "Updated new name",
   "contact" : null,
   "remark" : "Updated remark",
   "status" : "USE"
@@ -1064,16 +1069,25 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 251
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Length: 255
 
 {
-  "createdAt" : "2023-07-13T03:53:35.995594Z",
-  "updatedAt" : "2023-07-14T05:55:43.157623Z",
+  "createdAt" : "2023-07-06T04:39:07.716917Z",
+  "updatedAt" : "2023-07-06T04:39:07.716917Z",
   "createBy" : null,
   "updatedBy" : null,
-  "id" : 352,
-  "name" : "Updated name",
+  "id" : 202,
+  "name" : "Updated new name",
   "contact" : null,
   "remark" : "Updated remark",
   "status" : "USE"

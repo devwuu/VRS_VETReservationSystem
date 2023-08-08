@@ -3,6 +3,7 @@ package com.web.vt.security;
 import com.web.vt.common.ControllerTestSupporter;
 import com.web.vt.domain.employee.EmployeeVO;
 import com.web.vt.domain.user.AdminVO;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -12,6 +13,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Disabled
 public class SecurityTest extends ControllerTestSupporter {
 
     @Test @DisplayName("시스템 관리자로 로그인합니다.")

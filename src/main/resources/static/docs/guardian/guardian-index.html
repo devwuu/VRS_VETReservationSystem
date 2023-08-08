@@ -569,7 +569,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h4 id="_1_1_save_http_request">HTTP request</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /v1/guardian/save HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /v1/client/guardian/save HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Content-Length: 220
 Host: localhost:8080
@@ -594,16 +594,25 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
-Location: /v1/guardian/4452
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Location: /v1/guardian/5702
 Content-Type: application/json;charset=UTF-8
-Content-Length: 270
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Length: 272
 
 {
-  "createdAt" : "2023-07-20T03:18:06.518360Z",
-  "updatedAt" : "2023-07-20T03:18:06.518360Z",
-  "createBy" : null,
+  "createdAt" : "2023-08-08T08:23:29.309040Z",
+  "updatedAt" : "2023-08-08T08:23:29.309040Z",
+  "createBy" : "test",
   "updatedBy" : null,
-  "id" : 4452,
+  "id" : 5702,
   "name" : "달이 언니",
   "contact" : "01011112222",
   "address" : null,
@@ -654,7 +663,7 @@ Content-Length: 270
 <h4 id="_1_2_find_http_request">HTTP request</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/guardian/302 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/client/guardian/302 HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -664,7 +673,16 @@ Host: localhost:8080</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
 Content-Length: 258
 
 {
@@ -758,7 +776,7 @@ Content-Length: 258
 <h4 id="_1_3_update_http_request">HTTP request</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /v1/guardian/update HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /v1/client/guardian/update HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Content-Length: 219
 Host: localhost:8080
@@ -783,7 +801,16 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
 Content-Length: 269
 
 {
@@ -842,7 +869,7 @@ Content-Length: 269
 <h4 id="_1_4_delete_http_request">HTTP request</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /v1/guardian/delete HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /v1/client/guardian/delete HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Content-Length: 198
 Host: localhost:8080
@@ -867,7 +894,16 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
 Content-Length: 252
 
 {

@@ -528,13 +528,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>clinicId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">동물병원 id</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>animalName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
@@ -548,7 +541,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h4 id="_1_1_search_by_animal_name_http_request">HTTP request</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/animal/search?page=0&amp;size=2&amp;clinicId=1&amp;animalName=%EB%8B%AC HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/client/animal/search?page=0&amp;size=2&amp;animalName=%EB%8B%AC HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -558,37 +551,20 @@ Host: localhost:8080</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 1170
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Length: 473
 
 {
-  "content" : [ {
-    "animalId" : 3202,
-    "animalName" : "달이",
-    "animalSpecies" : "강아지",
-    "animalAge" : 10,
-    "animalRemark" : null,
-    "animalStatus" : "USE",
-    "guardianId" : 1,
-    "guardianName" : "devwuu",
-    "guardianContact" : "123-123",
-    "guardianAddress" : null,
-    "guardianStatus" : "USE",
-    "guardianRemark" : null
-  }, {
-    "animalId" : 1452,
-    "animalName" : "달이",
-    "animalSpecies" : "강아지",
-    "animalAge" : 10,
-    "animalRemark" : null,
-    "animalStatus" : "USE",
-    "guardianId" : 1,
-    "guardianName" : "devwuu",
-    "guardianContact" : "123-123",
-    "guardianAddress" : null,
-    "guardianStatus" : "USE",
-    "guardianRemark" : null
-  } ],
+  "content" : [ ],
   "pageable" : {
     "sort" : {
       "empty" : false,
@@ -601,9 +577,9 @@ Content-Length: 1170
     "paged" : true,
     "unpaged" : false
   },
-  "last" : false,
-  "totalPages" : 13,
-  "totalElements" : 26,
+  "last" : true,
+  "totalPages" : 0,
+  "totalElements" : 0,
   "first" : true,
   "size" : 2,
   "number" : 0,
@@ -612,8 +588,8 @@ Content-Length: 1170
     "sorted" : true,
     "unsorted" : false
   },
-  "numberOfElements" : 2,
-  "empty" : false
+  "numberOfElements" : 0,
+  "empty" : true
 }</code></pre>
 </div>
 </div>
@@ -660,13 +636,6 @@ Content-Length: 1170
 <td class="tableblock halign-left valign-top"></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>clinicId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">동물병원 id</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>guardianName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
@@ -680,7 +649,7 @@ Content-Length: 1170
 <h4 id="_1_2_search_by_guardian_name_http_request">HTTP request</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/animal/search?page=0&amp;size=2&amp;clinicId=1&amp;guardianName=abc HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/client/animal/search?page=0&amp;size=2&amp;guardianName=abc HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -690,37 +659,20 @@ Host: localhost:8080</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Content-Length: 1167
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Length: 473
 
 {
-  "content" : [ {
-    "animalId" : 1302,
-    "animalName" : "달이",
-    "animalSpecies" : "강아지",
-    "animalAge" : 10,
-    "animalRemark" : null,
-    "animalStatus" : "USE",
-    "guardianId" : 152,
-    "guardianName" : "abc",
-    "guardianContact" : "123-123",
-    "guardianAddress" : null,
-    "guardianStatus" : "USE",
-    "guardianRemark" : null
-  }, {
-    "animalId" : 1252,
-    "animalName" : "달이",
-    "animalSpecies" : "강아지",
-    "animalAge" : 10,
-    "animalRemark" : null,
-    "animalStatus" : "USE",
-    "guardianId" : 152,
-    "guardianName" : "abc",
-    "guardianContact" : "123-123",
-    "guardianAddress" : null,
-    "guardianStatus" : "USE",
-    "guardianRemark" : null
-  } ],
+  "content" : [ ],
   "pageable" : {
     "sort" : {
       "empty" : false,
@@ -733,9 +685,9 @@ Content-Length: 1167
     "paged" : true,
     "unpaged" : false
   },
-  "last" : false,
-  "totalPages" : 5,
-  "totalElements" : 10,
+  "last" : true,
+  "totalPages" : 0,
+  "totalElements" : 0,
   "first" : true,
   "size" : 2,
   "number" : 0,
@@ -744,8 +696,8 @@ Content-Length: 1167
     "sorted" : true,
     "unsorted" : false
   },
-  "numberOfElements" : 2,
-  "empty" : false
+  "numberOfElements" : 0,
+  "empty" : true
 }</code></pre>
 </div>
 </div>

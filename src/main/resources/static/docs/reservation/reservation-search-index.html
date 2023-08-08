@@ -521,13 +521,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>clinicId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">동물병원 id</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>animalName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
@@ -555,7 +548,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h4 id="_1_1_search_by_animal_name_http_request">HTTP request</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/reservation/search?clinicId=202&amp;page=0&amp;size=5&amp;animalName=%EB%8B%AC HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/client/reservation/search?page=0&amp;size=5&amp;animalName=%EB%8B%AC HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -565,7 +558,16 @@ Host: localhost:8080</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
 Content-Length: 2074
 
 {
@@ -682,13 +684,6 @@ Content-Length: 2074
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>clinicId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">동물병원 id</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>guardianName</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
@@ -716,7 +711,7 @@ Content-Length: 2074
 <h4 id="_1_2_search_by_guardian_name_http_request">HTTP request</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/reservation/search?clinicId=202&amp;page=0&amp;size=5&amp;guardianName=ab HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/client/reservation/search?page=0&amp;size=5&amp;guardianName=ab HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -726,7 +721,16 @@ Host: localhost:8080</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
 Content-Length: 1745
 
 {
@@ -832,13 +836,6 @@ Content-Length: 1745
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>clinicId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Number</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">동물병원 id</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>from</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
@@ -873,7 +870,7 @@ Content-Length: 1745
 <h4 id="_1_3_search_by_reservation_date_http_request">HTTP request</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/reservation/search?clinicId=202&amp;page=0&amp;size=5&amp;from=2023-07-11T15%3A00%3A00Z&amp;to=2023-07-31T14%3A59%3A59.999999999Z HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/client/reservation/search?page=0&amp;size=5&amp;from=2023-07-11T15%3A00%3A00Z&amp;to=2023-07-31T14%3A59%3A59.999999999Z HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -883,7 +880,16 @@ Host: localhost:8080</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
 Content-Length: 2040
 
 {

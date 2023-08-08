@@ -31,7 +31,6 @@ class ReservationClientControllerTest extends ControllerTestSupporter {
         Instant reservationDateTime = LocalDateTime.now().atZone(ZoneOffset.UTC).toInstant();
 
         ReservationVO vo = new ReservationVO()
-                .clinicId(1L)
                 .animalId(1L)
                 .status(ReservationStatus.APPROVED)
                 .reservationDateTime(reservationDateTime);
@@ -45,7 +44,7 @@ class ReservationClientControllerTest extends ControllerTestSupporter {
                         docs.document(
                                 requestFields(
                                         fieldWithPath("id").ignored(),
-                                        fieldWithPath("clinicId").type(JsonFieldType.NUMBER).description("동물병원 id"),
+                                        fieldWithPath("clinicId").ignored(),
                                         fieldWithPath("animalId").type(JsonFieldType.NUMBER).description("반려동물 id"),
                                         fieldWithPath("reservationDateTime").type(JsonFieldType.STRING).attributes(field("constraints", "YYYY-MM-DDTMM:mm:ss.sssZ")).description("예약일시 (UTC)"),
                                         fieldWithPath("status").type(JsonFieldType.STRING).attributes(field("constraints", "[Approved | Revoked]")).description("예약 상태(확정, 취소)"),
@@ -109,14 +108,12 @@ class ReservationClientControllerTest extends ControllerTestSupporter {
     @Test @DisplayName("등록된 예약 리스트를 조회합니다")
     public void findAll() throws Exception {
         mvc.perform(get("/v1/client/reservation/all")
-                        .param("clinicId", "202")
                         .param("page", "0")
                         .param("size", "5")
                 )
                 .andDo(
                         docs.document(
                                 queryParameters(
-                                        parameterWithName("clinicId").attributes(field("type", "Number")).description("동물병원 id"),
                                         parameterWithName("page").attributes(field("type", "Number")).description("현재 페이지(index)"),
                                         parameterWithName("size").attributes(field("type", "Number")).description("한 번에 보여줄 content 갯수")
                                 )
@@ -129,14 +126,12 @@ class ReservationClientControllerTest extends ControllerTestSupporter {
     @Test @DisplayName("등록된 예약 리스트에서 반려동물 이름으로 검색합니다")
     public void searchAllByAnimalName() throws Exception {
         mvc.perform(get("/v1/client/reservation/search")
-                .param("clinicId", "202")
                 .param("page", "0")
                 .param("size", "5")
                 .param("animalName", "달")
         ).andDo(
             docs.document(
                     queryParameters(
-                            parameterWithName("clinicId").attributes(field("type", "Number")).description("동물병원 id"),
                             parameterWithName("animalName").attributes(field("type", "String")).description("반려동물 이름"),
                             parameterWithName("page").attributes(field("type", "Number")).description("현재 페이지(index)"),
                             parameterWithName("size").attributes(field("type", "Number")).description("한 번에 보여줄 content 갯수")
@@ -150,14 +145,12 @@ class ReservationClientControllerTest extends ControllerTestSupporter {
     @Test @DisplayName("등록된 예약 리스트에서 보호자 이름으로 검색합니다")
     public void searchAllByGuardianName() throws Exception {
         mvc.perform(get("/v1/client/reservation/search")
-                        .param("clinicId", "202")
                         .param("page", "0")
                         .param("size", "5")
                         .param("guardianName", "ab")
                 ).andDo(
                         docs.document(
                                 queryParameters(
-                                        parameterWithName("clinicId").attributes(field("type", "Number")).description("동물병원 id"),
                                         parameterWithName("guardianName").attributes(field("type", "String")).description("보호지 이름"),
                                         parameterWithName("page").attributes(field("type", "Number")).description("현재 페이지(index)"),
                                         parameterWithName("size").attributes(field("type", "Number")).description("한 번에 보여줄 content 갯수")
@@ -177,7 +170,6 @@ class ReservationClientControllerTest extends ControllerTestSupporter {
 
 
         mvc.perform(get("/v1/client/reservation/search")
-                        .param("clinicId", "202")
                         .param("page", "0")
                         .param("size", "5")
                         .param("from", from.toString())
@@ -185,7 +177,6 @@ class ReservationClientControllerTest extends ControllerTestSupporter {
                 ).andDo(
                         docs.document(
                                 queryParameters(
-                                        parameterWithName("clinicId").attributes(field("type", "Number")).description("동물병원 id"),
                                         parameterWithName("from").attributes(field("constraints", "YYYY-MM-DDTMM:mm:ss.sssZ"), field("type", "String")).description("시작 예약일시 (UTC)"),
                                         parameterWithName("to").attributes(field("constraints", "YYYY-MM-DDTMM:mm:ss.sssZ"), field("type", "String")).description("종료 예약일시 (UTC)"),
                                         parameterWithName("page").attributes(field("type", "Number")).description("현재 페이지(index)"),
@@ -203,12 +194,10 @@ class ReservationClientControllerTest extends ControllerTestSupporter {
         String criteriaDate = LocalDateTime.of(2023, 07, 12, 10, 00).toInstant(ZoneOffset.UTC).toString();
 
         mvc.perform(get("/v1/client/reservation/available")
-                        .param("clinicId", "202")
                         .param("reservationDateTime", criteriaDate)
                 ).andDo(
                         docs.document(
                                 queryParameters(
-                                        parameterWithName("clinicId").attributes(field("type", "Number")).description("동물병원 id"),
                                         parameterWithName("reservationDateTime").attributes(field("constraints", "YYYY-MM-DDTMM:mm:ss.sssZ"), field("type", "String")).description("예약일 (UTC)")
                                 )
                         )

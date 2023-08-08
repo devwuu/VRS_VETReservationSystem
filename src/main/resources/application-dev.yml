@@ -1,0 +1,12 @@
+server:
+  port: 8090
+spring:
+  config:
+    activate:
+      on-profile: dev
+app:
+  security:
+    jwt:
+      secret: dev
+      limit: 10
+      issuer: localhost:8090

@@ -30,7 +30,6 @@ class AnimalClientControllerTest extends ControllerTestSupporter {
                 .age(10L)
                 .species("강아지")
                 .status(UsageStatus.USE)
-                .clinicId(1L)
                 .guardianId(1L)
                 .gender(Gender.Female);
 
@@ -47,7 +46,7 @@ class AnimalClientControllerTest extends ControllerTestSupporter {
                                     fieldWithPath("remark").type(JsonFieldType.STRING).description("비고").optional(),
                                     fieldWithPath("gender").type(JsonFieldType.STRING).description("반려동물 성별").attributes(field("constraints", "[ Female | Male | ETC ]")).optional(),
                                     fieldWithPath("status").type(JsonFieldType.STRING).attributes(field("constraints", "[ Use | NotUse | Deleted ]")).description("상태"),
-                                    fieldWithPath("clinicId").type(JsonFieldType.NUMBER).description("동물병원 id"),
+                                    fieldWithPath("clinicId").ignored(),
                                     fieldWithPath("guardianId").type(JsonFieldType.NUMBER).description("반려동물 보호자 id").optional(),
                                     fieldWithPath("createdAt").ignored(),
                                     fieldWithPath("updatedAt").ignored(),
@@ -130,14 +129,12 @@ class AnimalClientControllerTest extends ControllerTestSupporter {
                 RestDocumentationRequestBuilders.get("/v1/client/animal/all")
                     .param("page", "0")
                     .param("size", "2")
-                    .param("clinicId", "1")
                 )
                 .andDo(
                         docs.document(
                                 queryParameters(
                                         parameterWithName("page").attributes(field("type", "Number")).description("현재 페이지(index)"),
-                                        parameterWithName("size").attributes(field("type", "Number")).description("한 번에 보여줄 content 갯수"),
-                                        parameterWithName("clinicId").attributes(field("type", "Number")).description("동물병원 id")
+                                        parameterWithName("size").attributes(field("type", "Number")).description("한 번에 보여줄 content 갯수")
                                 )
                         )
                 )
@@ -166,7 +163,6 @@ class AnimalClientControllerTest extends ControllerTestSupporter {
                         RestDocumentationRequestBuilders.get("/v1/client/animal/search")
                                 .param("page", "0")
                                 .param("size", "2")
-                                .param("clinicId", "1")
                                 .param("animalName", "달")
                 )
                 .andDo(
@@ -174,7 +170,6 @@ class AnimalClientControllerTest extends ControllerTestSupporter {
                                 queryParameters(
                                         parameterWithName("page").attributes(field("type", "Number")).description("현재 페이지(index)"),
                                         parameterWithName("size").attributes(field("type", "Number")).description("한 번에 보여줄 content 갯수"),
-                                        parameterWithName("clinicId").attributes(field("type", "Number")).description("동물병원 id"),
                                         parameterWithName("animalName").attributes(field("type", "String")).description("반려동물 이름")
                                 )
                         )
@@ -189,7 +184,6 @@ class AnimalClientControllerTest extends ControllerTestSupporter {
                         RestDocumentationRequestBuilders.get("/v1/client/animal/search")
                                 .param("page", "0")
                                 .param("size", "2")
-                                .param("clinicId", "1")
                                 .param("guardianName", "abc")
                 )
                 .andDo(
@@ -197,7 +191,6 @@ class AnimalClientControllerTest extends ControllerTestSupporter {
                                 queryParameters(
                                         parameterWithName("page").attributes(field("type", "Number")).description("현재 페이지(index)"),
                                         parameterWithName("size").attributes(field("type", "Number")).description("한 번에 보여줄 content 갯수"),
-                                        parameterWithName("clinicId").attributes(field("type", "Number")).description("동물병원 id"),
                                         parameterWithName("guardianName").attributes(field("type", "String")).description("보호자 이름")
                                 )
                         )

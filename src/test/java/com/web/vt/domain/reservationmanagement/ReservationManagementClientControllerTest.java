@@ -16,8 +16,6 @@ import java.time.ZonedDateTime;
 import static com.web.vt.common.RestDocsConfiguration.field;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -31,14 +29,8 @@ class ReservationManagementClientControllerTest extends ControllerTestSupporter 
     @Test
     @DisplayName("동물병원 id로 예약관리 정보를 조회합니다")
     public void findByClinicId() throws Exception {
-        String id = "202";
-        mvc.perform(RestDocumentationRequestBuilders.get("/v1/client/reservation-management/{id}", id))
-                .andDo(docs.document(
-                                pathParameters(
-                                        parameterWithName("id").attributes(field("type", "Number")).description("동물병원 id")
-                                )
-                        )
-                )
+        mvc.perform(RestDocumentationRequestBuilders.get("/v1/client/reservation-management/info"))
+                .andDo(docs.document())
                 .andDo(print())
                 .andExpect(status().isOk());
     }

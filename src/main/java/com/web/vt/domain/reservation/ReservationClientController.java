@@ -5,6 +5,7 @@ import com.web.vt.domain.common.dto.ReservationAnimalGuardianDTO;
 import com.web.vt.domain.common.dto.ReservationSearchCondition;
 import com.web.vt.exceptions.ValidationException;
 import com.web.vt.utils.ObjectUtil;
+import com.web.vt.utils.SecurityUtil;
 import com.web.vt.utils.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -30,7 +31,6 @@ public class ReservationClientController {
 
     private final ReservationService reservationService;
 
-    // todo clinicId 에 security 적용
     @PostMapping("save")
     public ResponseEntity<ReservationVO> save(@RequestBody ReservationVO vo){
 
@@ -40,13 +40,13 @@ public class ReservationClientController {
         if(ObjectUtil.isEmpty(vo.status())){
             throw new ValidationException("STATUS SHOULD NOT BE EMPTY");
         }
-        if(ObjectUtil.isEmpty(vo.clinicId())){
-            throw new ValidationException("CLINIC ID SHOULD NOT BE EMPTY");
-        }
         if(ObjectUtil.isEmpty(vo.animalId())){
             throw new ValidationException("ANIMAL ID SHOULD NOT BE EMPTY");
         }
-        ReservationVO saved = reservationService.save(vo);
+
+        Long clinicId = SecurityUtil.getEmployeePrincipal().getClinicId();
+
+        ReservationVO saved = reservationService.save(vo.clinicId(clinicId));
         return ResponseEntity.created(URI.create("/v1/reservation/"+saved.id())).body(saved);
     }
 
@@ -73,18 +73,18 @@ public class ReservationClientController {
         return ResponseEntity.ok().body(find);
     }
 
-    // todo clinicId 에 security 적용
     @GetMapping("all")
-    public ResponseEntity<Page<ReservationAnimalGuardianDTO>> findAll(@RequestParam String clinicId, PageVO pageVO){
-        if(StringUtil.isEmpty(clinicId)){
-            throw new ValidationException("CLINIC ID SHOULD NOT BE EMPTY");
-        }
+    public ResponseEntity<Page<ReservationAnimalGuardianDTO>> findAll(PageVO pageVO){
+
         if(pageVO.getSize() == 0){
             throw new ValidationException("PAGINATION INFO SHOULD NOT BE EMPTY");
         }
+
+        Long clinicId = SecurityUtil.getEmployeePrincipal().getClinicId();
         Pageable pageable = PageRequest.of(pageVO.getPage(), pageVO.getSize(), by(desc("reservationDateTime")));
+
         Page<ReservationAnimalGuardianDTO> all = reservationService.findAllWithAnimalAndGuardian(
-                Long.parseLong(clinicId),
+                clinicId,
                 pageable
         );
         return ResponseEntity.ok().body(all);
@@ -92,38 +92,37 @@ public class ReservationClientController {
 
     // todo clinicId 에 security 적용
     @GetMapping("search")
-    public ResponseEntity<Page<ReservationAnimalGuardianDTO>> searchAll(@RequestParam String clinicId, PageVO pageVO, ReservationSearchCondition condition){
-        if(StringUtil.isEmpty(clinicId)){
-            throw new ValidationException("CLINIC ID SHOULD NOT BE EMPTY");
-        }
+    public ResponseEntity<Page<ReservationAnimalGuardianDTO>> searchAll(PageVO pageVO, ReservationSearchCondition condition){
+
         if(pageVO.getSize() == 0){
             throw new ValidationException("PAGINATION INFO SHOULD NOT BE EMPTY");
         }
+
+        Long clinicId = SecurityUtil.getEmployeePrincipal().getClinicId();
         Pageable pageable = PageRequest.of(pageVO.getPage(), pageVO.getSize(), by(desc("reservationDateTime")));
+
         Page<ReservationAnimalGuardianDTO> find = reservationService.searchAllWithAnimalAndGuardian(
-                Long.parseLong(clinicId),
+                clinicId,
                 condition,
                 pageable
         );
         return ResponseEntity.ok().body(find);
     }
 
-    // todo clinicId 에 security 적용
     @GetMapping("available")
-    public ResponseEntity<List<ReservationSlotDTO>> findAllAvailableSlots(@RequestParam String clinicId, @RequestParam String reservationDateTime){
-       if(StringUtil.isEmpty(clinicId)){
-           throw new ValidationException("CLINIC ID SHOULD NOT BE EMPTY");
-       }
+    public ResponseEntity<List<ReservationSlotDTO>> findAllAvailableSlots(@RequestParam String reservationDateTime){
+
         if(StringUtil.isEmpty(reservationDateTime)){
             throw new ValidationException("RESERVATION DATE SHOULD NOT BE EMPTY");
         }
 
+        Long clinicId = SecurityUtil.getEmployeePrincipal().getClinicId();
         Instant parsedReservationDateTime = LocalDateTime
                 .parse(reservationDateTime, DateTimeFormatter.ISO_DATE_TIME)
                 .toInstant(ZoneOffset.UTC);
 
         ReservationVO vo = new ReservationVO()
-                .clinicId(Long.parseLong(clinicId))
+                .clinicId(clinicId)
                 .reservationDateTime(parsedReservationDateTime);
 
         List<ReservationSlotDTO> slots = reservationService.findAllReservationSlots(vo);

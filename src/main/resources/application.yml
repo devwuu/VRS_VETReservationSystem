@@ -1,37 +1,7 @@
-server:
-  port: 8090
+
 spring:
-  config:
-    activate:
-      on-profile: staging
-  datasource:
-    url: jdbc:log4jdbc:postgresql://localhost:5432/test
-    username: test
-    password: test
-    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-  jpa:
-    hibernate:
-      ddl-auto: none
-    open-in-view: false
-    show-sql: off
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+  profiles:
+    default: local
   jackson:
     serialization:
       indent-output: true
-logging:
-  level:
-    jdbc:
-      audit: off
-      resultset: off
-      resultsettable: debug
-      connection: off
-      sqlonly: off
-      sqltimming: debug
-app:
-  security:
-    jwt:
-      secret: sample
-      limit: 10
-      issuer: localhost:8090

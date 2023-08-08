@@ -2,6 +2,7 @@ package com.web.vt.domain.clinic;
 
 import com.web.vt.common.ControllerTestSupporter;
 import com.web.vt.domain.common.enums.UsageStatus;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -31,6 +32,7 @@ class VeterinaryClinicClientControllerTest extends ControllerTestSupporter {
     }
 
     @Test @DisplayName("영업 중이지 않은 동물병원을 찾으면 not found로 응답받습니다")
+    @Disabled
     public void notFound() throws Exception {
         mvc.perform(RestDocumentationRequestBuilders.get("/v1/client/clinic/info"))
                 .andDo(

@@ -5,6 +5,7 @@ import com.web.vt.domain.common.dto.AnimalGuardianDTO;
 import com.web.vt.domain.common.dto.AnimalSearchCondition;
 import com.web.vt.exceptions.ValidationException;
 import com.web.vt.utils.ObjectUtil;
+import com.web.vt.utils.SecurityUtil;
 import com.web.vt.utils.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,7 +26,6 @@ public class AnimalClientController {
 
     private final AnimalService animalService;
 
-    // todo clinicId 에 security 적용
     @PostMapping("save")
     public ResponseEntity<AnimalVO> save(@RequestBody AnimalVO vo){
         if(ObjectUtil.isNotEmpty(vo.id())){
@@ -34,10 +34,8 @@ public class AnimalClientController {
         if(ObjectUtil.isEmpty(vo.status())){
             throw new ValidationException("STATUS SHOULD NOT BE EMPTY");
         }
-        if(ObjectUtil.isEmpty(vo.clinicId())){
-            throw new ValidationException("CLINIC ID SHOULD NOT BE EMPTY");
-        }
-        AnimalVO saved = animalService.save(vo);
+        Long clinicId = SecurityUtil.getEmployeePrincipal().getClinicId();
+        AnimalVO saved = animalService.save(vo.clinicId(clinicId));
         return ResponseEntity.created(URI.create("/v1/animal/"+saved.id())).body(saved);
     }
 
@@ -63,17 +61,14 @@ public class AnimalClientController {
         return ResponseEntity.ok().body(delete);
     }
 
-    // todo clinicId 에 security 적용
     @GetMapping("all")
-    public ResponseEntity<Page<AnimalGuardianDTO>> findAll(@RequestParam String clinicId, PageVO vo){
+    public ResponseEntity<Page<AnimalGuardianDTO>> findAll(PageVO vo){
         if(vo.getSize() == 0){
             throw new ValidationException("PAGINATION INFO SHOULD NOT BE EMPTY");
         }
-        if(StringUtil.isEmpty(clinicId)){
-            throw new ValidationException("CLINIC ID SHOULD NOT BE EMPTY");
-        }
+        Long clinicId = SecurityUtil.getEmployeePrincipal().getClinicId();
         Pageable pageable = PageRequest.of(vo.getPage(), vo.getSize(), by(desc("createdAt")));
-        Page<AnimalGuardianDTO> result = animalService.findAllWithGuardian(Long.parseLong(clinicId), pageable);
+        Page<AnimalGuardianDTO> result = animalService.findAllWithGuardian(clinicId, pageable);
         return ResponseEntity.ok().body(result);
     }
 
@@ -88,15 +83,15 @@ public class AnimalClientController {
         return ResponseEntity.ok().body(find);
     }
 
-    // todo clinicId 에 security 적용
     @GetMapping("search")
-    public ResponseEntity<Page<AnimalGuardianDTO>> searchAll(@RequestParam String clinicId, AnimalSearchCondition condition, PageVO vo) {
+    public ResponseEntity<Page<AnimalGuardianDTO>> searchAll(AnimalSearchCondition condition, PageVO vo) {
         if(vo.getSize() == 0){
             throw new ValidationException("PAGINATION INFO SHOULD NOT BE EMPTY");
         }
-       Pageable pageable = PageRequest.of(vo.getPage(), vo.getSize(), by(desc("createdAt")));
+        Long clinicId = SecurityUtil.getEmployeePrincipal().getClinicId();
+        Pageable pageable = PageRequest.of(vo.getPage(), vo.getSize(), by(desc("createdAt")));
         Page<AnimalGuardianDTO> search = animalService.searchAllWithGuardian(
-                Long.parseLong(clinicId),
+                clinicId,
                 condition,
                 pageable
         );
