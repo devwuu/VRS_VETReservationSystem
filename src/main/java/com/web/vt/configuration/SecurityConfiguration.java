@@ -29,10 +29,16 @@ public class SecurityConfiguration {
 
     private final EmployeeService employeeService;
     private final AdminService adminService;
+    private final JwtProperties jwtProperties;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public JwtProviders jwtProviders(){
+        return new JwtProviders(jwtProperties);
     }
 
     @Bean
@@ -63,7 +69,7 @@ public class SecurityConfiguration {
         authProvider.setUserDetailsService(employeeDetailService());
         authProvider.setPasswordEncoder(passwordEncoder());
         ProviderManager providerManager = new ProviderManager(authProvider);
-        ClientAuthenticationFilter clientAuthenticationFilter = new ClientAuthenticationFilter(providerManager);
+        ClientAuthenticationFilter clientAuthenticationFilter = new ClientAuthenticationFilter(providerManager, jwtProviders());
         clientAuthenticationFilter.setAuthenticationManager(providerManager);
         clientAuthenticationFilter.setFilterProcessesUrl("/client/token");
         return clientAuthenticationFilter;
@@ -71,7 +77,7 @@ public class SecurityConfiguration {
 
     @Bean
     public ClientAuthorizationFilter clientAuthorizationFilter(){
-        return new ClientAuthorizationFilter(employeeDetailService());
+        return new ClientAuthorizationFilter(employeeDetailService(), jwtProviders());
     }
 
 
@@ -81,7 +87,7 @@ public class SecurityConfiguration {
         authProvider.setUserDetailsService(adminDetailService());
         authProvider.setPasswordEncoder(passwordEncoder());
         ProviderManager providerManager = new ProviderManager(authProvider);
-        AdminAuthenticationFilter adminAuthenticationFilter = new AdminAuthenticationFilter(providerManager);
+        AdminAuthenticationFilter adminAuthenticationFilter = new AdminAuthenticationFilter(providerManager, jwtProviders());
         adminAuthenticationFilter.setAuthenticationManager(providerManager);
         adminAuthenticationFilter.setFilterProcessesUrl("/admin/token");
         adminAuthenticationFilter.setPostOnly(true);
@@ -90,7 +96,7 @@ public class SecurityConfiguration {
 
     @Bean
     public AdminAuthorizationFilter adminAuthorizationFilter(){
-        return new AdminAuthorizationFilter(adminDetailService());
+        return new AdminAuthorizationFilter(adminDetailService(), jwtProviders());
     }
 
     @Bean

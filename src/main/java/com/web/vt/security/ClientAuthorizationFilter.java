@@ -1,6 +1,5 @@
 package com.web.vt.security;
 
-import com.auth0.jwt.JWT;
 import com.web.vt.utils.StringUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -15,24 +14,25 @@ import java.io.IOException;
 public class ClientAuthorizationFilter extends OncePerRequestFilter {
 
     private final EmployeeDetailService employeeDetailService;
+    private final JwtProviders jwtProviders;
 
-    public ClientAuthorizationFilter(EmployeeDetailService employeeDetailService) {
+    public ClientAuthorizationFilter(EmployeeDetailService employeeDetailService,
+                                     JwtProviders jwtProviders) {
         this.employeeDetailService = employeeDetailService;
+        this.jwtProviders = jwtProviders;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         String header = request.getHeader("Authorization");
-        if(StringUtil.isEmpty(header) || !StringUtil.startsWith(header, JwtProperties.PRE_FIX)){
+        if(StringUtil.isEmpty(header) || !jwtProviders.isStartWithPrefix(header)){
             filterChain.doFilter(request, response);
             return;
         }
-        String id = JWT.require(JwtProperties.SIGN)
-                .build()
-                .verify(StringUtil.remove(header, JwtProperties.PRE_FIX))
-                .getClaim("id")
-                .asString();
+
+        String id = jwtProviders.authorize(header);
+
         EmployeePrincipal principal = (EmployeePrincipal) employeeDetailService.loadUserByUsername(id);
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(principal.getUsername(), null, principal.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(token);

@@ -1,6 +1,5 @@
 package com.web.vt.security;
 
-import com.auth0.jwt.JWT;
 import com.web.vt.utils.StringUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -15,9 +14,12 @@ import java.io.IOException;
 public class AdminAuthorizationFilter extends OncePerRequestFilter {
 
     private final AdminDetailService adminDetailService;
+    private final JwtProviders jwtProviders;
 
-    public AdminAuthorizationFilter(AdminDetailService adminDetailService) {
+    public AdminAuthorizationFilter(AdminDetailService adminDetailService,
+                                    JwtProviders jwtProviders) {
         this.adminDetailService = adminDetailService;
+        this.jwtProviders = jwtProviders;
     }
 
     @Override
@@ -25,16 +27,12 @@ public class AdminAuthorizationFilter extends OncePerRequestFilter {
 
         String authorization = request.getHeader("Authorization");
 
-        if(StringUtil.isEmpty(authorization) || !StringUtil.startsWith(authorization, JwtProperties.PRE_FIX)){
+        if(StringUtil.isEmpty(authorization) || !jwtProviders.isStartWithPrefix(authorization)){
             filterChain.doFilter(request, response);
             return;
         }
 
-        String id = JWT.require(JwtProperties.SIGN)
-                .build()
-                .verify(StringUtil.remove(authorization, JwtProperties.PRE_FIX))
-                .getClaim("id")
-                .asString();
+        String id = jwtProviders.authorize(authorization);
 
         AdminPrincipal principal = (AdminPrincipal) adminDetailService.loadUserByUsername(id);
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -16,6 +17,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@ActiveProfiles("local")
 public class SecurityTest extends RestDocsTestSupport {
 
     @BeforeEach
@@ -55,7 +57,7 @@ public class SecurityTest extends RestDocsTestSupport {
     @Test @DisplayName("시스템 관리자 권한이 필요한 api를 요청합니다")
     public void adminApi() throws Exception {
         mvc.perform(get("/v1/admin/test")
-                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImlkIjoidGVzdCIsImV4cCI6MTY5MTA0Mzk4MH0.5N5wP1xqnxOVUQB-MNYPpXvYr12CQVTkIocDP9ED5mU"))
+                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoidGVzdCIsImV4cCI6MTY5MTU1MDI1N30.wmGiiuAIE6t6BPWhUE4aopYtW1mGTlFo9j6SFNxxveM"))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
@@ -63,7 +65,7 @@ public class SecurityTest extends RestDocsTestSupport {
     @Test @DisplayName("동물병원 관리자 권한이 필요한 api를 요청합니다")
     public void employeeAdminApi() throws Exception {
         mvc.perform(get("/v1/client/test")
-                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbGllbnQiLCJpZCI6InRlc3QiLCJleHAiOjE2OTEwNDQ5MDV9.CN01PwiENuiSZ2W2HsdSxgJfYL4i49kdGsaf8fg7N5o"))
+                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoidGVzdCIsImV4cCI6MTY5MTU1MDIyMn0.x4w_VnSFzdbkajvXwZTNEuCKz5WWNYVNLvp3Qf74mCg"))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }

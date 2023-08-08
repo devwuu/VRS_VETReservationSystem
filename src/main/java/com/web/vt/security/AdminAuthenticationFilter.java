@@ -1,6 +1,5 @@
 package com.web.vt.security;
 
-import com.auth0.jwt.JWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.web.vt.domain.user.AdminVO;
 import jakarta.servlet.FilterChain;
@@ -20,9 +19,12 @@ import java.io.IOException;
 public class AdminAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
+    private final JwtProviders jwtProviders;
 
-    public AdminAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public AdminAuthenticationFilter(AuthenticationManager authenticationManager,
+                                     JwtProviders jwtProviders) {
         this.authenticationManager = authenticationManager;
+        this.jwtProviders = jwtProviders;
     }
 
     @Override
@@ -43,13 +45,9 @@ public class AdminAuthenticationFilter extends UsernamePasswordAuthenticationFil
 
         AdminPrincipal principal = (AdminPrincipal) authResult.getPrincipal();
 
-        String token = JWT.create()
-                .withSubject(JwtProperties.ADMIN_TOKEN)
-                .withClaim("id", principal.getUsername())
-                .withExpiresAt(JwtProperties.EXPIRED_TIME)
-                .sign(JwtProperties.SIGN);
+        String token = jwtProviders.authenticate(principal);
 
-        response.addHeader("Authorization", JwtProperties.PRE_FIX + token);
+        response.addHeader("Authorization", token);
 
     }
 }
