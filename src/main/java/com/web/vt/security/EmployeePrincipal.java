@@ -18,6 +18,10 @@ public class EmployeePrincipal implements UserDetails {
         this.employee = employee;
     }
 
+    public Long getClinicId(){
+        return employee.clinicId();
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of((GrantedAuthority) employee::employeeRole);
