@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.test.context.support.WithUserDetails;
 
 import static com.web.vt.common.RestDocsConfiguration.field;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -17,6 +18,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
+@WithUserDetails(userDetailsServiceBeanName = "employeeDetailService", value = "test")
 class VeterinaryClinicClientControllerTest extends ControllerTestSupporter {
 
     @Test @DisplayName("영업 중인 특정 동물병원을 찾습니다.")
@@ -54,7 +57,7 @@ class VeterinaryClinicClientControllerTest extends ControllerTestSupporter {
 
         VeterinaryClinicVO vo = new VeterinaryClinicVO()
                 .id(352L)
-                .name("Updated name")
+                .name("Updated new name")
                 .remark("Updated remark")
                 .status(UsageStatus.USE);
 

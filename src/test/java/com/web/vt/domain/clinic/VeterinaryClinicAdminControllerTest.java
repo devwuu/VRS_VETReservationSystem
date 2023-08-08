@@ -56,7 +56,7 @@ class VeterinaryClinicAdminControllerTest extends ControllerTestSupporter {
     @Test @DisplayName("동물병원을 삭제(영업중지)합니다.")
     public void delete() throws Exception {
 
-        VeterinaryClinicVO vo = new VeterinaryClinicVO().id(352L);
+        VeterinaryClinicVO vo = new VeterinaryClinicVO().id(1402L);
 
         mvc.perform(post("/v1/admin/clinic/delete")
                         .contentType(MediaType.APPLICATION_JSON)

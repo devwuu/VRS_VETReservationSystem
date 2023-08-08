@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.test.context.support.WithUserDetails;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -21,6 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@WithUserDetails(userDetailsServiceBeanName = "employeeDetailService", value = "test")
 class ReservationManagementClientControllerTest extends ControllerTestSupporter {
 
     private final ZonedDateTime START = LocalDateTime.now().atZone(ZoneOffset.UTC);

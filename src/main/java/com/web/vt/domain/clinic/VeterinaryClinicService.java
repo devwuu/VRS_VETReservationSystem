@@ -30,7 +30,8 @@ public class VeterinaryClinicService {
         }
 
         // update method 고려
-        VeterinaryClinic saved = find.get().name(vo.name())
+        VeterinaryClinic saved = find.get()
+                .name(vo.name())
                 .contact(vo.contact())
                 .remark(vo.remark())
                 .status(vo.status());
