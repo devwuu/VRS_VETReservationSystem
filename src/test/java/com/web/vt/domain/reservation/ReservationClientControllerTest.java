@@ -1,6 +1,6 @@
 package com.web.vt.domain.reservation;
 
-import com.web.vt.common.RestDocsTestSupport;
+import com.web.vt.common.ControllerTestSupporter;
 import com.web.vt.domain.common.enums.ReservationStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class ReservationClientControllerTest extends RestDocsTestSupport {
+class ReservationClientControllerTest extends ControllerTestSupporter {
 
 
     @Test @DisplayName("새로운 예약을 등록합니다")

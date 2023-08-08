@@ -1,6 +1,6 @@
 package com.web.vt.domain.clinic;
 
-import com.web.vt.common.RestDocsTestSupport;
+import com.web.vt.common.ControllerTestSupporter;
 import com.web.vt.domain.common.enums.UsageStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class VeterinaryClinicClientControllerTest extends RestDocsTestSupport {
+class VeterinaryClinicClientControllerTest extends ControllerTestSupporter {
 
     @Test @DisplayName("영업 중인 특정 동물병원을 찾습니다.")
     public void find() throws Exception {

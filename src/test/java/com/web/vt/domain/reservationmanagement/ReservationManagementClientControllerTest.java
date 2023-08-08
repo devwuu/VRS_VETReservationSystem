@@ -1,6 +1,6 @@
 package com.web.vt.domain.reservationmanagement;
 
-import com.web.vt.common.RestDocsTestSupport;
+import com.web.vt.common.ControllerTestSupporter;
 import com.web.vt.domain.common.enums.UsageStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class ReservationManagementClientControllerTest extends RestDocsTestSupport {
+class ReservationManagementClientControllerTest extends ControllerTestSupporter {
 
     private final ZonedDateTime START = LocalDateTime.now().atZone(ZoneOffset.UTC);
     private final ZonedDateTime END = START.plusDays(1);

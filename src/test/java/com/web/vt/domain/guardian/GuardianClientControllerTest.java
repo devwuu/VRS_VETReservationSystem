@@ -1,6 +1,6 @@
 package com.web.vt.domain.guardian;
 
-import com.web.vt.common.RestDocsTestSupport;
+import com.web.vt.common.ControllerTestSupporter;
 import com.web.vt.domain.common.enums.UsageStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class GuardianClientControllerTest extends RestDocsTestSupport {
+class GuardianClientControllerTest extends ControllerTestSupporter {
 
     @Test
     @DisplayName("신규 보호자를 등록합니다")

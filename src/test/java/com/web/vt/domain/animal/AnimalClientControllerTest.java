@@ -1,6 +1,6 @@
 package com.web.vt.domain.animal;
 
-import com.web.vt.common.RestDocsTestSupport;
+import com.web.vt.common.ControllerTestSupporter;
 import com.web.vt.domain.common.enums.Gender;
 import com.web.vt.domain.common.enums.UsageStatus;
 import org.junit.jupiter.api.DisplayName;
@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class AnimalClientControllerTest extends RestDocsTestSupport {
+class AnimalClientControllerTest extends ControllerTestSupporter {
 
     @Test
     @DisplayName("새로운 반려동물을 등록합니다")

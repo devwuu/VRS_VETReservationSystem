@@ -1,12 +1,13 @@
 package com.web.vt.domain.clinic;
 
-import com.web.vt.common.RestDocsTestSupport;
+import com.web.vt.common.ControllerTestSupporter;
 import com.web.vt.domain.common.enums.UsageStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.test.context.support.WithUserDetails;
 
 import static com.web.vt.common.RestDocsConfiguration.field;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -18,7 +19,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-class VeterinaryClinicAdminControllerTest extends RestDocsTestSupport {
+@WithUserDetails(userDetailsServiceBeanName = "adminDetailService", value = "test")
+class VeterinaryClinicAdminControllerTest extends ControllerTestSupporter {
 
     @Test @DisplayName("신규 동물병원을 등록합니다")
     public void save() throws Exception {
