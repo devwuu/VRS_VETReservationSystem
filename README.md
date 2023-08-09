@@ -1,7 +1,7 @@
-## vet_2023
+## VRS
 
-> develop vet repository (2021)  
-> 동물병원 예약 기능 위주 구현  
+> VET Reservation System
+> 동물병원 진료 예약 시스템 
 > API overview : http://localhost:8080/docs/overview.html
 
 ---
