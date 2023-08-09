@@ -13,7 +13,7 @@
 ### Specification
 
 * **Backend** : Spring boot  + Spring security + JPA + PostgreSQL  
-* **Frontend** : -
+* **Frontend(document)** : Spring Rest Docs
 
 ---
 ### domains
