@@ -98,7 +98,7 @@ public class ReservationService {
         Reservation reservation = new Reservation(vo).addClinic(findClinic).addAnimal(findAnimal);
         Reservation saved = reservationRepository.save(reservation);
 
-        return new ReservationVO(saved);
+        return new ReservationVO(saved).animalId(findAnimal.id()).clinicId(findClinic.id());
 
     }
 
