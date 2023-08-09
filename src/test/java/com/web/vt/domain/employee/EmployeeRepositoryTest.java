@@ -22,7 +22,7 @@ class EmployeeRepositoryTest {
     private PasswordEncoder passwordEncoder;
 
     @Test @DisplayName("테스트용 client user를 생성합니다.")
-    public void save() {
+    public void saveAdminUser() {
 
         EmployeeVO vo = new EmployeeVO()
                 .id("test")
@@ -32,6 +32,24 @@ class EmployeeRepositoryTest {
                 .position(Position.VET);
 
         Employee save = repository.save(new Employee(vo).addClinic(1L));
+
+        EmployeeVO result = new EmployeeVO(save);
+
+        assertThat(result.id()).isEqualTo(vo.id());
+
+    }
+
+    @Test @DisplayName("테스트용 client user를 생성합니다.")
+    public void saveUser() {
+
+        EmployeeVO vo = new EmployeeVO()
+                .id("user")
+                .password(passwordEncoder.encode("1234"))
+                .role("ROLE_USER")
+                .status(UsageStatus.USE)
+                .position(Position.VET);
+
+        Employee save = repository.save(new Employee(vo).addClinic(202L));
 
         EmployeeVO result = new EmployeeVO(save);
 

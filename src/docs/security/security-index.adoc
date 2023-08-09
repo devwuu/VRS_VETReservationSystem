@@ -1,0 +1,38 @@
+= Common API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+
+NOTE: 로그인 및 권한과 관련된 api 입니다.
+
+== 1. Admin API
+
+=== 1.1 login
+시스템 관리자로 로그안합니다
+
+operation::security-test/admin-login[snippets='request-fields,http-request,http-response']
+
+=== 1.2 request
+시스템 관리자 권한이 필요한 API를 요청합니다
+
+operation::security-test/admin-api[snippets='request-headers,http-request,http-response']
+
+== 2. Client API
+
+=== 2.1 login
+병원 관리자 또는 병원 일반 사용자로 로그인합니다
+
+operation::security-test/employee-admin-login[snippets='request-fields,http-request,http-response']
+
+'''
+
+=== 2.2 request
+병원 관리자 권한이 필요한 API를 요청합니다
+
+==== 관리자 권한으로 요청시
+operation::security-test/employee-admin-api[snippets='request-headers,http-request,http-response']
+
+==== 일반 사용자 권한으로 요청시
+operation::security-test/employee-user-api[snippets='request-headers,http-request,http-response']
