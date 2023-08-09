@@ -1,7 +1,7 @@
 ## VRS
 
-> VET Reservation System
-> 동물병원 진료 예약 시스템 
+> VET Reservation System  
+> 동물병원 진료 예약 시스템  
 > API overview : http://localhost:8080/docs/overview.html
 
 ---
