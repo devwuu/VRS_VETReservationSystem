@@ -31,6 +31,10 @@ public class ReservationVO extends BaseVO implements Serializable {
         reservationDateTime = entity.reservationDateTime();
         status = entity.status();
         remark = entity.remark();
+        createBy(entity.createdBy());
+        createdAt(entity.createdAt());
+        updatedBy(entity.updatedBy());
+        updatedAt(entity.updatedAt());
     }
 
 

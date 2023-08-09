@@ -33,5 +33,9 @@ public class EmployeeVO extends BaseVO implements Serializable {
         role = employee.role();
         status = employee.status();
         position = employee.position();
+        createdAt(employee.createdAt());
+        createBy(employee.createdBy());
+        updatedAt(employee.updatedAt());
+        updatedBy(employee.updatedBy());
     }
 }
