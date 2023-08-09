@@ -5,6 +5,8 @@
 :toc: left
 :toclevels: 4
 
+IMPORTANT: 시스템 관리자 권한 또는 동물병원 관리자 권한이 필요합니다.
+
 == Clinic API
 
 * link:clinic/clinic-index.html[동물병원 API, window=_blank]

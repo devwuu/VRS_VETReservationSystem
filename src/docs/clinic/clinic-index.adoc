@@ -34,12 +34,12 @@ operation::veterinary-clinic-admin-controller-test/save[snippets='request-fields
 operation::veterinary-clinic-admin-controller-test/delete[snippets='request-fields,http-request,http-response']
 
 == 2. Client API
+IMPORTANT: 로그인한 사용자가 근무 중인 동물병원을 기준으로 하여 데이터를 조회합니다.
 
 === 2.1 find
 영업 중인 특정 동물병원을 찾습니다
 
-operation::veterinary-clinic-client-controller-test/find[snippets='path-parameters,http-request,http-response']
-operation::veterinary-clinic-client-controller-test/not-found[snippets='http-response']
+operation::veterinary-clinic-client-controller-test/find[snippets='http-request,http-response']
 
 '''
 

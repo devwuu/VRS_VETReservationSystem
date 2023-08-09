@@ -462,7 +462,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#_2_1_find_by_clinic_id">2.1 find by clinic id</a>
 <ul class="sectlevel3">
-<li><a href="#_2_1_find_by_clinic_id_path_parameters">Path parameters</a></li>
 <li><a href="#_2_1_find_by_clinic_id_http_request">HTTP request</a></li>
 <li><a href="#_2_1_find_by_clinic_id_http_response">HTTP response</a></li>
 </ul>
@@ -572,8 +571,8 @@ Host: localhost:8080
   "id" : null,
   "clinicId" : 352,
   "status" : "NOT_USE",
-  "startDateTime" : "2023-08-08T08:23:29.550981Z",
-  "endDateTime" : "2023-08-09T08:23:29.550981Z"
+  "startDateTime" : "2023-08-09T04:09:50.746843Z",
+  "endDateTime" : "2023-08-10T04:09:50.746843Z"
 }</code></pre>
 </div>
 </div>
@@ -597,15 +596,15 @@ X-Frame-Options: DENY
 Content-Length: 302
 
 {
-  "createdAt" : "2023-08-08T08:23:29.562631Z",
-  "updatedAt" : "2023-08-08T08:23:29.562631Z",
+  "createdAt" : "2023-08-09T04:09:50.758125Z",
+  "updatedAt" : "2023-08-09T04:09:50.758125Z",
   "createBy" : "test",
   "updatedBy" : "test",
-  "id" : 1752,
+  "id" : 1952,
   "clinicId" : 352,
   "status" : "NOT_USE",
-  "startDateTime" : "2023-08-08T08:23:29.550981Z",
-  "endDateTime" : "2023-08-09T08:23:29.550981Z"
+  "startDateTime" : "2023-08-09T04:09:50.746843Z",
+  "endDateTime" : "2023-08-10T04:09:50.746843Z"
 }</code></pre>
 </div>
 </div>
@@ -616,16 +615,22 @@ Content-Length: 302
 <div class="sect1">
 <h2 id="_2_client_api">2. Client API</h2>
 <div class="sectionbody">
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+로그인한 사용자가 근무 중인 동물병원을 기준으로 하여 데이터를 조회합니다.
+</td>
+</tr>
+</table>
+</div>
 <div class="sect2">
 <h3 id="_2_1_find_by_clinic_id">2.1 find by clinic id</h3>
 <div class="paragraph">
 <p>동물병원 id로 예약관리 정보를 조회합니다</p>
-</div>
-<div class="sect3">
-<h4 id="_2_1_find_by_clinic_id_path_parameters">Path parameters</h4>
-<div class="paragraph">
-<p>Snippet path-parameters not found for operation::reservation-management-client-controller-test/find-by-clinic-id</p>
-</div>
 </div>
 <div class="sect3">
 <h4 id="_2_1_find_by_clinic_id_http_request">HTTP request</h4>
@@ -742,8 +747,8 @@ Host: localhost:8080
   "id" : 2,
   "clinicId" : null,
   "status" : "NOT_USE",
-  "startDateTime" : "2023-08-08T08:23:29.587122Z",
-  "endDateTime" : "2023-08-09T08:23:29.587122Z"
+  "startDateTime" : "2023-08-09T04:09:50.781985Z",
+  "endDateTime" : "2023-08-10T04:09:50.781985Z"
 }</code></pre>
 </div>
 </div>
@@ -773,8 +778,8 @@ Content-Length: 296
   "id" : 2,
   "clinicId" : null,
   "status" : "NOT_USE",
-  "startDateTime" : "2023-08-08T08:23:29.587122Z",
-  "endDateTime" : "2023-08-09T08:23:29.587122Z"
+  "startDateTime" : "2023-08-09T04:09:50.781985Z",
+  "endDateTime" : "2023-08-10T04:09:50.781985Z"
 }</code></pre>
 </div>
 </div>
@@ -786,7 +791,7 @@ Content-Length: 296
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-07-17 15:19:47 +0900
+Last updated 2023-08-09 13:08:42 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

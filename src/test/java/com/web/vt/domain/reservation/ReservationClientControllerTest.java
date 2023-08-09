@@ -168,7 +168,6 @@ class ReservationClientControllerTest extends ControllerTestSupporter {
         Instant from = criteria.atStartOfDay().toInstant(ZoneOffset.of("+09:00"));
         Instant to = criteria.with(TemporalAdjusters.lastDayOfMonth()).atTime(LocalTime.MAX).toInstant(ZoneOffset.of("+09:00"));
 
-
         mvc.perform(get("/v1/client/reservation/search")
                         .param("page", "0")
                         .param("size", "5")

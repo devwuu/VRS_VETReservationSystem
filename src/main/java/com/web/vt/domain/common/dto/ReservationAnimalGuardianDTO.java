@@ -23,6 +23,7 @@ public class ReservationAnimalGuardianDTO implements Serializable {
     private Long reservationId;
     private Instant reservationDateTime;
     private ReservationStatus reservationStatus;
+    private Long reservationClinicId;
 
     // animal
     private Long animalId;
@@ -39,6 +40,7 @@ public class ReservationAnimalGuardianDTO implements Serializable {
     public ReservationAnimalGuardianDTO(Long reservationId,
                                         Instant reservationDateTime,
                                         ReservationStatus reservationStatus,
+                                        Long reservationClinicId,
                                         Long animalId,
                                         String animalName,
                                         String animalSpecies,
@@ -49,6 +51,7 @@ public class ReservationAnimalGuardianDTO implements Serializable {
         this.reservationId = reservationId;
         this.reservationDateTime = reservationDateTime;
         this.reservationStatus = reservationStatus;
+        this.reservationClinicId = reservationClinicId;
         this.animalId = animalId;
         this.animalName = animalName;
         this.animalSpecies = animalSpecies;

@@ -495,6 +495,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect1">
 <h2 id="_1_client_api">1. Client API</h2>
 <div class="sectionbody">
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+로그인한 사용자가 근무 중인 동물병원을 기준으로 하여 데이터를 조회합니다.
+</td>
+</tr>
+</table>
+</div>
 <div class="sect2">
 <h3 id="_1_1_search_by_animal_name">1.1 search by animal name</h3>
 <div class="paragraph">
@@ -568,13 +580,14 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 2074
+Content-Length: 2239
 
 {
   "content" : [ {
     "reservationId" : 952,
     "reservationDateTime" : "2023-07-12T10:00:00Z",
     "reservationStatus" : "APPROVED",
+    "reservationClinicId" : 202,
     "animalId" : 252,
     "animalName" : "달이",
     "animalSpecies" : "강아지",
@@ -586,6 +599,7 @@ Content-Length: 2074
     "reservationId" : 1052,
     "reservationDateTime" : "2023-07-12T10:00:00Z",
     "reservationStatus" : "APPROVED",
+    "reservationClinicId" : 202,
     "animalId" : 252,
     "animalName" : "달이",
     "animalSpecies" : "강아지",
@@ -597,6 +611,7 @@ Content-Length: 2074
     "reservationId" : 1402,
     "reservationDateTime" : "2023-07-12T10:00:00Z",
     "reservationStatus" : "APPROVED",
+    "reservationClinicId" : 202,
     "animalId" : 252,
     "animalName" : "달이",
     "animalSpecies" : "강아지",
@@ -608,6 +623,7 @@ Content-Length: 2074
     "reservationId" : 1502,
     "reservationDateTime" : "2023-07-12T10:00:00Z",
     "reservationStatus" : "APPROVED",
+    "reservationClinicId" : 202,
     "animalId" : 252,
     "animalName" : "달이",
     "animalSpecies" : "강아지",
@@ -619,6 +635,7 @@ Content-Length: 2074
     "reservationId" : 1152,
     "reservationDateTime" : "2023-07-12T10:00:00Z",
     "reservationStatus" : "APPROVED",
+    "reservationClinicId" : 202,
     "animalId" : 252,
     "animalName" : "달이",
     "animalSpecies" : "강아지",
@@ -630,12 +647,12 @@ Content-Length: 2074
   "pageable" : {
     "sort" : {
       "empty" : false,
-      "sorted" : true,
-      "unsorted" : false
+      "unsorted" : false,
+      "sorted" : true
     },
     "offset" : 0,
-    "pageSize" : 5,
     "pageNumber" : 0,
+    "pageSize" : 5,
     "paged" : true,
     "unpaged" : false
   },
@@ -647,8 +664,8 @@ Content-Length: 2074
   "number" : 0,
   "sort" : {
     "empty" : false,
-    "sorted" : true,
-    "unsorted" : false
+    "unsorted" : false,
+    "sorted" : true
   },
   "numberOfElements" : 5,
   "empty" : false
@@ -731,13 +748,14 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 1745
+Content-Length: 1877
 
 {
   "content" : [ {
     "reservationId" : 802,
     "reservationDateTime" : "2023-07-12T10:00:00Z",
     "reservationStatus" : "APPROVED",
+    "reservationClinicId" : 202,
     "animalId" : 902,
     "animalName" : "달이",
     "animalSpecies" : "강아지",
@@ -749,6 +767,7 @@ Content-Length: 1745
     "reservationId" : 752,
     "reservationDateTime" : "2023-07-12T10:00:00Z",
     "reservationStatus" : "APPROVED",
+    "reservationClinicId" : 202,
     "animalId" : 902,
     "animalName" : "달이",
     "animalSpecies" : "강아지",
@@ -760,6 +779,7 @@ Content-Length: 1745
     "reservationId" : 852,
     "reservationDateTime" : "2023-07-12T10:00:00Z",
     "reservationStatus" : "APPROVED",
+    "reservationClinicId" : 202,
     "animalId" : 902,
     "animalName" : "달이",
     "animalSpecies" : "강아지",
@@ -771,6 +791,7 @@ Content-Length: 1745
     "reservationId" : 902,
     "reservationDateTime" : "2023-07-12T10:00:00Z",
     "reservationStatus" : "APPROVED",
+    "reservationClinicId" : 202,
     "animalId" : 902,
     "animalName" : "달이",
     "animalSpecies" : "강아지",
@@ -782,12 +803,12 @@ Content-Length: 1745
   "pageable" : {
     "sort" : {
       "empty" : false,
-      "sorted" : true,
-      "unsorted" : false
+      "unsorted" : false,
+      "sorted" : true
     },
     "offset" : 0,
-    "pageSize" : 5,
     "pageNumber" : 0,
+    "pageSize" : 5,
     "paged" : true,
     "unpaged" : false
   },
@@ -799,8 +820,8 @@ Content-Length: 1745
   "number" : 0,
   "sort" : {
     "empty" : false,
-    "sorted" : true,
-    "unsorted" : false
+    "unsorted" : false,
+    "sorted" : true
   },
   "numberOfElements" : 4,
   "empty" : false
@@ -890,13 +911,14 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 2040
+Content-Length: 2205
 
 {
   "content" : [ {
     "reservationId" : 302,
     "reservationDateTime" : "2023-07-12T10:00:00Z",
     "reservationStatus" : "APPROVED",
+    "reservationClinicId" : 202,
     "animalId" : 1,
     "animalName" : "샛별이",
     "animalSpecies" : null,
@@ -908,6 +930,7 @@ Content-Length: 2040
     "reservationId" : 352,
     "reservationDateTime" : "2023-07-12T10:00:00Z",
     "reservationStatus" : "APPROVED",
+    "reservationClinicId" : 202,
     "animalId" : 1,
     "animalName" : "샛별이",
     "animalSpecies" : null,
@@ -919,6 +942,7 @@ Content-Length: 2040
     "reservationId" : 402,
     "reservationDateTime" : "2023-07-12T10:00:00Z",
     "reservationStatus" : "APPROVED",
+    "reservationClinicId" : 202,
     "animalId" : 1,
     "animalName" : "샛별이",
     "animalSpecies" : null,
@@ -930,6 +954,7 @@ Content-Length: 2040
     "reservationId" : 452,
     "reservationDateTime" : "2023-07-12T10:00:00Z",
     "reservationStatus" : "APPROVED",
+    "reservationClinicId" : 202,
     "animalId" : 1,
     "animalName" : "샛별이",
     "animalSpecies" : null,
@@ -941,6 +966,7 @@ Content-Length: 2040
     "reservationId" : 252,
     "reservationDateTime" : "2023-07-12T10:00:00Z",
     "reservationStatus" : "APPROVED",
+    "reservationClinicId" : 202,
     "animalId" : 1,
     "animalName" : "샛별이",
     "animalSpecies" : null,
@@ -952,12 +978,12 @@ Content-Length: 2040
   "pageable" : {
     "sort" : {
       "empty" : false,
-      "sorted" : true,
-      "unsorted" : false
+      "unsorted" : false,
+      "sorted" : true
     },
     "offset" : 0,
-    "pageSize" : 5,
     "pageNumber" : 0,
+    "pageSize" : 5,
     "paged" : true,
     "unpaged" : false
   },
@@ -969,8 +995,8 @@ Content-Length: 2040
   "number" : 0,
   "sort" : {
     "empty" : false,
-    "sorted" : true,
-    "unsorted" : false
+    "unsorted" : false,
+    "sorted" : true
   },
   "numberOfElements" : 5,
   "empty" : false
@@ -986,7 +1012,7 @@ Content-Length: 2040
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-07-19 15:29:55 +0900
+Last updated 2023-08-09 13:08:28 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

@@ -15,12 +15,12 @@ NOTE: 예약 관리 정보와 관련된 api 입니다.
 operation::reservation-management-admin-controller-test/save[snippets='request-fields,http-request,http-response']
 
 == 2. Client API
+IMPORTANT: 로그인한 사용자가 근무 중인 동물병원을 기준으로 하여 데이터를 조회합니다.
 
 === 2.1 find by clinic id
 동물병원 id로 예약관리 정보를 조회합니다
 
-operation::reservation-management-client-controller-test/find-by-clinic-id[snippets='path-parameters,http-request,http-response']
-
+operation::reservation-management-client-controller-test/find-by-clinic-id[snippets='http-request,http-response']
 
 '''
 
