@@ -2,7 +2,15 @@ package com.web.vt.configuration;
 
 import com.web.vt.domain.employee.EmployeeService;
 import com.web.vt.domain.user.AdminService;
-import com.web.vt.security.*;
+import com.web.vt.security.JwtProperties;
+import com.web.vt.security.JwtService;
+import com.web.vt.security.admin.AdminAuthenticationFilter;
+import com.web.vt.security.admin.AdminAuthorizationFilter;
+import com.web.vt.security.admin.AdminDetailService;
+import com.web.vt.security.admin.AdminRefreshTokenRepository;
+import com.web.vt.security.client.ClientAuthenticationFilter;
+import com.web.vt.security.client.ClientAuthorizationFilter;
+import com.web.vt.security.client.EmployeeDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +38,7 @@ public class SecurityConfiguration {
     private final EmployeeService employeeService;
     private final AdminService adminService;
     private final JwtProperties jwtProperties;
+    private final AdminRefreshTokenRepository adminRefreshTokenRepository;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -37,8 +46,8 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public JwtProviders jwtProviders(){
-        return new JwtProviders(jwtProperties);
+    public JwtService jwtProviders(){
+        return new JwtService(jwtProperties, adminRefreshTokenRepository);
     }
 
     @Bean

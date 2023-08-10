@@ -14,12 +14,19 @@ import java.time.ZoneOffset;
 public class JwtProperties {
 
     private String secret;
-    private int limit;
+    private int accessTokenExpiredTime;
+    private int refreshTokenExpiredTime;
     private String issuer;
     private String prefix = "Bearer ";
+    private String refreshTokenSubject = "refresh";
+    private String accessTokenSubject = "refresh";
 
-    public Instant getExpiredTime(){
-        return LocalDateTime.now().plusMinutes(limit).toInstant(ZoneOffset.UTC);
+    public Instant getAccessTokenExpiredAt(){
+        return LocalDateTime.now().plusMinutes(accessTokenExpiredTime).toInstant(ZoneOffset.UTC);
+    }
+
+    public Instant getRefreshTokenExpiredAt(){
+        return LocalDateTime.now().plusMinutes(accessTokenExpiredTime).toInstant(ZoneOffset.UTC);
     }
 
     public Algorithm getSign(){

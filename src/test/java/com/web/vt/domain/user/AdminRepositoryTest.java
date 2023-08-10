@@ -20,8 +20,8 @@ class AdminRepositoryTest {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @Test @DisplayName("테스트용 admin user를 생성합니다")
-    public void save() {
+    @Test @DisplayName("테스트용 admin user1를 생성합니다")
+    public void saveUser1() {
         AdminVO vo = new AdminVO()
                 .id("test")
                 .password(passwordEncoder.encode("1234"))
@@ -30,5 +30,17 @@ class AdminRepositoryTest {
         AdminVO result = new AdminVO(saved);
         assertThat(result.id()).isEqualTo(vo.id());
     }
+
+    @Test @DisplayName("테스트용 admin user2를 생성합니다")
+    public void saveUser2() {
+        AdminVO vo = new AdminVO()
+                .id("demo")
+                .password(passwordEncoder.encode("1234"))
+                .status(UsageStatus.USE);
+        Admin saved = repository.save(new Admin(vo));
+        AdminVO result = new AdminVO(saved);
+        assertThat(result.id()).isEqualTo(vo.id());
+    }
+
 
 }

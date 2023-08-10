@@ -1,7 +1,8 @@
-package com.web.vt.security;
+package com.web.vt.security.admin;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.web.vt.domain.user.AdminVO;
+import com.web.vt.security.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,12 +20,12 @@ import java.io.IOException;
 public class AdminAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
-    private final JwtProviders jwtProviders;
+    private final JwtService jwtService;
 
     public AdminAuthenticationFilter(AuthenticationManager authenticationManager,
-                                     JwtProviders jwtProviders) {
+                                     JwtService jwtService) {
         this.authenticationManager = authenticationManager;
-        this.jwtProviders = jwtProviders;
+        this.jwtService = jwtService;
     }
 
     @Override
@@ -45,9 +46,10 @@ public class AdminAuthenticationFilter extends UsernamePasswordAuthenticationFil
 
         AdminPrincipal principal = (AdminPrincipal) authResult.getPrincipal();
 
-        String token = jwtProviders.authenticate(principal);
+        String accessToken = jwtService.generateAccessToken(principal);
+        String refreshToken = jwtService.generateRefreshToken(principal);
 
-        response.addHeader("Authorization", token);
+        response.addHeader("Authorization", accessToken);
 
     }
 }

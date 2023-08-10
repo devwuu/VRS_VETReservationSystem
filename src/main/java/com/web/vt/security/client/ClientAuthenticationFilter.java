@@ -1,7 +1,8 @@
-package com.web.vt.security;
+package com.web.vt.security.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.web.vt.domain.employee.EmployeeVO;
+import com.web.vt.security.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,12 +20,12 @@ import java.io.IOException;
 public class ClientAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
-    private final JwtProviders jwtProviders;
+    private final JwtService jwtService;
 
     public ClientAuthenticationFilter(AuthenticationManager authenticationManager,
-                                      JwtProviders jwtProviders) {
+                                      JwtService jwtService) {
         this.authenticationManager = authenticationManager;
-        this.jwtProviders = jwtProviders;
+        this.jwtService = jwtService;
     }
 
     @Override
@@ -43,7 +44,7 @@ public class ClientAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         EmployeePrincipal principal = (EmployeePrincipal) authResult.getPrincipal();
-        String token = jwtProviders.authenticate(principal);
+        String token = jwtService.generateAccessToken(principal);
         response.addHeader("Authorization", token);
 
     }

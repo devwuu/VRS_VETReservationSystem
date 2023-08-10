@@ -56,6 +56,14 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     // https://mvnrepository.com/artifact/com.auth0/java-jwt
     implementation 'com.auth0:java-jwt:4.4.0'
+
+    //redis
+    // https://mvnrepository.com/artifact/org.springframework.data/spring-data-redis
+    implementation 'org.springframework.data:spring-data-redis:3.1.2'
+    // https://mvnrepository.com/artifact/io.lettuce/lettuce-core
+    implementation 'io.lettuce:lettuce-core:6.2.5.RELEASE'
+
+
 }
 
 ext {

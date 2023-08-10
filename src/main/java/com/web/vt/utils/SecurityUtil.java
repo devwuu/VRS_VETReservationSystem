@@ -1,7 +1,7 @@
 package com.web.vt.utils;
 
-import com.web.vt.security.AdminPrincipal;
-import com.web.vt.security.EmployeePrincipal;
+import com.web.vt.security.admin.AdminPrincipal;
+import com.web.vt.security.client.EmployeePrincipal;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
