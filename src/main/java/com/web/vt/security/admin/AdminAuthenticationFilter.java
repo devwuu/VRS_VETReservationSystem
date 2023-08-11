@@ -1,8 +1,12 @@
 package com.web.vt.security.admin;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.web.vt.domain.user.AdminVO;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.web.vt.exceptions.InvalidTokenException;
+import com.web.vt.security.AuthenticationRequest;
+import com.web.vt.security.AuthenticationResponse;
 import com.web.vt.security.JwtService;
+import com.web.vt.utils.JsonUtil;
+import com.web.vt.utils.StringUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,33 +16,44 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Slf4j
 public class AdminAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final AdminDetailService adminDetailService;
 
     public AdminAuthenticationFilter(AuthenticationManager authenticationManager,
-                                     JwtService jwtService) {
+                                     JwtService jwtService,
+                                     AdminDetailService adminDetailService) {
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
+        this.adminDetailService = adminDetailService;
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            AdminVO loginInfo = mapper.readValue(request.getInputStream(), AdminVO.class);
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginInfo.id(), loginInfo.password());
+
+        AuthenticationRequest authenticationRequest = JsonUtil.readValue(request, AuthenticationRequest.class);
+
+        if(StringUtil.isEmpty(authenticationRequest.refreshToken())){
+            UsernamePasswordAuthenticationToken authenticationToken = UsernamePasswordAuthenticationToken.unauthenticated(authenticationRequest.id(), authenticationRequest.password());
             Authentication authenticate = authenticationManager.authenticate(authenticationToken);
             return authenticate;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        }else{
+            Optional<DecodedJWT> verifyToken = jwtService.verifyToken(authenticationRequest.refreshToken());
+            DecodedJWT decodedJWT = verifyToken.orElseThrow(() -> new InvalidTokenException("INVALID TOKEN EXCEPTION"));
+            UserDetails userDetails = adminDetailService.loadUserByUsername(decodedJWT.getClaim("id").asString());
+            UsernamePasswordAuthenticationToken authenticationToken = UsernamePasswordAuthenticationToken.authenticated(userDetails, null, userDetails.getAuthorities());
+            return authenticationToken;
         }
+
     }
 
     @Override
@@ -46,10 +61,12 @@ public class AdminAuthenticationFilter extends UsernamePasswordAuthenticationFil
 
         AdminPrincipal principal = (AdminPrincipal) authResult.getPrincipal();
 
+        // access token과 refresh token 모두 재발급
         String accessToken = jwtService.generateAccessToken(principal);
         String refreshToken = jwtService.generateRefreshToken(principal);
 
-        response.addHeader("Authorization", accessToken);
+        AuthenticationResponse token = new AuthenticationResponse().accessToken(accessToken).refreshToken(refreshToken);
+        JsonUtil.writeValue(response.getOutputStream(), token);
 
     }
 }

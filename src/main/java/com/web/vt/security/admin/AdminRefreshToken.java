@@ -7,6 +7,8 @@ import lombok.experimental.Accessors;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.TimeToLive;
 
+import java.util.concurrent.TimeUnit;
+
 @RedisHash(value = "admin")
 @Getter @Setter
 @Accessors(chain = true, fluent = true)
@@ -17,7 +19,7 @@ public class AdminRefreshToken {
 
     private String refreshToken;
 
-    @TimeToLive
+    @TimeToLive(unit = TimeUnit.MINUTES)
     private Long expiration;
 
 }

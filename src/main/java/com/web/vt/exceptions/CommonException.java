@@ -6,16 +6,15 @@ import lombok.Setter;
 
 @Getter @Setter
 @NoArgsConstructor
-public class ValidationException extends RuntimeException{
+public class CommonException extends RuntimeException{
 
-    public ValidationException(String msg){
+    public CommonException(String msg){
         super(msg);
     }
-    public ValidationException(String msg, Throwable cause) {
+    public CommonException(String msg, Throwable cause) {
         super(msg, cause);
     }
-    public ValidationException(Throwable cause) {
+    public CommonException(Throwable cause) {
         super(cause);
     }
-
 }

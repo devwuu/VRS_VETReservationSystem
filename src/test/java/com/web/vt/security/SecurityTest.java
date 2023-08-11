@@ -2,8 +2,6 @@ package com.web.vt.security;
 
 import com.web.vt.common.ControllerTestSupporter;
 import com.web.vt.domain.employee.EmployeeVO;
-import com.web.vt.domain.user.AdminVO;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
@@ -19,28 +17,45 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Disabled
+//@Disabled
 public class SecurityTest extends ControllerTestSupporter {
 
     @Test @DisplayName("시스템 관리자로 로그인합니다.")
     public void adminLogin() throws Exception {
-        AdminVO vo = new AdminVO()
+        AuthenticationRequest authenticationRequest = new AuthenticationRequest()
                 .id("test")
                 .password("1234");
 
         mvc.perform(post("/admin/token")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(vo)))
+                .content(mapper.writeValueAsString(authenticationRequest)))
                 .andDo(
                         docs.document(
                                 requestFields(
                                         fieldWithPath("id").type(JsonFieldType.STRING).description("로그인 id"),
                                         fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호"),
-                                        fieldWithPath("status").ignored(),
-                                        fieldWithPath("createBy").ignored(),
-                                        fieldWithPath("createdAt").ignored(),
-                                        fieldWithPath("updatedBy").ignored(),
-                                        fieldWithPath("updatedAt").ignored()
+                                        fieldWithPath("refreshToken").ignored()
+                                )
+                        )
+                )
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test @DisplayName("시스템 관리자 권한의 refresh token으로 token을 재발급 받습니다")
+    public void adminRefreshToken() throws Exception {
+        AuthenticationRequest authenticationRequest = new AuthenticationRequest()
+                .refreshToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJyZWZyZXNoIiwiaWQiOiJ0ZXN0IiwiZXhwIjoxNjkxNzMxODI0fQ.CE79hsiSoc2X_nxtXccIkXmWIMJ40rF7Pd6A7tn1vsY");
+
+        mvc.perform(post("/admin/token")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(authenticationRequest)))
+                .andDo(
+                        docs.document(
+                                requestFields(
+                                        fieldWithPath("id").ignored(),
+                                        fieldWithPath("password").ignored(),
+                                        fieldWithPath("refreshToken").type(JsonFieldType.STRING).description("refresh token")
                                 )
                         )
                 )
@@ -62,14 +77,7 @@ public class SecurityTest extends ControllerTestSupporter {
                                 requestFields(
                                         fieldWithPath("id").type(JsonFieldType.STRING).description("로그인 id"),
                                         fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호"),
-                                        fieldWithPath("role").ignored(),
-                                        fieldWithPath("clinicId").ignored(),
-                                        fieldWithPath("status").ignored(),
-                                        fieldWithPath("position").ignored(),
-                                        fieldWithPath("createBy").ignored(),
-                                        fieldWithPath("createdAt").ignored(),
-                                        fieldWithPath("updatedBy").ignored(),
-                                        fieldWithPath("updatedAt").ignored()
+                                        fieldWithPath("refreshToken").ignored()
                                 )
                         )
                 )
@@ -109,7 +117,7 @@ public class SecurityTest extends ControllerTestSupporter {
     @Test @DisplayName("시스템 관리자 권한이 필요한 api를 요청합니다")
     public void adminApi() throws Exception {
         mvc.perform(get("/v1/admin/test")
-                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoidGVzdCIsImV4cCI6MTY5MTY0MjMzMn0.rWeZf1h00PAbVfd3Ipa9rfBgM3HqF4G97jTJ_uapszw"))
+                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJpZCI6InRlc3QiLCJleHAiOjE2OTE3MzExMTB9.QhBPkufaF6MDa2DtrMEMuS3rUhVJRpD_wDHUWxTtxao"))
                 .andDo(
                         docs.document(
                                 requestHeaders(

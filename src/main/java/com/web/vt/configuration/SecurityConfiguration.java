@@ -96,7 +96,7 @@ public class SecurityConfiguration {
         authProvider.setUserDetailsService(adminDetailService());
         authProvider.setPasswordEncoder(passwordEncoder());
         ProviderManager providerManager = new ProviderManager(authProvider);
-        AdminAuthenticationFilter adminAuthenticationFilter = new AdminAuthenticationFilter(providerManager, jwtProviders());
+        AdminAuthenticationFilter adminAuthenticationFilter = new AdminAuthenticationFilter(providerManager, jwtProviders(), adminDetailService());
         adminAuthenticationFilter.setAuthenticationManager(providerManager);
         adminAuthenticationFilter.setFilterProcessesUrl("/admin/token");
         adminAuthenticationFilter.setPostOnly(true);
@@ -108,6 +108,7 @@ public class SecurityConfiguration {
         return new AdminAuthorizationFilter(adminDetailService(), jwtProviders());
     }
 
+    // todo logout
     @Bean
     public SecurityFilterChain clientFilterChain(HttpSecurity http) throws Exception {
         http
@@ -134,6 +135,7 @@ public class SecurityConfiguration {
         return http.build();
     }
 
+    // todo logout
     @Bean
     public SecurityFilterChain adminFilterChain(HttpSecurity http) throws Exception {
         http

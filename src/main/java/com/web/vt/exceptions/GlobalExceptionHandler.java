@@ -25,4 +25,18 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<ExceptionResponseVO> invalidTokenExceptionHandler(ValidationException e){
+        log.error("invalid token exception", e);
+        ExceptionResponseVO body = new ExceptionResponseVO().status(HttpStatus.UNAUTHORIZED).message(e.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
+    }
+
+    @ExceptionHandler(CommonException.class)
+    public ResponseEntity<ExceptionResponseVO> commonExceptionHandler(ValidationException e){
+        log.error("common exception", e);
+        ExceptionResponseVO body = new ExceptionResponseVO().status(HttpStatus.INTERNAL_SERVER_ERROR).message(e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
+    }
+
 }

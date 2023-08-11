@@ -17,16 +17,17 @@ public class JwtProperties {
     private int accessTokenExpiredTime;
     private int refreshTokenExpiredTime;
     private String issuer;
-    private String prefix = "Bearer ";
-    private String refreshTokenSubject = "refresh";
-    private String accessTokenSubject = "refresh";
+
+    private final String prefix = "Bearer ";
+    private final String refreshTokenSubject = "refresh";
+    private final String accessTokenSubject = "access";
 
     public Instant getAccessTokenExpiredAt(){
         return LocalDateTime.now().plusMinutes(accessTokenExpiredTime).toInstant(ZoneOffset.UTC);
     }
 
     public Instant getRefreshTokenExpiredAt(){
-        return LocalDateTime.now().plusMinutes(accessTokenExpiredTime).toInstant(ZoneOffset.UTC);
+        return LocalDateTime.now().plusMinutes(refreshTokenExpiredTime).toInstant(ZoneOffset.UTC);
     }
 
     public Algorithm getSign(){

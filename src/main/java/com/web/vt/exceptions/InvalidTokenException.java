@@ -6,16 +6,21 @@ import lombok.Setter;
 
 @Getter @Setter
 @NoArgsConstructor
-public class ValidationException extends RuntimeException{
+public class InvalidTokenException extends RuntimeException{
 
-    public ValidationException(String msg){
+    public InvalidTokenException(String msg){
         super(msg);
     }
-    public ValidationException(String msg, Throwable cause) {
+
+    public InvalidTokenException(String msg, Throwable cause) {
         super(msg, cause);
     }
-    public ValidationException(Throwable cause) {
+
+    public InvalidTokenException(Throwable cause) {
         super(cause);
     }
+
+
+
 
 }

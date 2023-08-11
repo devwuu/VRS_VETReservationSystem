@@ -32,6 +32,6 @@ app:
   security:
     jwt:
       secret: local
-      access-token-expired-time: 1440
+      access-token-expired-time: 10
       refresh-token-expired-time: 30
       issuer: localhost:8080
