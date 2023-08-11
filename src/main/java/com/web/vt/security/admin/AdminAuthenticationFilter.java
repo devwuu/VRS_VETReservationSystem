@@ -47,7 +47,7 @@ public class AdminAuthenticationFilter extends UsernamePasswordAuthenticationFil
             Authentication authenticate = authenticationManager.authenticate(authenticationToken);
             return authenticate;
         }else{
-            Optional<DecodedJWT> verifyToken = jwtService.verifyToken(authenticationRequest.refreshToken());
+            Optional<DecodedJWT> verifyToken = jwtService.verifyRefreshTokenForAdmin(authenticationRequest.refreshToken());
             DecodedJWT decodedJWT = verifyToken.orElseThrow(() -> new InvalidTokenException("INVALID TOKEN EXCEPTION"));
             UserDetails userDetails = adminDetailService.loadUserByUsername(decodedJWT.getClaim("id").asString());
             UsernamePasswordAuthenticationToken authenticationToken = UsernamePasswordAuthenticationToken.authenticated(userDetails, null, userDetails.getAuthorities());
@@ -63,7 +63,7 @@ public class AdminAuthenticationFilter extends UsernamePasswordAuthenticationFil
 
         // access token과 refresh token 모두 재발급
         String accessToken = jwtService.generateAccessToken(principal);
-        String refreshToken = jwtService.generateRefreshToken(principal);
+        String refreshToken = jwtService.generateRefreshTokenForAdmin(principal);
 
         AuthenticationResponse token = new AuthenticationResponse().accessToken(accessToken).refreshToken(refreshToken);
         JsonUtil.writeValue(response.getOutputStream(), token);

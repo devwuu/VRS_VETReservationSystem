@@ -33,8 +33,7 @@ public class AdminAuthorizationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String id = jwtService.authorize(authorization);
-
+        String id = jwtService.decodeToken(authorization).getClaim("id").asString();
         AdminPrincipal principal = (AdminPrincipal) adminDetailService.loadUserByUsername(id);
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(token);

@@ -45,7 +45,7 @@ public class SecurityTest extends ControllerTestSupporter {
     @Test @DisplayName("시스템 관리자 권한의 refresh token으로 token을 재발급 받습니다")
     public void adminRefreshToken() throws Exception {
         AuthenticationRequest authenticationRequest = new AuthenticationRequest()
-                .refreshToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJyZWZyZXNoIiwiaWQiOiJ0ZXN0IiwiZXhwIjoxNjkxNzMxODI0fQ.CE79hsiSoc2X_nxtXccIkXmWIMJ40rF7Pd6A7tn1vsY");
+                .refreshToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJyZWZyZXNoIiwiaXNzIjoibG9jYWxob3N0OjgwODAiLCJpZCI6InRlc3QiLCJleHAiOjE2OTE3NDIwOTF9.ErT8lOgEJAhfIWE-_60iq-BN-UgkClkS5CeOQJe3Wzs");
 
         mvc.perform(post("/admin/token")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -65,19 +65,41 @@ public class SecurityTest extends ControllerTestSupporter {
 
     @Test @DisplayName("동물병원 관리자로 로그인합니다")
     public void employeeAdminLogin() throws Exception {
-        EmployeeVO vo = new EmployeeVO()
+
+        AuthenticationRequest authenticationRequest = new AuthenticationRequest()
                 .id("test")
                 .password("1234");
 
         mvc.perform(post("/client/token")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(vo)))
+                        .content(mapper.writeValueAsString(authenticationRequest)))
                 .andDo(
                         docs.document(
                                 requestFields(
                                         fieldWithPath("id").type(JsonFieldType.STRING).description("로그인 id"),
                                         fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호"),
                                         fieldWithPath("refreshToken").ignored()
+                                )
+                        )
+                )
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test @DisplayName("동물병원 관리자 권한의 refresh token으로 token을 재발급 받습니다")
+    public void clientRefreshToken() throws Exception {
+        AuthenticationRequest authenticationRequest = new AuthenticationRequest()
+                .refreshToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJyZWZyZXNoIiwiaXNzIjoibG9jYWxob3N0OjgwODAiLCJpZCI6InRlc3QiLCJleHAiOjE2OTE3NDIxNzF9.yXg5fNV4wnZuB6paD-xoOKzGfdeyWyfR7-f07eH0tC8");
+
+        mvc.perform(post("/client/token")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(authenticationRequest)))
+                .andDo(
+                        docs.document(
+                                requestFields(
+                                        fieldWithPath("id").ignored(),
+                                        fieldWithPath("password").ignored(),
+                                        fieldWithPath("refreshToken").type(JsonFieldType.STRING).description("refresh token")
                                 )
                         )
                 )
@@ -117,7 +139,7 @@ public class SecurityTest extends ControllerTestSupporter {
     @Test @DisplayName("시스템 관리자 권한이 필요한 api를 요청합니다")
     public void adminApi() throws Exception {
         mvc.perform(get("/v1/admin/test")
-                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJpZCI6InRlc3QiLCJleHAiOjE2OTE3MzExMTB9.QhBPkufaF6MDa2DtrMEMuS3rUhVJRpD_wDHUWxTtxao"))
+                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJpc3MiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoidGVzdCIsImV4cCI6MTY5MTc0MDkxOX0.-ADuRQAH4Oz4rA1upiYsFSauCYAmsHOk9jLqTAlvC60"))
                 .andDo(
                         docs.document(
                                 requestHeaders(
@@ -132,7 +154,7 @@ public class SecurityTest extends ControllerTestSupporter {
     @Test @DisplayName("동물병원 관리자 권한이 필요한 api를 요청합니다")
     public void employeeAdminApi() throws Exception {
         mvc.perform(get("/v1/client/test")
-                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoidGVzdCIsImV4cCI6MTY5MTY0MjI5OH0.9_AqFdwFDHnoT5hzrocls2KpagRxVgAaPvwkf7LLOEo"))
+                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJpc3MiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoidGVzdCIsImV4cCI6MTY5MTc0MDk3MX0.eU4mefzgtpKTiMiDLn-l8g7RvA46lCIvg6Ke-Nr8axg"))
                 .andDo(
                         docs.document(
                                 requestHeaders(

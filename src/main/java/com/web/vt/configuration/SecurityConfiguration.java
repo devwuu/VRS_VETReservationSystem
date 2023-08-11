@@ -2,12 +2,10 @@ package com.web.vt.configuration;
 
 import com.web.vt.domain.employee.EmployeeService;
 import com.web.vt.domain.user.AdminService;
-import com.web.vt.security.JwtProperties;
 import com.web.vt.security.JwtService;
 import com.web.vt.security.admin.AdminAuthenticationFilter;
 import com.web.vt.security.admin.AdminAuthorizationFilter;
 import com.web.vt.security.admin.AdminDetailService;
-import com.web.vt.security.admin.AdminRefreshTokenRepository;
 import com.web.vt.security.client.ClientAuthenticationFilter;
 import com.web.vt.security.client.ClientAuthorizationFilter;
 import com.web.vt.security.client.EmployeeDetailService;
@@ -35,29 +33,19 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
-    private final EmployeeService employeeService;
-    private final AdminService adminService;
-    private final JwtProperties jwtProperties;
-    private final AdminRefreshTokenRepository adminRefreshTokenRepository;
-
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public JwtService jwtProviders(){
-        return new JwtService(jwtProperties, adminRefreshTokenRepository);
+    public AdminDetailService adminDetailService(AdminService service){
+        return new AdminDetailService(service);
     }
 
     @Bean
-    public AdminDetailService adminDetailService(){
-        return new AdminDetailService(adminService);
-    }
-
-    @Bean
-    public EmployeeDetailService employeeDetailService(){
-        return new EmployeeDetailService(employeeService);
+    public EmployeeDetailService employeeDetailService(EmployeeService service){
+        return new EmployeeDetailService(service);
     }
 
     @Bean
@@ -73,30 +61,30 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public ClientAuthenticationFilter clientAuthenticationFilter(){
+    public ClientAuthenticationFilter clientAuthenticationFilter(EmployeeDetailService employeeDetailService, JwtService jwtService){
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(employeeDetailService());
+        authProvider.setUserDetailsService(employeeDetailService);
         authProvider.setPasswordEncoder(passwordEncoder());
         ProviderManager providerManager = new ProviderManager(authProvider);
-        ClientAuthenticationFilter clientAuthenticationFilter = new ClientAuthenticationFilter(providerManager, jwtProviders());
+        ClientAuthenticationFilter clientAuthenticationFilter = new ClientAuthenticationFilter(providerManager, jwtService, employeeDetailService);
         clientAuthenticationFilter.setAuthenticationManager(providerManager);
         clientAuthenticationFilter.setFilterProcessesUrl("/client/token");
         return clientAuthenticationFilter;
     }
 
     @Bean
-    public ClientAuthorizationFilter clientAuthorizationFilter(){
-        return new ClientAuthorizationFilter(employeeDetailService(), jwtProviders());
+    public ClientAuthorizationFilter clientAuthorizationFilter(EmployeeDetailService detailService, JwtService jwtService){
+        return new ClientAuthorizationFilter(detailService, jwtService);
     }
 
 
     @Bean
-    public AdminAuthenticationFilter adminAuthenticationFilter(){
+    public AdminAuthenticationFilter adminAuthenticationFilter(AdminDetailService detailService, JwtService jwtService){
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(adminDetailService());
+        authProvider.setUserDetailsService(detailService);
         authProvider.setPasswordEncoder(passwordEncoder());
         ProviderManager providerManager = new ProviderManager(authProvider);
-        AdminAuthenticationFilter adminAuthenticationFilter = new AdminAuthenticationFilter(providerManager, jwtProviders(), adminDetailService());
+        AdminAuthenticationFilter adminAuthenticationFilter = new AdminAuthenticationFilter(providerManager, jwtService, detailService);
         adminAuthenticationFilter.setAuthenticationManager(providerManager);
         adminAuthenticationFilter.setFilterProcessesUrl("/admin/token");
         adminAuthenticationFilter.setPostOnly(true);
@@ -104,13 +92,13 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public AdminAuthorizationFilter adminAuthorizationFilter(){
-        return new AdminAuthorizationFilter(adminDetailService(), jwtProviders());
+    public AdminAuthorizationFilter adminAuthorizationFilter(AdminDetailService detailService, JwtService jwtService){
+        return new AdminAuthorizationFilter(detailService, jwtService);
     }
 
-    // todo logout
+    // todo logoutå
     @Bean
-    public SecurityFilterChain clientFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain clientFilterChain(HttpSecurity http, ClientAuthenticationFilter authenticationFilter, ClientAuthorizationFilter authorizationFilter) throws Exception {
         http
                 .securityMatchers((matchers) -> matchers
                         .requestMatchers("client/**", "v1/client/**")
@@ -129,15 +117,15 @@ public class SecurityConfiguration {
                         httpSecurityCorsConfigurer
                                 .configurationSource(corsConfigurationSource()))
                 .formLogin(AbstractHttpConfigurer::disable)
-                .addFilter(clientAuthenticationFilter())
-                .addFilterBefore(clientAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilter(authenticationFilter)
+                .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
     // todo logout
     @Bean
-    public SecurityFilterChain adminFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain adminFilterChain(HttpSecurity http, AdminAuthenticationFilter authenticationFilter, AdminAuthorizationFilter authorizationFilter) throws Exception {
         http
                 .securityMatchers((matchers) -> matchers
                         .requestMatchers("admin/**", "v1/admin/**")
@@ -155,8 +143,8 @@ public class SecurityConfiguration {
                         httpSecurityCorsConfigurer
                                 .configurationSource(corsConfigurationSource()))
                 .formLogin(AbstractHttpConfigurer::disable)
-                .addFilter(adminAuthenticationFilter())
-                .addFilterBefore(adminAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilter(authenticationFilter)
+                .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

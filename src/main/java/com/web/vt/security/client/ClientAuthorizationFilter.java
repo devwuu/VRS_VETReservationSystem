@@ -32,7 +32,7 @@ public class ClientAuthorizationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String id = jwtService.authorize(header);
+        String id = jwtService.decodeToken(header).getClaim("id").asString();
 
         EmployeePrincipal principal = (EmployeePrincipal) employeeDetailService.loadUserByUsername(id);
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(principal.getUsername(), null, principal.getAuthorities());

@@ -1,4 +1,4 @@
-package com.web.vt.security.admin;
+package com.web.vt.security.client;
 
 import jakarta.persistence.Id;
 import lombok.Getter;
@@ -11,11 +11,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.concurrent.TimeUnit;
 
-@RedisHash(value = "admin")
+@RedisHash(value = "client")
 @Getter @Setter
-@Accessors(chain = true, fluent = true)
+@Accessors(fluent = true, chain = true)
 @NoArgsConstructor
-public class AdminRefreshToken {
+public class ClientRefreshToken {
 
     @Id
     private String id;
@@ -25,10 +25,11 @@ public class AdminRefreshToken {
     @TimeToLive(unit = TimeUnit.MINUTES)
     private Long expiration;
 
-    public AdminRefreshToken(UserDetails userDetails, String refreshToken, Long expiration){
+    public ClientRefreshToken(UserDetails userDetails, String refreshToken, Long expiration){
         this.id = userDetails.getUsername();
         this.refreshToken = refreshToken;
         this.expiration = expiration;
     }
+
 
 }

@@ -4,75 +4,85 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.web.vt.security.admin.AdminRefreshToken;
 import com.web.vt.security.admin.AdminRefreshTokenRepository;
+import com.web.vt.security.client.ClientRefreshToken;
+import com.web.vt.security.client.ClientRefreshTokenRepository;
 import com.web.vt.utils.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class JwtService {
     private final JwtProperties properties;
-    private final AdminRefreshTokenRepository repository;
+    private final AdminRefreshTokenRepository adminTokenRepository;
+    private final ClientRefreshTokenRepository clientTokenRepository;
 
-    public String generateAccessToken(UserDetails userDetails) {
+    // todo admin refresh token, client refresh token 공통화
+
+    private String createToken(UserDetails userDetails, String subject, Instant expiration){
 
         String token = JWT.create()
-                .withSubject(properties.getAccessTokenSubject())
+                .withSubject(subject)
+                .withIssuer(properties.getIssuer())
                 .withClaim("id", userDetails.getUsername())
-                .withExpiresAt(properties.getAccessTokenExpiredAt())
+                .withExpiresAt(expiration)
                 .sign(properties.getSign());
 
+        return token;
+    }
+
+    public DecodedJWT decodeToken(String token){
+
+        if(isStartWithPrefix(token)){
+            token = StringUtil.remove(token, properties.getPrefix());
+        }
+
+        DecodedJWT decodedJWT = JWT
+                .require(properties.getSign())
+                .build()
+                .verify(token);
+
+        return decodedJWT;
+    }
+
+    public String generateAccessToken(UserDetails userDetails) {
+        String token = createToken(userDetails, properties.getAccessTokenSubject(), properties.getAccessTokenExpiredAt());
         return token;
     }
 
     @Transactional
-    public String generateRefreshToken(UserDetails userDetails) {
+    public String generateRefreshTokenForAdmin(UserDetails userDetails){
+        String token = createToken(userDetails, properties.getRefreshTokenSubject(), properties.getRefreshTokenExpiredAt());
+        AdminRefreshToken refreshToken = new AdminRefreshToken(userDetails, token, (long)properties.getRefreshTokenExpiredTime());
+        adminTokenRepository.save(refreshToken);
+        return token;
+    }
 
-        String token = JWT.create()
-                .withSubject(properties.getRefreshTokenSubject())
-                .withClaim("id", userDetails.getUsername())
-                .withExpiresAt(properties.getRefreshTokenExpiredAt())
-                .sign(properties.getSign());
-
-        AdminRefreshToken refreshToken = new AdminRefreshToken()
-                .id(userDetails.getUsername())
-                .refreshToken(token)
-                .expiration((long) properties.getRefreshTokenExpiredTime());
-
-        repository.save(refreshToken);
-
+    @Transactional
+    public String generateRefreshTokenForClient(UserDetails userDetails){
+        String token = createToken(userDetails, properties.getRefreshTokenSubject(), properties.getRefreshTokenExpiredAt());
+        ClientRefreshToken refreshToken = new ClientRefreshToken(userDetails, token, (long)properties.getRefreshTokenExpiredTime());
+        clientTokenRepository.save(refreshToken);
         return token;
     }
 
     @Transactional(readOnly = true)
-    public Optional<DecodedJWT> verifyToken(String token){
-
-        DecodedJWT decodedJWT = JWT.require(properties.getSign())
-                .build()
-                .verify(token);
-
-        Optional<AdminRefreshToken> refreshToken = repository.findById(decodedJWT.getClaim("id").asString());
-
+    public Optional<DecodedJWT> verifyRefreshTokenForAdmin(String token){
+        DecodedJWT decodedJWT = decodeToken(token);
+        Optional<AdminRefreshToken> refreshToken = adminTokenRepository.findById(decodedJWT.getClaim("id").asString());
         return refreshToken.filter(adminRefreshToken -> adminRefreshToken.refreshToken().equals(token)).map(adminRefreshToken -> decodedJWT);
     }
 
-    public String authorize(String header){
-
-        String id = JWT.require(properties.getSign())
-                .build()
-                .verify(StringUtil.remove(header, properties.getPrefix()))
-                .getClaim("id")
-                .asString();
-
-        return id;
-    }
-
-    public String removePrefix(String header){
-        return StringUtil.remove(header, properties.getPrefix());
+    @Transactional(readOnly = true)
+    public Optional<DecodedJWT> verifyRefreshTokenForClient(String token){
+        DecodedJWT decodedJWT = decodeToken(token);
+        Optional<ClientRefreshToken> refreshToken = clientTokenRepository.findById(decodedJWT.getClaim("id").asString());
+        return refreshToken.filter(clientRefreshToken -> clientRefreshToken.refreshToken().equals(token)).map(clientRefreshToken -> decodedJWT);
     }
 
     public Boolean isStartWithPrefix(String header){
