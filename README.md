@@ -12,7 +12,7 @@
 ---
 ### Specification
 
-* **Backend** : Spring boot  + Spring security + JPA + PostgreSQL  
+* **Backend** : Spring boot  + Spring security + JPA + PostgreSQL + Redis
 * **Frontend(document)** : Spring Rest Docs
 
 ---
