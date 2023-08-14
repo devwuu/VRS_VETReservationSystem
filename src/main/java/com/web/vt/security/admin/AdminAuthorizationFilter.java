@@ -8,9 +8,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.stream.Stream;
 
 public class AdminAuthorizationFilter extends OncePerRequestFilter {
 
@@ -35,10 +37,14 @@ public class AdminAuthorizationFilter extends OncePerRequestFilter {
 
         String id = jwtService.decodeToken(authorization).getClaim("id").asString();
         AdminPrincipal principal = (AdminPrincipal) adminDetailService.loadUserByUsername(id);
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
+        UsernamePasswordAuthenticationToken token = UsernamePasswordAuthenticationToken.authenticated(principal, null, principal.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(token);
         filterChain.doFilter(request, response);
     }
 
-
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String url = request.getRequestURI();
+        return Stream.of("/client/**", "/v1/client/**").anyMatch(x -> new AntPathMatcher().match(x, url));
+    }
 }

@@ -2,7 +2,9 @@ package com.web.vt.configuration;
 
 import com.web.vt.domain.employee.EmployeeService;
 import com.web.vt.domain.user.AdminService;
+import com.web.vt.security.FilterExceptionHandler;
 import com.web.vt.security.JwtService;
+import com.web.vt.security.UserLogoutHandler;
 import com.web.vt.security.admin.AdminAuthenticationFilter;
 import com.web.vt.security.admin.AdminAuthorizationFilter;
 import com.web.vt.security.admin.AdminDetailService;
@@ -10,6 +12,7 @@ import com.web.vt.security.client.ClientAuthenticationFilter;
 import com.web.vt.security.client.ClientAuthorizationFilter;
 import com.web.vt.security.client.EmployeeDetailService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.ProviderManager;
@@ -31,6 +34,7 @@ import java.util.Arrays;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@Slf4j
 public class SecurityConfiguration {
 
     @Bean
@@ -46,6 +50,16 @@ public class SecurityConfiguration {
     @Bean
     public EmployeeDetailService employeeDetailService(EmployeeService service){
         return new EmployeeDetailService(service);
+    }
+
+    @Bean
+    public FilterExceptionHandler filterExceptionHandler(){
+        return new FilterExceptionHandler();
+    }
+
+    @Bean
+    public UserLogoutHandler userLogoutHandler(JwtService jwtService){
+        return new UserLogoutHandler(jwtService);
     }
 
     @Bean
@@ -77,7 +91,6 @@ public class SecurityConfiguration {
         return new ClientAuthorizationFilter(detailService, jwtService);
     }
 
-
     @Bean
     public AdminAuthenticationFilter adminAuthenticationFilter(AdminDetailService detailService, JwtService jwtService){
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -96,9 +109,8 @@ public class SecurityConfiguration {
         return new AdminAuthorizationFilter(detailService, jwtService);
     }
 
-    // todo logoutå
     @Bean
-    public SecurityFilterChain clientFilterChain(HttpSecurity http, ClientAuthenticationFilter authenticationFilter, ClientAuthorizationFilter authorizationFilter) throws Exception {
+    public SecurityFilterChain clientFilterChain(HttpSecurity http, ClientAuthenticationFilter authenticationFilter, ClientAuthorizationFilter authorizationFilter, UserLogoutHandler logoutHandler) throws Exception {
         http
                 .securityMatchers((matchers) -> matchers
                         .requestMatchers("client/**", "v1/client/**")
@@ -110,22 +122,31 @@ public class SecurityConfiguration {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize ->
                         authorize.
-                                requestMatchers("v1/client/**").hasRole("ADMIN")
+                        requestMatchers("v1/client/**").hasRole("ADMIN")
                                 .requestMatchers("client/token").permitAll()
                                 .anyRequest().authenticated())
                 .cors(httpSecurityCorsConfigurer ->
                         httpSecurityCorsConfigurer
                                 .configurationSource(corsConfigurationSource()))
                 .formLogin(AbstractHttpConfigurer::disable)
+                .logout(logoutConfigurer ->
+                        logoutConfigurer
+                                .addLogoutHandler(logoutHandler)
+                                .logoutSuccessHandler(logoutHandler)
+                                .logoutUrl("/client/logout")
+                                .invalidateHttpSession(true)
+                                .permitAll()
+                )
                 .addFilter(authenticationFilter)
-                .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(filterExceptionHandler(), ClientAuthenticationFilter.class)
+                .addFilterBefore(filterExceptionHandler(), ClientAuthorizationFilter.class);
 
         return http.build();
     }
 
-    // todo logout
     @Bean
-    public SecurityFilterChain adminFilterChain(HttpSecurity http, AdminAuthenticationFilter authenticationFilter, AdminAuthorizationFilter authorizationFilter) throws Exception {
+    public SecurityFilterChain adminFilterChain(HttpSecurity http, AdminAuthenticationFilter authenticationFilter, AdminAuthorizationFilter authorizationFilter, UserLogoutHandler logoutHandler) throws Exception {
         http
                 .securityMatchers((matchers) -> matchers
                         .requestMatchers("admin/**", "v1/admin/**")
@@ -143,8 +164,18 @@ public class SecurityConfiguration {
                         httpSecurityCorsConfigurer
                                 .configurationSource(corsConfigurationSource()))
                 .formLogin(AbstractHttpConfigurer::disable)
+                .logout(logoutConfigurer ->
+                        logoutConfigurer
+                                .addLogoutHandler(logoutHandler)
+                                .logoutSuccessHandler(logoutHandler)
+                                .logoutUrl("/admin/logout")
+                                .invalidateHttpSession(true)
+                                .permitAll()
+                )
                 .addFilter(authenticationFilter)
-                .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(filterExceptionHandler(), AdminAuthenticationFilter.class)
+                .addFilterBefore(filterExceptionHandler(), AdminAuthorizationFilter.class);
 
         return http.build();
     }

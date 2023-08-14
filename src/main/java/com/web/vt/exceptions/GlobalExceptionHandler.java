@@ -14,13 +14,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ExceptionResponseVO> notFoundExceptionHandler(NotFoundException e){
         log.error("not found exception", e);
-        ExceptionResponseVO body = new ExceptionResponseVO().status(HttpStatus.NOT_FOUND).message(e.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
+        e.printStackTrace();
+        ExceptionResponseVO body = new ExceptionResponseVO().status(HttpStatus.BAD_REQUEST).message(e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<ExceptionResponseVO> validationExceptionHandler(ValidationException e){
         log.error("validation exception", e);
+        e.printStackTrace();
         ExceptionResponseVO body = new ExceptionResponseVO().status(HttpStatus.BAD_REQUEST).message(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
@@ -28,6 +30,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidTokenException.class)
     public ResponseEntity<ExceptionResponseVO> invalidTokenExceptionHandler(ValidationException e){
         log.error("invalid token exception", e);
+        e.printStackTrace();
         ExceptionResponseVO body = new ExceptionResponseVO().status(HttpStatus.UNAUTHORIZED).message(e.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
     }
@@ -35,6 +38,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CommonException.class)
     public ResponseEntity<ExceptionResponseVO> commonExceptionHandler(ValidationException e){
         log.error("common exception", e);
+        e.printStackTrace();
         ExceptionResponseVO body = new ExceptionResponseVO().status(HttpStatus.INTERNAL_SERVER_ERROR).message(e.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
     }

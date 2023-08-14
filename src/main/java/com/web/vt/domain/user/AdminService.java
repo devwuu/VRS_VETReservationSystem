@@ -14,6 +14,9 @@ public class AdminService {
 
     private final AdminRepository adminRepository;
 
+    /**
+     * todo need prefix for id
+     * */
     @Transactional(readOnly = true)
     public AdminVO findById(String id){
         Optional<Admin> find = adminRepository.findById(id);
