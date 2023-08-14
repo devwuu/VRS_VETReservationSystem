@@ -199,7 +199,7 @@ public class SecurityTest extends ControllerTestSupporter {
     @Test @DisplayName("동물병원 관리자 권한이 필요한 api를 요청합니다")
     public void employeeUserApi() throws Exception {
         mvc.perform(get("/v1/client/test")
-                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJpc3MiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoiYWRtaW4iLCJleHAiOjE2OTE5OTQ1NDl9.Z4Q4tg-N27_rzXUTj5Mei7QVfHBzHyUvLJwVBLXS47s"))
+                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJpc3MiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoidGVzdCIsImV4cCI6MTY5MjAwNDI0NX0.QL7CB1Isy4qi7K57WDPy2jlt9cUs_i4htdl9lGWLD94"))
                 .andDo(
                         docs.document(
                                 requestHeaders(
