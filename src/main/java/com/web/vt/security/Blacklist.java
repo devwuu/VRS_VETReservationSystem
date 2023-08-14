@@ -1,4 +1,4 @@
-package com.web.vt.security.admin;
+package com.web.vt.security;
 
 import jakarta.persistence.Id;
 import lombok.Getter;
@@ -7,15 +7,14 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.TimeToLive;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.concurrent.TimeUnit;
 
-@RedisHash(value = "admin")
+@RedisHash("black")
 @Getter @Setter
 @Accessors(chain = true, fluent = true)
 @NoArgsConstructor
-public class AdminRefreshToken {
+public class Blacklist {
 
     @Id
     private String id;
@@ -24,11 +23,5 @@ public class AdminRefreshToken {
 
     @TimeToLive(unit = TimeUnit.MINUTES)
     private Long expiration;
-
-    public AdminRefreshToken(UserDetails userDetails, String refreshToken, Long expiration){
-        this.id = userDetails.getUsername();
-        this.refreshToken = refreshToken;
-        this.expiration = expiration;
-    }
 
 }

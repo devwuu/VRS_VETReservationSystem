@@ -2,16 +2,14 @@ package com.web.vt.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.web.vt.security.admin.AdminRefreshToken;
-import com.web.vt.security.admin.AdminRefreshTokenRepository;
-import com.web.vt.security.client.ClientRefreshToken;
-import com.web.vt.security.client.ClientRefreshTokenRepository;
+import com.web.vt.exceptions.InvalidTokenException;
 import com.web.vt.utils.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Optional;
 
@@ -19,10 +17,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class JwtService {
     private final JwtProperties properties;
-    private final AdminRefreshTokenRepository adminTokenRepository;
-    private final ClientRefreshTokenRepository clientTokenRepository;
-
-    // todo admin refresh token, client refresh token 공통화
+    private final UserRefreshTokenRepository tokenRepository;
+    private final BlacklistRepository blacklistRepository;
 
     private String createToken(UserDetails userDetails, String subject, Instant expiration){
 
@@ -56,37 +52,47 @@ public class JwtService {
     }
 
     @Transactional
-    public String generateRefreshTokenForAdmin(UserDetails userDetails){
+    public String generateRefreshToken(UserDetails userDetails){
         String token = createToken(userDetails, properties.getRefreshTokenSubject(), properties.getRefreshTokenExpiredAt());
-        AdminRefreshToken refreshToken = new AdminRefreshToken(userDetails, token, (long)properties.getRefreshTokenExpiredTime());
-        adminTokenRepository.save(refreshToken);
-        return token;
-    }
-
-    @Transactional
-    public String generateRefreshTokenForClient(UserDetails userDetails){
-        String token = createToken(userDetails, properties.getRefreshTokenSubject(), properties.getRefreshTokenExpiredAt());
-        ClientRefreshToken refreshToken = new ClientRefreshToken(userDetails, token, (long)properties.getRefreshTokenExpiredTime());
-        clientTokenRepository.save(refreshToken);
+        UserRefreshToken refreshToken = new UserRefreshToken(userDetails, token, (long)properties.getRefreshTokenExpiredTime());
+        tokenRepository.save(refreshToken);
         return token;
     }
 
     @Transactional(readOnly = true)
-    public Optional<DecodedJWT> verifyRefreshTokenForAdmin(String token){
+    public Optional<DecodedJWT> verifyRefreshToken(String token){
         DecodedJWT decodedJWT = decodeToken(token);
-        Optional<AdminRefreshToken> refreshToken = adminTokenRepository.findById(decodedJWT.getClaim("id").asString());
-        return refreshToken.filter(adminRefreshToken -> adminRefreshToken.refreshToken().equals(token)).map(adminRefreshToken -> decodedJWT);
-    }
-
-    @Transactional(readOnly = true)
-    public Optional<DecodedJWT> verifyRefreshTokenForClient(String token){
-        DecodedJWT decodedJWT = decodeToken(token);
-        Optional<ClientRefreshToken> refreshToken = clientTokenRepository.findById(decodedJWT.getClaim("id").asString());
-        return refreshToken.filter(clientRefreshToken -> clientRefreshToken.refreshToken().equals(token)).map(clientRefreshToken -> decodedJWT);
+        Optional<UserRefreshToken> refreshToken = tokenRepository.findById(decodedJWT.getClaim("id").asString());
+        return refreshToken.filter(userRefreshToken -> userRefreshToken.refreshToken().equals(token)).map(userRefreshToken -> decodedJWT);
     }
 
     public Boolean isStartWithPrefix(String header){
         return StringUtil.startsWith(header, properties.getPrefix());
+    }
+
+    @Transactional
+    public String destroyRefreshToken(UserDetails userDetails){
+
+        String username = userDetails.getUsername();
+
+        Optional<UserRefreshToken> findToken = tokenRepository.findById(username);
+
+        if(findToken.isEmpty()){
+            throw new InvalidTokenException("NOT EXIST TOKEN");
+        }
+
+        String refreshToken = findToken.get().refreshToken();
+        long expiration = Duration.between(Instant.now(), decodeToken(refreshToken).getExpiresAtAsInstant()).toMinutes();
+
+        Blacklist blacklist = new Blacklist()
+                .id(username)
+                .refreshToken(refreshToken)
+                .expiration(expiration);
+
+        tokenRepository.deleteById(username);
+        blacklistRepository.save(blacklist);
+
+        return refreshToken;
     }
 
 

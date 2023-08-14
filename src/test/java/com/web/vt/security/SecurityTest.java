@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.test.context.support.WithUserDetails;
 
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
@@ -44,7 +45,7 @@ public class SecurityTest extends ControllerTestSupporter {
     @Test @DisplayName("시스템 관리자 권한의 refresh token으로 token을 재발급 받습니다")
     public void adminRefreshToken() throws Exception {
         AuthenticationRequest authenticationRequest = new AuthenticationRequest()
-                .refreshToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJyZWZyZXNoIiwiaXNzIjoibG9jYWxob3N0OjgwODAiLCJpZCI6InRlc3QiLCJleHAiOjE2OTE5NzIxMDF9.kyGxEXe7AG8AkY-p1cKYESUz9Q8Hz3WQGCRbyPQhILQ");
+                .refreshToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJyZWZyZXNoIiwiaXNzIjoibG9jYWxob3N0OjgwODAiLCJpZCI6ImFkbWluIiwiZXhwIjoxNjkyMDAyMjI2fQ.dJ-HlnNYV7CCP3nMVcL--F8WDWxAExOiyyE12ptIxCA");
 
         mvc.perform(post("/admin/token")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -88,7 +89,7 @@ public class SecurityTest extends ControllerTestSupporter {
     @Test @DisplayName("동물병원 관리자 권한의 refresh token으로 token을 재발급 받습니다")
     public void clientRefreshToken() throws Exception {
         AuthenticationRequest authenticationRequest = new AuthenticationRequest()
-                .refreshToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJpc3MiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoiYWRtaW4iLCJleHAiOjE2OTE5OTQ1NDl9.Z4Q4tg-N27_rzXUTj5Mei7QVfHBzHyUvLJwVBLXS47s");
+                .refreshToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJyZWZyZXNoIiwiaXNzIjoibG9jYWxob3N0OjgwODAiLCJpZCI6InRlc3QiLCJleHAiOjE2OTIwMDIyOTV9.I13A6uSg-GI413g3akrSgkGTapEzY-XuBVmBpCP3QKw");
 
         mvc.perform(post("/client/token")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -153,7 +154,7 @@ public class SecurityTest extends ControllerTestSupporter {
     @Test @DisplayName("시스템 관리자 권한이 필요한 api를 요청합니다")
     public void adminUserApi() throws Exception {
         mvc.perform(get("/v1/admin/test")
-                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJpc3MiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoidGVzdCIsImV4cCI6MTY5MTk3MDkzOX0.AEhntYp_2PMRykTpAn8bLrDw_4iWHdM7GoDaw7Iqqwo"))
+                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJpc3MiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoiYWRtaW4iLCJleHAiOjE2OTE5OTg2NTF9.VMjR8QiUXZChKAbH1TAYWFr1dxWKRo11axRL9iseJNE"))
                 .andDo(
                         docs.document(
                                 requestHeaders(
@@ -208,6 +209,22 @@ public class SecurityTest extends ControllerTestSupporter {
                 )
                 .andDo(print())
                 .andExpect(status().isForbidden());
+    }
+
+    @Test @DisplayName("admin 계정에서 로그아웃 합니다")
+    @WithUserDetails(userDetailsServiceBeanName = "adminDetailService", value = "admin")
+    public void adminUserLogout() throws Exception {
+        mvc.perform(post("/admin/logout"))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test @DisplayName("client 계정에서 로그아웃 합니다")
+    @WithUserDetails(userDetailsServiceBeanName = "employeeDetailService", value = "test")
+    public void employeeUserLogout() throws Exception {
+        mvc.perform(post("/client/logout"))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
 }

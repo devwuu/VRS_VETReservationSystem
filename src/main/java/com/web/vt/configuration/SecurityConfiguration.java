@@ -4,6 +4,7 @@ import com.web.vt.domain.employee.EmployeeService;
 import com.web.vt.domain.user.AdminService;
 import com.web.vt.security.FilterExceptionHandler;
 import com.web.vt.security.JwtService;
+import com.web.vt.security.UserLogoutHandler;
 import com.web.vt.security.admin.AdminAuthenticationFilter;
 import com.web.vt.security.admin.AdminAuthorizationFilter;
 import com.web.vt.security.admin.AdminDetailService;
@@ -57,6 +58,11 @@ public class SecurityConfiguration {
     }
 
     @Bean
+    public UserLogoutHandler userLogoutHandler(JwtService jwtService){
+        return new UserLogoutHandler(jwtService);
+    }
+
+    @Bean
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
@@ -103,9 +109,8 @@ public class SecurityConfiguration {
         return new AdminAuthorizationFilter(detailService, jwtService);
     }
 
-    // todo logout
     @Bean
-    public SecurityFilterChain clientFilterChain(HttpSecurity http, ClientAuthenticationFilter authenticationFilter, ClientAuthorizationFilter authorizationFilter) throws Exception {
+    public SecurityFilterChain clientFilterChain(HttpSecurity http, ClientAuthenticationFilter authenticationFilter, ClientAuthorizationFilter authorizationFilter, UserLogoutHandler logoutHandler) throws Exception {
         http
                 .securityMatchers((matchers) -> matchers
                         .requestMatchers("client/**", "v1/client/**")
@@ -120,11 +125,18 @@ public class SecurityConfiguration {
                         requestMatchers("v1/client/**").hasRole("ADMIN")
                                 .requestMatchers("client/token").permitAll()
                                 .anyRequest().authenticated())
-                .exceptionHandling(handler -> handler.authenticationEntryPoint((request, response, authException) -> log.info("aaaaaa??")))
                 .cors(httpSecurityCorsConfigurer ->
                         httpSecurityCorsConfigurer
                                 .configurationSource(corsConfigurationSource()))
                 .formLogin(AbstractHttpConfigurer::disable)
+                .logout(logoutConfigurer ->
+                        logoutConfigurer
+                                .addLogoutHandler(logoutHandler)
+                                .logoutSuccessHandler(logoutHandler)
+                                .logoutUrl("/client/logout")
+                                .invalidateHttpSession(true)
+                                .permitAll()
+                )
                 .addFilter(authenticationFilter)
                 .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(filterExceptionHandler(), ClientAuthenticationFilter.class)
@@ -133,9 +145,8 @@ public class SecurityConfiguration {
         return http.build();
     }
 
-    // todo logout
     @Bean
-    public SecurityFilterChain adminFilterChain(HttpSecurity http, AdminAuthenticationFilter authenticationFilter, AdminAuthorizationFilter authorizationFilter) throws Exception {
+    public SecurityFilterChain adminFilterChain(HttpSecurity http, AdminAuthenticationFilter authenticationFilter, AdminAuthorizationFilter authorizationFilter, UserLogoutHandler logoutHandler) throws Exception {
         http
                 .securityMatchers((matchers) -> matchers
                         .requestMatchers("admin/**", "v1/admin/**")
@@ -153,6 +164,14 @@ public class SecurityConfiguration {
                         httpSecurityCorsConfigurer
                                 .configurationSource(corsConfigurationSource()))
                 .formLogin(AbstractHttpConfigurer::disable)
+                .logout(logoutConfigurer ->
+                        logoutConfigurer
+                                .addLogoutHandler(logoutHandler)
+                                .logoutSuccessHandler(logoutHandler)
+                                .logoutUrl("/admin/logout")
+                                .invalidateHttpSession(true)
+                                .permitAll()
+                )
                 .addFilter(authenticationFilter)
                 .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(filterExceptionHandler(), AdminAuthenticationFilter.class)

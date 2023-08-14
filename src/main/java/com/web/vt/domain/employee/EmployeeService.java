@@ -12,6 +12,9 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
 
+    /**
+     * todo need prefix for id
+     * */
     @Transactional(readOnly = true)
     public EmployeeClinicDTO findById(String id){
         return employeeRepository.findByEmployeeId(id);

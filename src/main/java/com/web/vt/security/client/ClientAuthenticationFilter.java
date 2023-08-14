@@ -47,7 +47,7 @@ public class ClientAuthenticationFilter extends UsernamePasswordAuthenticationFi
             return authentication;
         }else {
 
-            Optional<DecodedJWT> verifyToken = jwtService.verifyRefreshTokenForClient(authenticationRequest.refreshToken());
+            Optional<DecodedJWT> verifyToken = jwtService.verifyRefreshToken(authenticationRequest.refreshToken());
             DecodedJWT decodedJWT = verifyToken.orElseThrow(() -> new InvalidTokenException("INVALID TOKEN"));
             UserDetails userDetails = clientDetailService.loadUserByUsername(decodedJWT.getClaim("id").asString());
             UsernamePasswordAuthenticationToken authenticated = UsernamePasswordAuthenticationToken.authenticated(userDetails, null, userDetails.getAuthorities());
@@ -60,7 +60,7 @@ public class ClientAuthenticationFilter extends UsernamePasswordAuthenticationFi
         EmployeePrincipal principal = (EmployeePrincipal) authResult.getPrincipal();
         // access token, refresh token 모두 재발급
         String accessToken = jwtService.generateAccessToken(principal);
-        String refreshToken = jwtService.generateRefreshTokenForClient(principal);
+        String refreshToken = jwtService.generateRefreshToken(principal);
         AuthenticationResponse authenticationResponse = new AuthenticationResponse().accessToken(accessToken).refreshToken(refreshToken);
         JsonUtil.writeValue(response.getOutputStream(), authenticationResponse);
     }
