@@ -35,7 +35,7 @@ public class ClientAuthorizationFilter extends OncePerRequestFilter {
         String id = jwtService.decodeToken(header).getClaim("id").asString();
 
         EmployeePrincipal principal = (EmployeePrincipal) employeeDetailService.loadUserByUsername(id);
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(principal.getUsername(), null, principal.getAuthorities());
+        UsernamePasswordAuthenticationToken token = UsernamePasswordAuthenticationToken.authenticated(principal.getUsername(), null, principal.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(token);
         filterChain.doFilter(request, response);
     }

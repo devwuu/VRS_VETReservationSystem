@@ -1,7 +1,6 @@
 package com.web.vt.security;
 
 import com.web.vt.common.ControllerTestSupporter;
-import com.web.vt.domain.employee.EmployeeVO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
@@ -23,7 +22,7 @@ public class SecurityTest extends ControllerTestSupporter {
     @Test @DisplayName("시스템 관리자로 로그인합니다.")
     public void adminLogin() throws Exception {
         AuthenticationRequest authenticationRequest = new AuthenticationRequest()
-                .id("test")
+                .id("admin")
                 .password("1234");
 
         mvc.perform(post("/admin/token")
@@ -45,7 +44,7 @@ public class SecurityTest extends ControllerTestSupporter {
     @Test @DisplayName("시스템 관리자 권한의 refresh token으로 token을 재발급 받습니다")
     public void adminRefreshToken() throws Exception {
         AuthenticationRequest authenticationRequest = new AuthenticationRequest()
-                .refreshToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJyZWZyZXNoIiwiaXNzIjoibG9jYWxob3N0OjgwODAiLCJpZCI6InRlc3QiLCJleHAiOjE2OTE3NDIwOTF9.ErT8lOgEJAhfIWE-_60iq-BN-UgkClkS5CeOQJe3Wzs");
+                .refreshToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJyZWZyZXNoIiwiaXNzIjoibG9jYWxob3N0OjgwODAiLCJpZCI6InRlc3QiLCJleHAiOjE2OTE5NzIxMDF9.kyGxEXe7AG8AkY-p1cKYESUz9Q8Hz3WQGCRbyPQhILQ");
 
         mvc.perform(post("/admin/token")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -89,7 +88,7 @@ public class SecurityTest extends ControllerTestSupporter {
     @Test @DisplayName("동물병원 관리자 권한의 refresh token으로 token을 재발급 받습니다")
     public void clientRefreshToken() throws Exception {
         AuthenticationRequest authenticationRequest = new AuthenticationRequest()
-                .refreshToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJyZWZyZXNoIiwiaXNzIjoibG9jYWxob3N0OjgwODAiLCJpZCI6InRlc3QiLCJleHAiOjE2OTE3NDIxNzF9.yXg5fNV4wnZuB6paD-xoOKzGfdeyWyfR7-f07eH0tC8");
+                .refreshToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJpc3MiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoiYWRtaW4iLCJleHAiOjE2OTE5OTQ1NDl9.Z4Q4tg-N27_rzXUTj5Mei7QVfHBzHyUvLJwVBLXS47s");
 
         mvc.perform(post("/client/token")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -109,7 +108,7 @@ public class SecurityTest extends ControllerTestSupporter {
 
     @Test @DisplayName("동물병원 일반 사용자로 로그인합니다")
     public void employeeUserLogin() throws Exception {
-        EmployeeVO vo = new EmployeeVO()
+        AuthenticationRequest vo = new AuthenticationRequest()
                 .id("user")
                 .password("1234");
 
@@ -120,15 +119,8 @@ public class SecurityTest extends ControllerTestSupporter {
                         docs.document(
                                 requestFields(
                                         fieldWithPath("id").type(JsonFieldType.STRING).description("로그인 id"),
-                                        fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호"),
-                                        fieldWithPath("role").ignored(),
-                                        fieldWithPath("clinicId").ignored(),
-                                        fieldWithPath("status").ignored(),
-                                        fieldWithPath("position").ignored(),
-                                        fieldWithPath("createBy").ignored(),
-                                        fieldWithPath("createdAt").ignored(),
-                                        fieldWithPath("updatedBy").ignored(),
-                                        fieldWithPath("updatedAt").ignored()
+                                        fieldWithPath("password").type(JsonFieldType.STRING).description("password"),
+                                        fieldWithPath("refreshToken").ignored()
                                 )
                         )
                 )
@@ -136,10 +128,32 @@ public class SecurityTest extends ControllerTestSupporter {
                 .andExpect(status().isOk());
     }
 
+    @Test @DisplayName("동물병원 일반 사용자로 로그인합니다")
+    public void notExistEmployeeUserLogin() throws Exception {
+        AuthenticationRequest vo = new AuthenticationRequest()
+                .id("not-user")
+                .password("1234");
+
+        mvc.perform(post("/admin/token")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(vo)))
+                .andDo(
+                        docs.document(
+                                requestFields(
+                                        fieldWithPath("id").type(JsonFieldType.STRING).description("로그인 id"),
+                                        fieldWithPath("password").type(JsonFieldType.STRING).description("password"),
+                                        fieldWithPath("refreshToken").ignored()
+                                )
+                        )
+                )
+                .andDo(print())
+                .andExpect(status().isUnauthorized());
+    }
+
     @Test @DisplayName("시스템 관리자 권한이 필요한 api를 요청합니다")
-    public void adminApi() throws Exception {
+    public void adminUserApi() throws Exception {
         mvc.perform(get("/v1/admin/test")
-                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJpc3MiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoidGVzdCIsImV4cCI6MTY5MTc0MDkxOX0.-ADuRQAH4Oz4rA1upiYsFSauCYAmsHOk9jLqTAlvC60"))
+                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJpc3MiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoidGVzdCIsImV4cCI6MTY5MTk3MDkzOX0.AEhntYp_2PMRykTpAn8bLrDw_4iWHdM7GoDaw7Iqqwo"))
                 .andDo(
                         docs.document(
                                 requestHeaders(
@@ -151,10 +165,25 @@ public class SecurityTest extends ControllerTestSupporter {
                 .andExpect(status().isNotFound());
     }
 
+    @Test @DisplayName("시스템 관리자 권한이 필요한 api를 요청합니다")
+    public void notAdminUserApi() throws Exception {
+        mvc.perform(get("/v1/admin/test")
+                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJpc3MiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoidXNlciIsImV4cCI6MTY5MTk3NTAyMX0.43T8-t4JvgjzLKgd7K7acvV1weAFu0e4UMrzb6E2i80"))
+                .andDo(
+                        docs.document(
+                                requestHeaders(
+                                        headerWithName(HttpHeaders.AUTHORIZATION).description("Access Token")
+                                )
+                        )
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
     @Test @DisplayName("동물병원 관리자 권한이 필요한 api를 요청합니다")
     public void employeeAdminApi() throws Exception {
         mvc.perform(get("/v1/client/test")
-                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJpc3MiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoidGVzdCIsImV4cCI6MTY5MTc0MDk3MX0.eU4mefzgtpKTiMiDLn-l8g7RvA46lCIvg6Ke-Nr8axg"))
+                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJpc3MiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoidGVzdCIsImV4cCI6MTY5MTk3MTAzOX0.2nex9iFFzxHIzq4Ja8H_2PnQ6GxWpf04gV8qvopIAzg"))
                 .andDo(
                         docs.document(
                                 requestHeaders(
@@ -169,7 +198,7 @@ public class SecurityTest extends ControllerTestSupporter {
     @Test @DisplayName("동물병원 관리자 권한이 필요한 api를 요청합니다")
     public void employeeUserApi() throws Exception {
         mvc.perform(get("/v1/client/test")
-                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoidXNlciIsImV4cCI6MTY5MTY0MjE3Mn0.FBF5IeDE0qNaqoMTA8iIz4eZ7cPdYPr4AIdo-D5CiWk"))
+                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJpc3MiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoiYWRtaW4iLCJleHAiOjE2OTE5OTQ1NDl9.Z4Q4tg-N27_rzXUTj5Mei7QVfHBzHyUvLJwVBLXS47s"))
                 .andDo(
                         docs.document(
                                 requestHeaders(

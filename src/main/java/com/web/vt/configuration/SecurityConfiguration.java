@@ -2,6 +2,7 @@ package com.web.vt.configuration;
 
 import com.web.vt.domain.employee.EmployeeService;
 import com.web.vt.domain.user.AdminService;
+import com.web.vt.security.FilterExceptionHandler;
 import com.web.vt.security.JwtService;
 import com.web.vt.security.admin.AdminAuthenticationFilter;
 import com.web.vt.security.admin.AdminAuthorizationFilter;
@@ -10,6 +11,7 @@ import com.web.vt.security.client.ClientAuthenticationFilter;
 import com.web.vt.security.client.ClientAuthorizationFilter;
 import com.web.vt.security.client.EmployeeDetailService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.ProviderManager;
@@ -31,6 +33,7 @@ import java.util.Arrays;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@Slf4j
 public class SecurityConfiguration {
 
     @Bean
@@ -46,6 +49,11 @@ public class SecurityConfiguration {
     @Bean
     public EmployeeDetailService employeeDetailService(EmployeeService service){
         return new EmployeeDetailService(service);
+    }
+
+    @Bean
+    public FilterExceptionHandler filterExceptionHandler(){
+        return new FilterExceptionHandler();
     }
 
     @Bean
@@ -77,7 +85,6 @@ public class SecurityConfiguration {
         return new ClientAuthorizationFilter(detailService, jwtService);
     }
 
-
     @Bean
     public AdminAuthenticationFilter adminAuthenticationFilter(AdminDetailService detailService, JwtService jwtService){
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -96,7 +103,7 @@ public class SecurityConfiguration {
         return new AdminAuthorizationFilter(detailService, jwtService);
     }
 
-    // todo logoutå
+    // todo logout
     @Bean
     public SecurityFilterChain clientFilterChain(HttpSecurity http, ClientAuthenticationFilter authenticationFilter, ClientAuthorizationFilter authorizationFilter) throws Exception {
         http
@@ -110,15 +117,18 @@ public class SecurityConfiguration {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize ->
                         authorize.
-                                requestMatchers("v1/client/**").hasRole("ADMIN")
+                        requestMatchers("v1/client/**").hasRole("ADMIN")
                                 .requestMatchers("client/token").permitAll()
                                 .anyRequest().authenticated())
+                .exceptionHandling(handler -> handler.authenticationEntryPoint((request, response, authException) -> log.info("aaaaaa??")))
                 .cors(httpSecurityCorsConfigurer ->
                         httpSecurityCorsConfigurer
                                 .configurationSource(corsConfigurationSource()))
                 .formLogin(AbstractHttpConfigurer::disable)
                 .addFilter(authenticationFilter)
-                .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(filterExceptionHandler(), ClientAuthenticationFilter.class)
+                .addFilterBefore(filterExceptionHandler(), ClientAuthorizationFilter.class);
 
         return http.build();
     }
@@ -144,7 +154,9 @@ public class SecurityConfiguration {
                                 .configurationSource(corsConfigurationSource()))
                 .formLogin(AbstractHttpConfigurer::disable)
                 .addFilter(authenticationFilter)
-                .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(filterExceptionHandler(), AdminAuthenticationFilter.class)
+                .addFilterBefore(filterExceptionHandler(), AdminAuthorizationFilter.class);
 
         return http.build();
     }
