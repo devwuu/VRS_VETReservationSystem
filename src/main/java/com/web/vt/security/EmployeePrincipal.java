@@ -1,4 +1,4 @@
-package com.web.vt.security.client;
+package com.web.vt.security;
 
 import com.web.vt.domain.common.dto.EmployeeClinicDTO;
 import com.web.vt.domain.common.enums.UsageStatus;
