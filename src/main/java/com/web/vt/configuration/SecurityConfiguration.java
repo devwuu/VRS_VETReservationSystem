@@ -49,8 +49,8 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public UserLogoutHandler userLogoutHandler(JwtService jwtService){
-        return new UserLogoutHandler(jwtService);
+    public UserLogoutHandler userLogoutHandler(JwtUtil jwtUtil){
+        return new UserLogoutHandler(jwtUtil);
     }
 
     @Bean
@@ -66,12 +66,12 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public UserAuthenticationFilter adminAuthenticationFilter(PasswordEncoder passwordEncoder, AdminDetailService userDetailsService, JwtService jwtService){
+    public UserAuthenticationFilter adminAuthenticationFilter(PasswordEncoder passwordEncoder, AdminDetailService userDetailsService, JwtUtil jwtUtil){
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setPasswordEncoder(passwordEncoder);
         authenticationProvider.setUserDetailsService(userDetailsService);
         ProviderManager providerManager = new ProviderManager(authenticationProvider);
-        UserAuthenticationFilter userAuthenticationFilter = new UserAuthenticationFilter(providerManager, jwtService, userDetailsService);
+        UserAuthenticationFilter userAuthenticationFilter = new UserAuthenticationFilter(providerManager, jwtUtil, userDetailsService);
         userAuthenticationFilter.setAuthenticationManager(providerManager);
         userAuthenticationFilter.setFilterProcessesUrl("/admin/token");
         userAuthenticationFilter.setPostOnly(true);
@@ -79,12 +79,12 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public UserAuthenticationFilter clientAuthenticationFilter(PasswordEncoder passwordEncoder, EmployeeDetailService userDetailsService, JwtService jwtService){
+    public UserAuthenticationFilter clientAuthenticationFilter(PasswordEncoder passwordEncoder, EmployeeDetailService userDetailsService, JwtUtil jwtUtil){
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setPasswordEncoder(passwordEncoder);
         authenticationProvider.setUserDetailsService(userDetailsService);
         ProviderManager providerManager = new ProviderManager(authenticationProvider);
-        UserAuthenticationFilter userAuthenticationFilter = new UserAuthenticationFilter(providerManager, jwtService, userDetailsService);
+        UserAuthenticationFilter userAuthenticationFilter = new UserAuthenticationFilter(providerManager, jwtUtil, userDetailsService);
         userAuthenticationFilter.setAuthenticationManager(providerManager);
         userAuthenticationFilter.setFilterProcessesUrl("/client/token");
         userAuthenticationFilter.setPostOnly(true);
@@ -95,7 +95,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain clientFilterChain(HttpSecurity http,
                                                  @Qualifier("clientAuthenticationFilter") UserAuthenticationFilter authenticationFilter,
                                                  EmployeeDetailService detailService,
-                                                 JwtService jwtService,
+                                                 JwtUtil jwtUtil,
                                                  UserLogoutHandler logoutHandler,
                                                  FilterExceptionHandler exceptionHandler) throws Exception {
         http
@@ -125,7 +125,7 @@ public class SecurityConfiguration {
                                 .permitAll()
                 )
                 .addFilter(authenticationFilter)
-                .addFilterBefore(new UserAuthorizationFilter(detailService, jwtService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new UserAuthorizationFilter(detailService, jwtUtil), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(exceptionHandler, UserAuthenticationFilter.class)
                 .addFilterBefore(exceptionHandler, UserAuthorizationFilter.class);
 
@@ -136,7 +136,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain adminFilterChain(HttpSecurity http,
                                                 @Qualifier("adminAuthenticationFilter") UserAuthenticationFilter authenticationFilter,
                                                 AdminDetailService detailService,
-                                                JwtService jwtService,
+                                                JwtUtil jwtUtil,
                                                 UserLogoutHandler logoutHandler,
                                                 FilterExceptionHandler exceptionHandler) throws Exception {
         http
@@ -165,7 +165,7 @@ public class SecurityConfiguration {
                                 .permitAll()
                 )
                 .addFilter(authenticationFilter)
-                .addFilterBefore(new UserAuthorizationFilter(detailService, jwtService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new UserAuthorizationFilter(detailService, jwtUtil), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(exceptionHandler, UserAuthenticationFilter.class)
                 .addFilterBefore(exceptionHandler, UserAuthorizationFilter.class);
 

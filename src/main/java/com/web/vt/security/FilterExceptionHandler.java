@@ -24,10 +24,13 @@ public class FilterExceptionHandler extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         }catch (NotFoundException notFoundException){
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, notFoundException.getMessage());
+            notFoundException.printStackTrace();
         }catch (InvalidTokenException | TokenExpiredException | SignatureVerificationException | JWTDecodeException invalidTokenException){
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "INVALID TOKEN");
+            invalidTokenException.printStackTrace();
         } catch (CommonException commonException){
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, commonException.getMessage());
+            commonException.printStackTrace();
         }
     }
 

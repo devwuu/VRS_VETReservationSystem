@@ -2,7 +2,6 @@ package com.web.vt.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.web.vt.exceptions.InvalidTokenException;
 import com.web.vt.utils.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,27 +14,15 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class JwtService {
+public class JwtUtil {
     private final JwtProperties properties;
     private final UserRefreshTokenRepository tokenRepository;
     private final BlacklistRepository blacklistRepository;
 
-    private String createToken(UserDetails userDetails, String subject, Instant expiration){
-
-        String token = JWT.create()
-                .withSubject(subject)
-                .withIssuer(properties.getIssuer())
-                .withClaim("id", userDetails.getUsername())
-                .withExpiresAt(expiration)
-                .sign(properties.getSign());
-
-        return token;
-    }
-
     public DecodedJWT decodeToken(String token){
 
         if(isStartWithPrefix(token)){
-            token = StringUtil.remove(token, properties.getPrefix());
+            token = removePrefix(token);
         }
 
         DecodedJWT decodedJWT = JWT
@@ -66,33 +53,54 @@ public class JwtService {
         return refreshToken.filter(userRefreshToken -> userRefreshToken.refreshToken().equals(token)).map(userRefreshToken -> decodedJWT);
     }
 
+    @Transactional(readOnly = true)
+    public Optional<DecodedJWT> verifyAccessToken(String header){
+        String token = removePrefix(header);
+        DecodedJWT decodedJWT = decodeToken(token);
+        Optional<Blacklist> blacklist = blacklistRepository.findById(decodedJWT.getClaim("id").asString());
+        return blacklist.filter(black -> black.accessToken().equals(token)).map(black -> Optional.<DecodedJWT>empty()).orElse(Optional.of(decodedJWT));
+    }
+
+    @Transactional
+    public void destroyToken(String header){
+
+        String accessToken = removePrefix(header);
+        DecodedJWT decodedJWT = decodeToken(accessToken);
+        String username = decodedJWT.getClaim("id").asString();
+        long expiration = Duration.between(Instant.now(), decodedJWT.getExpiresAtAsInstant()).toMinutes();
+
+        tokenRepository.deleteById(username);
+
+        Blacklist blacklist = new Blacklist()
+                .id(username)
+                .accessToken(accessToken)
+                .expiration(expiration);
+
+        blacklistRepository.save(blacklist);
+    }
+
+    private String createToken(UserDetails userDetails, String subject, Instant expiration){
+
+        String token = JWT.create()
+                .withSubject(subject)
+                .withIssuer(properties.getIssuer())
+                .withClaim("id", userDetails.getUsername())
+                .withExpiresAt(expiration)
+                .sign(properties.getSign());
+
+        return token;
+    }
+
     public Boolean isStartWithPrefix(String header){
         return StringUtil.startsWith(header, properties.getPrefix());
     }
 
-    @Transactional
-    public String destroyRefreshToken(UserDetails userDetails){
+    public String removePrefix(String header){
+        return StringUtil.remove(header, properties.getPrefix());
+    }
 
-        String username = userDetails.getUsername();
-
-        Optional<UserRefreshToken> findToken = tokenRepository.findById(username);
-
-        if(findToken.isEmpty()){
-            throw new InvalidTokenException("NOT EXIST TOKEN");
-        }
-
-        String refreshToken = findToken.get().refreshToken();
-        long expiration = Duration.between(Instant.now(), decodeToken(refreshToken).getExpiresAtAsInstant()).toMinutes();
-
-        Blacklist blacklist = new Blacklist()
-                .id(username)
-                .refreshToken(refreshToken)
-                .expiration(expiration);
-
-        tokenRepository.deleteById(username);
-        blacklistRepository.save(blacklist);
-
-        return refreshToken;
+    public Boolean isAccessToken(String header){
+        return decodeToken(header).getSubject().equals(properties.getAccessTokenSubject());
     }
 
 

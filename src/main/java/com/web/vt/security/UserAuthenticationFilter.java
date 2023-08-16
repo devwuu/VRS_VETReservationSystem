@@ -22,12 +22,12 @@ import java.util.Optional;
 public class UserAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
-    private final JwtService jwtService;
+    private final JwtUtil jwtUtil;
     private final UserDetailsService userDetailsService;
 
-    public UserAuthenticationFilter(AuthenticationManager authenticationManager, JwtService jwtService, UserDetailsService userDetailsService) {
+    public UserAuthenticationFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil, UserDetailsService userDetailsService) {
         this.authenticationManager = authenticationManager;
-        this.jwtService = jwtService;
+        this.jwtUtil = jwtUtil;
         this.userDetailsService = userDetailsService;
     }
 
@@ -40,7 +40,7 @@ public class UserAuthenticationFilter extends UsernamePasswordAuthenticationFilt
             Authentication authenticate = authenticationManager.authenticate(authenticationToken);
             return authenticate;
         }else{
-            Optional<DecodedJWT> verifyToken = jwtService.verifyRefreshToken(authenticationRequest.refreshToken());
+            Optional<DecodedJWT> verifyToken = jwtUtil.verifyRefreshToken(authenticationRequest.refreshToken());
             DecodedJWT decodedJWT = verifyToken.orElseThrow(() -> new InvalidTokenException("INVALID TOKEN"));
             UserDetails userDetails = userDetailsService.loadUserByUsername(decodedJWT.getClaim("id").asString());
             UsernamePasswordAuthenticationToken authenticationToken = UsernamePasswordAuthenticationToken.authenticated(userDetails, null, userDetails.getAuthorities());
@@ -54,8 +54,8 @@ public class UserAuthenticationFilter extends UsernamePasswordAuthenticationFilt
         UserDetails principal = (UserDetails) authResult.getPrincipal();
 
         // access token과 refresh token 모두 재발급
-        String accessToken = jwtService.generateAccessToken(principal);
-        String refreshToken = jwtService.generateRefreshToken(principal);
+        String accessToken = jwtUtil.generateAccessToken(principal);
+        String refreshToken = jwtUtil.generateRefreshToken(principal);
 
         AuthenticationResponse token = new AuthenticationResponse().accessToken(accessToken).refreshToken(refreshToken);
         JsonUtil.writeValue(response.getOutputStream(), token);
