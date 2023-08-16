@@ -1,4 +1,4 @@
-package com.web.vt.security.admin;
+package com.web.vt.security;
 
 import com.web.vt.domain.user.AdminService;
 import com.web.vt.domain.user.AdminVO;

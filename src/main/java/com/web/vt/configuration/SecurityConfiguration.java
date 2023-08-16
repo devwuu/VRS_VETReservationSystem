@@ -2,17 +2,9 @@ package com.web.vt.configuration;
 
 import com.web.vt.domain.employee.EmployeeService;
 import com.web.vt.domain.user.AdminService;
-import com.web.vt.security.FilterExceptionHandler;
-import com.web.vt.security.JwtService;
-import com.web.vt.security.UserLogoutHandler;
-import com.web.vt.security.admin.AdminAuthenticationFilter;
-import com.web.vt.security.admin.AdminAuthorizationFilter;
-import com.web.vt.security.admin.AdminDetailService;
-import com.web.vt.security.client.ClientAuthenticationFilter;
-import com.web.vt.security.client.ClientAuthorizationFilter;
-import com.web.vt.security.client.EmployeeDetailService;
+import com.web.vt.security.*;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.ProviderManager;
@@ -34,7 +26,6 @@ import java.util.Arrays;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@Slf4j
 public class SecurityConfiguration {
 
     @Bean
@@ -75,42 +66,38 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public ClientAuthenticationFilter clientAuthenticationFilter(EmployeeDetailService employeeDetailService, JwtService jwtService){
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(employeeDetailService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        ProviderManager providerManager = new ProviderManager(authProvider);
-        ClientAuthenticationFilter clientAuthenticationFilter = new ClientAuthenticationFilter(providerManager, jwtService, employeeDetailService);
-        clientAuthenticationFilter.setAuthenticationManager(providerManager);
-        clientAuthenticationFilter.setFilterProcessesUrl("/client/token");
-        return clientAuthenticationFilter;
+    public UserAuthenticationFilter adminAuthenticationFilter(PasswordEncoder passwordEncoder, AdminDetailService userDetailsService, JwtService jwtService){
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setPasswordEncoder(passwordEncoder);
+        authenticationProvider.setUserDetailsService(userDetailsService);
+        ProviderManager providerManager = new ProviderManager(authenticationProvider);
+        UserAuthenticationFilter userAuthenticationFilter = new UserAuthenticationFilter(providerManager, jwtService, userDetailsService);
+        userAuthenticationFilter.setAuthenticationManager(providerManager);
+        userAuthenticationFilter.setFilterProcessesUrl("/admin/token");
+        userAuthenticationFilter.setPostOnly(true);
+        return userAuthenticationFilter;
     }
 
     @Bean
-    public ClientAuthorizationFilter clientAuthorizationFilter(EmployeeDetailService detailService, JwtService jwtService){
-        return new ClientAuthorizationFilter(detailService, jwtService);
+    public UserAuthenticationFilter clientAuthenticationFilter(PasswordEncoder passwordEncoder, EmployeeDetailService userDetailsService, JwtService jwtService){
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setPasswordEncoder(passwordEncoder);
+        authenticationProvider.setUserDetailsService(userDetailsService);
+        ProviderManager providerManager = new ProviderManager(authenticationProvider);
+        UserAuthenticationFilter userAuthenticationFilter = new UserAuthenticationFilter(providerManager, jwtService, userDetailsService);
+        userAuthenticationFilter.setAuthenticationManager(providerManager);
+        userAuthenticationFilter.setFilterProcessesUrl("/client/token");
+        userAuthenticationFilter.setPostOnly(true);
+        return userAuthenticationFilter;
     }
 
     @Bean
-    public AdminAuthenticationFilter adminAuthenticationFilter(AdminDetailService detailService, JwtService jwtService){
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(detailService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        ProviderManager providerManager = new ProviderManager(authProvider);
-        AdminAuthenticationFilter adminAuthenticationFilter = new AdminAuthenticationFilter(providerManager, jwtService, detailService);
-        adminAuthenticationFilter.setAuthenticationManager(providerManager);
-        adminAuthenticationFilter.setFilterProcessesUrl("/admin/token");
-        adminAuthenticationFilter.setPostOnly(true);
-        return adminAuthenticationFilter;
-    }
-
-    @Bean
-    public AdminAuthorizationFilter adminAuthorizationFilter(AdminDetailService detailService, JwtService jwtService){
-        return new AdminAuthorizationFilter(detailService, jwtService);
-    }
-
-    @Bean
-    public SecurityFilterChain clientFilterChain(HttpSecurity http, ClientAuthenticationFilter authenticationFilter, ClientAuthorizationFilter authorizationFilter, UserLogoutHandler logoutHandler) throws Exception {
+    public SecurityFilterChain clientFilterChain(HttpSecurity http,
+                                                 @Qualifier("clientAuthenticationFilter") UserAuthenticationFilter authenticationFilter,
+                                                 EmployeeDetailService detailService,
+                                                 JwtService jwtService,
+                                                 UserLogoutHandler logoutHandler,
+                                                 FilterExceptionHandler exceptionHandler) throws Exception {
         http
                 .securityMatchers((matchers) -> matchers
                         .requestMatchers("client/**", "v1/client/**")
@@ -138,15 +125,20 @@ public class SecurityConfiguration {
                                 .permitAll()
                 )
                 .addFilter(authenticationFilter)
-                .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(filterExceptionHandler(), ClientAuthenticationFilter.class)
-                .addFilterBefore(filterExceptionHandler(), ClientAuthorizationFilter.class);
+                .addFilterBefore(new UserAuthorizationFilter(detailService, jwtService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(exceptionHandler, UserAuthenticationFilter.class)
+                .addFilterBefore(exceptionHandler, UserAuthorizationFilter.class);
 
         return http.build();
     }
 
     @Bean
-    public SecurityFilterChain adminFilterChain(HttpSecurity http, AdminAuthenticationFilter authenticationFilter, AdminAuthorizationFilter authorizationFilter, UserLogoutHandler logoutHandler) throws Exception {
+    public SecurityFilterChain adminFilterChain(HttpSecurity http,
+                                                @Qualifier("adminAuthenticationFilter") UserAuthenticationFilter authenticationFilter,
+                                                AdminDetailService detailService,
+                                                JwtService jwtService,
+                                                UserLogoutHandler logoutHandler,
+                                                FilterExceptionHandler exceptionHandler) throws Exception {
         http
                 .securityMatchers((matchers) -> matchers
                         .requestMatchers("admin/**", "v1/admin/**")
@@ -173,9 +165,9 @@ public class SecurityConfiguration {
                                 .permitAll()
                 )
                 .addFilter(authenticationFilter)
-                .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(filterExceptionHandler(), AdminAuthenticationFilter.class)
-                .addFilterBefore(filterExceptionHandler(), AdminAuthorizationFilter.class);
+                .addFilterBefore(new UserAuthorizationFilter(detailService, jwtService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(exceptionHandler, UserAuthenticationFilter.class)
+                .addFilterBefore(exceptionHandler, UserAuthorizationFilter.class);
 
         return http.build();
     }

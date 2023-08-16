@@ -1,4 +1,4 @@
-package com.web.vt.security.client;
+package com.web.vt.security;
 
 import com.web.vt.domain.common.dto.EmployeeClinicDTO;
 import com.web.vt.domain.employee.EmployeeService;
@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 @RequiredArgsConstructor
 public class EmployeeDetailService implements UserDetailsService {
-
     private final EmployeeService service;
 
     @Override
