@@ -16,7 +16,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.access.ExceptionTranslationFilter;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -41,16 +42,6 @@ public class SecurityConfiguration {
     @Bean
     public EmployeeDetailService employeeDetailService(EmployeeService service){
         return new EmployeeDetailService(service);
-    }
-
-    @Bean
-    public FilterExceptionHandler filterExceptionHandler(){
-        return new FilterExceptionHandler();
-    }
-
-    @Bean
-    public UserLogoutHandler userLogoutHandler(JwtUtil jwtUtil){
-        return new UserLogoutHandler(jwtUtil);
     }
 
     @Bean
@@ -95,9 +86,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain clientFilterChain(HttpSecurity http,
                                                  @Qualifier("clientAuthenticationFilter") UserAuthenticationFilter authenticationFilter,
                                                  EmployeeDetailService detailService,
-                                                 JwtUtil jwtUtil,
-                                                 UserLogoutHandler logoutHandler,
-                                                 FilterExceptionHandler exceptionHandler) throws Exception {
+                                                 JwtUtil jwtUtil) throws Exception {
         http
                 .securityMatchers((matchers) -> matchers
                         .requestMatchers("client/**", "v1/client/**")
@@ -118,16 +107,15 @@ public class SecurityConfiguration {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .logout(logoutConfigurer ->
                         logoutConfigurer
-                                .addLogoutHandler(logoutHandler)
-                                .logoutSuccessHandler(logoutHandler)
+                                .addLogoutHandler(new UserLogoutHandler(jwtUtil))
+                                .logoutSuccessHandler(new UserLogoutHandler(jwtUtil))
                                 .logoutUrl("/client/logout")
                                 .invalidateHttpSession(true)
                                 .permitAll()
                 )
                 .addFilter(authenticationFilter)
-                .addFilterBefore(new UserAuthorizationFilter(detailService, jwtUtil), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(exceptionHandler, UserAuthenticationFilter.class)
-                .addFilterBefore(exceptionHandler, UserAuthorizationFilter.class);
+                .addFilterBefore(new UserAuthorizationFilter(detailService, jwtUtil), AuthorizationFilter.class)
+                .addFilterAt(new FilterExceptionHandler(), ExceptionTranslationFilter.class);
 
         return http.build();
     }
@@ -136,9 +124,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain adminFilterChain(HttpSecurity http,
                                                 @Qualifier("adminAuthenticationFilter") UserAuthenticationFilter authenticationFilter,
                                                 AdminDetailService detailService,
-                                                JwtUtil jwtUtil,
-                                                UserLogoutHandler logoutHandler,
-                                                FilterExceptionHandler exceptionHandler) throws Exception {
+                                                JwtUtil jwtUtil) throws Exception {
         http
                 .securityMatchers((matchers) -> matchers
                         .requestMatchers("admin/**", "v1/admin/**")
@@ -158,16 +144,15 @@ public class SecurityConfiguration {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .logout(logoutConfigurer ->
                         logoutConfigurer
-                                .addLogoutHandler(logoutHandler)
-                                .logoutSuccessHandler(logoutHandler)
+                                .addLogoutHandler(new UserLogoutHandler(jwtUtil))
+                                .logoutSuccessHandler(new UserLogoutHandler(jwtUtil))
                                 .logoutUrl("/admin/logout")
                                 .invalidateHttpSession(true)
                                 .permitAll()
                 )
                 .addFilter(authenticationFilter)
-                .addFilterBefore(new UserAuthorizationFilter(detailService, jwtUtil), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(exceptionHandler, UserAuthenticationFilter.class)
-                .addFilterBefore(exceptionHandler, UserAuthorizationFilter.class);
+                .addFilterBefore(new UserAuthorizationFilter(detailService, jwtUtil), AuthorizationFilter.class)
+                .addFilterAt(new FilterExceptionHandler(), ExceptionTranslationFilter.class);
 
         return http.build();
     }

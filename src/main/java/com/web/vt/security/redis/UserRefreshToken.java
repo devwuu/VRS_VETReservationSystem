@@ -1,4 +1,4 @@
-package com.web.vt.security;
+package com.web.vt.security.redis;
 
 import jakarta.persistence.Id;
 import lombok.Getter;
@@ -7,25 +7,29 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.TimeToLive;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.concurrent.TimeUnit;
 
-@RedisHash("black")
-@Getter @Setter
+@RedisHash(value = "refresh")
+@Getter
+@Setter
 @Accessors(chain = true, fluent = true)
 @NoArgsConstructor
-public class Blacklist {
+public class UserRefreshToken {
 
     @Id
     private String id;
 
-    private String accessToken;
-    /**
-     * refresh token의 경우 UserRefreshToken으로 관리/검증되기 때문에
-     * Access token만 관리하면 된다
-     * */
+    private String refreshToken;
 
     @TimeToLive(unit = TimeUnit.MINUTES)
     private Long expiration;
+
+    public UserRefreshToken(UserDetails userDetails, String refreshToken, Long expiration){
+        this.id = userDetails.getUsername();
+        this.refreshToken = refreshToken;
+        this.expiration = expiration;
+    }
 
 }

@@ -1,4 +1,4 @@
-package com.web.vt.security;
+package com.web.vt.security.redis;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

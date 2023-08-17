@@ -2,6 +2,10 @@ package com.web.vt.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.web.vt.security.redis.Blacklist;
+import com.web.vt.security.redis.BlacklistRepository;
+import com.web.vt.security.redis.UserRefreshToken;
+import com.web.vt.security.redis.UserRefreshTokenRepository;
 import com.web.vt.utils.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
