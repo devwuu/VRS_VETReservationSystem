@@ -633,7 +633,7 @@ Host: localhost:8080
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Location: /v1/animal/6252
+Location: /v1/animal/6652
 Content-Type: application/json;charset=UTF-8
 X-Content-Type-Options: nosniff
 X-XSS-Protection: 0
@@ -644,11 +644,11 @@ X-Frame-Options: DENY
 Content-Length: 322
 
 {
-  "createdAt" : "2023-08-09T06:12:26.142739Z",
-  "updatedAt" : "2023-08-09T06:12:26.142739Z",
+  "createdAt" : "2023-08-18T05:26:47.639597Z",
+  "updatedAt" : "2023-08-18T05:26:47.639597Z",
   "createBy" : "test",
   "updatedBy" : "test",
-  "id" : 6252,
+  "id" : 6652,
   "name" : "달이",
   "species" : "강아지",
   "age" : 10,
@@ -809,35 +809,61 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 473
+Content-Length: 1169
 
 {
-  "content" : [ ],
+  "content" : [ {
+    "animalId" : 1302,
+    "animalName" : "달이",
+    "animalSpecies" : "강아지",
+    "animalAge" : 10,
+    "animalRemark" : null,
+    "animalStatus" : "USE",
+    "guardianId" : 1,
+    "guardianName" : "devwuu",
+    "guardianContact" : "123-123",
+    "guardianAddress" : null,
+    "guardianStatus" : "USE",
+    "guardianRemark" : null
+  }, {
+    "animalId" : 1252,
+    "animalName" : "달이",
+    "animalSpecies" : "강아지",
+    "animalAge" : 10,
+    "animalRemark" : null,
+    "animalStatus" : "USE",
+    "guardianId" : 1,
+    "guardianName" : "devwuu",
+    "guardianContact" : "123-123",
+    "guardianAddress" : null,
+    "guardianStatus" : "USE",
+    "guardianRemark" : null
+  } ],
   "pageable" : {
     "sort" : {
       "empty" : false,
-      "sorted" : true,
-      "unsorted" : false
+      "unsorted" : false,
+      "sorted" : true
     },
     "offset" : 0,
-    "pageSize" : 2,
     "pageNumber" : 0,
+    "pageSize" : 2,
     "paged" : true,
     "unpaged" : false
   },
-  "last" : true,
-  "totalPages" : 0,
-  "totalElements" : 0,
+  "last" : false,
+  "totalPages" : 5,
+  "totalElements" : 10,
   "first" : true,
   "size" : 2,
   "number" : 0,
   "sort" : {
     "empty" : false,
-    "sorted" : true,
-    "unsorted" : false
+    "unsorted" : false,
+    "sorted" : true
   },
-  "numberOfElements" : 0,
-  "empty" : true
+  "numberOfElements" : 2,
+  "empty" : false
 }</code></pre>
 </div>
 </div>
@@ -1088,7 +1114,7 @@ Content-Length: 235
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-08-09 13:07:55 +0900
+Last updated 2023-08-10 13:39:06 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

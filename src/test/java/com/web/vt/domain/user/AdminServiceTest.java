@@ -19,8 +19,8 @@ class AdminServiceTest {
     @Test
     @DisplayName("id로 등록된 admin user를 찾습니다")
     public void findById() {
-        AdminVO find = service.findById("test");
-        assertThat(find.id()).isEqualTo("test");
+        AdminVO find = service.findById("admin");
+        assertThat(find.id()).isEqualTo("admin");
     }
 
 }

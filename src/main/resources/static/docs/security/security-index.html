@@ -456,11 +456,25 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_1_1_login_http_response">HTTP response</a></li>
 </ul>
 </li>
-<li><a href="#_1_2_request">1.2 request</a>
+<li><a href="#_1_2_reissue_token">1.2 reissue token</a>
 <ul class="sectlevel3">
-<li><a href="#_1_2_request_request_headers">Request headers</a></li>
-<li><a href="#_1_2_request_http_request">HTTP request</a></li>
-<li><a href="#_1_2_request_http_response">HTTP response</a></li>
+<li><a href="#_1_2_reissue_token_request_fields">Request fields</a></li>
+<li><a href="#_1_2_reissue_token_http_request">HTTP request</a></li>
+<li><a href="#_1_2_reissue_token_http_response">HTTP response</a></li>
+</ul>
+</li>
+<li><a href="#_1_3_request">1.3 request</a>
+<ul class="sectlevel3">
+<li><a href="#_1_3_request_request_headers">Request headers</a></li>
+<li><a href="#_1_3_request_http_request">HTTP request</a></li>
+<li><a href="#_1_3_request_http_response">HTTP response</a></li>
+</ul>
+</li>
+<li><a href="#_1_4_logout">1.4 logout</a>
+<ul class="sectlevel3">
+<li><a href="#_1_4_logout_request_headers">Request headers</a></li>
+<li><a href="#_1_4_logout_http_request">HTTP request</a></li>
+<li><a href="#_1_4_logout_http_response">HTTP response</a></li>
 </ul>
 </li>
 </ul>
@@ -474,22 +488,25 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_2_1_login_http_response">HTTP response</a></li>
 </ul>
 </li>
-<li><a href="#_2_2_request">2.2 request</a>
+<li><a href="#_2_2_reissue_token">2.2 reissue token</a>
 <ul class="sectlevel3">
-<li><a href="#_관리자_권한으로_요청시">관리자 권한으로 요청시</a>
-<ul class="sectlevel4">
-<li><a href="#_관리자_권한으로_요청시_request_headers">Request headers</a></li>
-<li><a href="#_관리자_권한으로_요청시_http_request">HTTP request</a></li>
-<li><a href="#_관리자_권한으로_요청시_http_response">HTTP response</a></li>
+<li><a href="#_2_2_reissue_token_request_fields">Request fields</a></li>
+<li><a href="#_2_2_reissue_token_http_request">HTTP request</a></li>
+<li><a href="#_2_2_reissue_token_http_response">HTTP response</a></li>
 </ul>
 </li>
-<li><a href="#_일반_사용자_권한으로_요청시">일반 사용자 권한으로 요청시</a>
-<ul class="sectlevel4">
-<li><a href="#_일반_사용자_권한으로_요청시_request_headers">Request headers</a></li>
-<li><a href="#_일반_사용자_권한으로_요청시_http_request">HTTP request</a></li>
-<li><a href="#_일반_사용자_권한으로_요청시_http_response">HTTP response</a></li>
+<li><a href="#_2_3_request">2.3 request</a>
+<ul class="sectlevel3">
+<li><a href="#_2_3_request_request_headers">Request headers</a></li>
+<li><a href="#_2_3_request_http_request">HTTP request</a></li>
+<li><a href="#_2_3_request_http_response">HTTP response</a></li>
 </ul>
 </li>
+<li><a href="#_2_4_logout">2.4 logout</a>
+<ul class="sectlevel3">
+<li><a href="#_2_4_logout_request_headers">Request headers</a></li>
+<li><a href="#_2_4_logout_http_request">HTTP request</a></li>
+<li><a href="#_2_4_logout_http_response">HTTP response</a></li>
 </ul>
 </li>
 </ul>
@@ -520,7 +537,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect2">
 <h3 id="_1_1_login">1.1 login</h3>
 <div class="paragraph">
-<p>시스템 관리자로 로그안합니다</p>
+<p>시스템 관리자 계정으로 로그안합니다</p>
 </div>
 <div class="sect3">
 <h4 id="_1_1_login_request_fields">Request fields</h4>
@@ -565,17 +582,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /admin/token HTTP/1.1
 Content-Type: application/json
-Content-Length: 148
+Content-Length: 68
 Host: localhost:8080
 
 {
-  "createdAt" : null,
-  "updatedAt" : null,
-  "createBy" : null,
-  "updatedBy" : null,
-  "id" : "test",
+  "id" : "admin",
   "password" : "1234",
-  "status" : null
+  "refreshToken" : null
 }</code></pre>
 </div>
 </div>
@@ -588,24 +601,107 @@ Host: localhost:8080
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoidGVzdCIsImV4cCI6MTY5MTY0NzkzNH0.YtbCyx8nO1DR0HR-q9RMt9J5OPFsZKniOSVG2GTqXiw
 X-Content-Type-Options: nosniff
 X-XSS-Protection: 0
 Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
-X-Frame-Options: DENY</code></pre>
+X-Frame-Options: DENY
+Content-Length: 395
+
+{
+  "refreshToken" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJyZWZyZXNoIiwiaXNzIjoibG9jYWxob3N0OjgwODAiLCJpZCI6ImFkbWluIiwiZXhwIjoxNjkyMzQzNDU2fQ.RnQa8q7R9fDGphTBxRmAlKx6DBHjxANhpOU4ODSb3pQ",
+  "accessToken" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJpc3MiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoiYWRtaW4iLCJleHAiOjE2OTIzMzk4NTV9.iMVbREdrjDSl5Mk0y6vCL-vWh1oS-TjpCQnpsXtRNoo"
+}</code></pre>
 </div>
 </div>
 </div>
+<hr>
 </div>
 <div class="sect2">
-<h3 id="_1_2_request">1.2 request</h3>
+<h3 id="_1_2_reissue_token">1.2 reissue token</h3>
+<div class="paragraph">
+<p>시스템 관리자 권한의 토큰을 재발급 합니다</p>
+</div>
+<div class="sect3">
+<h4 id="_1_2_reissue_token_request_fields">Request fields</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">필드명</th>
+<th class="tableblock halign-left valign-top">타입</th>
+<th class="tableblock halign-left valign-top">필수값</th>
+<th class="tableblock halign-left valign-top">필드설명</th>
+<th class="tableblock halign-left valign-top">제약사항</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>refreshToken</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">refresh token</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_1_2_reissue_token_http_request">HTTP request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /admin/token HTTP/1.1
+Content-Type: application/json
+Content-Length: 236
+Host: localhost:8080
+
+{
+  "id" : null,
+  "password" : null,
+  "refreshToken" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJyZWZyZXNoIiwiaXNzIjoibG9jYWxob3N0OjgwODAiLCJpZCI6ImFkbWluIiwiZXhwIjoxNjkyMzQwOTA1fQ.lnopYddP4Ies3ONIxAnxKNgSNO1aJWNu1v_O6p8o1DY"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_1_2_reissue_token_http_response">HTTP response</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Length: 395
+
+{
+  "refreshToken" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJyZWZyZXNoIiwiaXNzIjoibG9jYWxob3N0OjgwODAiLCJpZCI6ImFkbWluIiwiZXhwIjoxNjkyMzQwOTMxfQ.CTAU3oJ1hnA_heY60L7T1YlJrOWGCGWk3rQQWPhIpGQ",
+  "accessToken" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJpc3MiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoiYWRtaW4iLCJleHAiOjE2OTIzMzczMzF9.n0CHaU79JrSUfMoU3q_gp0_PfMP6gaQDN-bZ0UOpXIs"
+}</code></pre>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div class="sect2">
+<h3 id="_1_3_request">1.3 request</h3>
 <div class="paragraph">
 <p>시스템 관리자 권한이 필요한 API를 요청합니다</p>
 </div>
 <div class="sect3">
-<h4 id="_1_2_request_request_headers">Request headers</h4>
+<h4 id="_1_3_request_request_headers">Request headers</h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -626,17 +722,17 @@ X-Frame-Options: DENY</code></pre>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_1_2_request_http_request">HTTP request</h4>
+<h4 id="_1_3_request_http_request">HTTP request</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/admin/test HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoidGVzdCIsImV4cCI6MTY5MTY0MjMzMn0.rWeZf1h00PAbVfd3Ipa9rfBgM3HqF4G97jTJ_uapszw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJpc3MiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoiYWRtaW4iLCJleHAiOjE2OTIzMzczMzF9.n0CHaU79JrSUfMoU3q_gp0_PfMP6gaQDN-bZ0UOpXIs
 Host: localhost:8080</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_1_2_request_http_response">HTTP response</h4>
+<h4 id="_1_3_request_http_response">HTTP response</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 404 Not Found
@@ -652,6 +748,65 @@ X-Frame-Options: DENY</code></pre>
 </div>
 </div>
 </div>
+<hr>
+</div>
+<div class="sect2">
+<h3 id="_1_4_logout">1.4 logout</h3>
+<div class="paragraph">
+<p>시스템 관리자 계정을 로그아웃합니다</p>
+</div>
+<div class="sect3">
+<h4 id="_1_4_logout_request_headers">Request headers</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Access Token</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_1_4_logout_http_request">HTTP request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /admin/logout HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJpc3MiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoiYWRtaW4iLCJleHAiOjE2OTIzMzk4NTV9.iMVbREdrjDSl5Mk0y6vCL-vWh1oS-TjpCQnpsXtRNoo
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_1_4_logout_http_response">HTTP response</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Length: 24
+
+"successfully logout!!!"</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -661,7 +816,7 @@ X-Frame-Options: DENY</code></pre>
 <div class="sect2">
 <h3 id="_2_1_login">2.1 login</h3>
 <div class="paragraph">
-<p>병원 관리자 또는 병원 일반 사용자로 로그인합니다</p>
+<p>동물 병원 관리자로 로그인합니다</p>
 </div>
 <div class="sect3">
 <h4 id="_2_1_login_request_fields">Request fields</h4>
@@ -706,20 +861,13 @@ X-Frame-Options: DENY</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /client/token HTTP/1.1
 Content-Type: application/json
-Content-Length: 207
+Content-Length: 67
 Host: localhost:8080
 
 {
-  "createdAt" : null,
-  "updatedAt" : null,
-  "createBy" : null,
-  "updatedBy" : null,
   "id" : "test",
   "password" : "1234",
-  "role" : null,
-  "clinicId" : null,
-  "status" : null,
-  "position" : null
+  "refreshToken" : null
 }</code></pre>
 </div>
 </div>
@@ -732,27 +880,107 @@ Host: localhost:8080
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoidGVzdCIsImV4cCI6MTY5MTY0NzkzNH0.YtbCyx8nO1DR0HR-q9RMt9J5OPFsZKniOSVG2GTqXiw
 X-Content-Type-Options: nosniff
 X-XSS-Protection: 0
 Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
-X-Frame-Options: DENY</code></pre>
+X-Frame-Options: DENY
+Content-Length: 392
+
+{
+  "refreshToken" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJyZWZyZXNoIiwiaXNzIjoibG9jYWxob3N0OjgwODAiLCJpZCI6InRlc3QiLCJleHAiOjE2OTIzNDM1MzJ9.0VsmCeBM7_DiVLYvKL2N3x5ZR64oF5rdoUciRPkyvPY",
+  "accessToken" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJpc3MiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoidGVzdCIsImV4cCI6MTY5MjMzOTkzMn0.F4dqe_MfFtD-8oaeMLaN8XLisT5ATuKmhgD6_cVPgZ0"
+}</code></pre>
 </div>
 </div>
 </div>
 <hr>
 </div>
 <div class="sect2">
-<h3 id="_2_2_request">2.2 request</h3>
+<h3 id="_2_2_reissue_token">2.2 reissue token</h3>
 <div class="paragraph">
-<p>병원 관리자 권한이 필요한 API를 요청합니다</p>
+<p>동물 병원 관리자 권한의 토큰을 재발급 합니다</p>
 </div>
 <div class="sect3">
-<h4 id="_관리자_권한으로_요청시">관리자 권한으로 요청시</h4>
-<div class="sect4">
-<h5 id="_관리자_권한으로_요청시_request_headers">Request headers</h5>
+<h4 id="_2_2_reissue_token_request_fields">Request fields</h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">필드명</th>
+<th class="tableblock halign-left valign-top">타입</th>
+<th class="tableblock halign-left valign-top">필수값</th>
+<th class="tableblock halign-left valign-top">필드설명</th>
+<th class="tableblock halign-left valign-top">제약사항</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>refreshToken</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">refresh token</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_2_2_reissue_token_http_request">HTTP request</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /admin/token HTTP/1.1
+Content-Type: application/json
+Content-Length: 236
+Host: localhost:8080
+
+{
+  "id" : null,
+  "password" : null,
+  "refreshToken" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJyZWZyZXNoIiwiaXNzIjoibG9jYWxob3N0OjgwODAiLCJpZCI6ImFkbWluIiwiZXhwIjoxNjkyMzQwOTA1fQ.lnopYddP4Ies3ONIxAnxKNgSNO1aJWNu1v_O6p8o1DY"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_2_2_reissue_token_http_response">HTTP response</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Length: 395
+
+{
+  "refreshToken" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJyZWZyZXNoIiwiaXNzIjoibG9jYWxob3N0OjgwODAiLCJpZCI6ImFkbWluIiwiZXhwIjoxNjkyMzQwOTMxfQ.CTAU3oJ1hnA_heY60L7T1YlJrOWGCGWk3rQQWPhIpGQ",
+  "accessToken" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJpc3MiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoiYWRtaW4iLCJleHAiOjE2OTIzMzczMzF9.n0CHaU79JrSUfMoU3q_gp0_PfMP6gaQDN-bZ0UOpXIs"
+}</code></pre>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div class="sect2">
+<h3 id="_2_3_request">2.3 request</h3>
+<div class="paragraph">
+<p>동물 병원 관리자 권한이 필요한 API를 요청합니다</p>
+</div>
+<div class="sect3">
+<h4 id="_2_3_request_request_headers">Request headers</h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -772,18 +1000,18 @@ X-Frame-Options: DENY</code></pre>
 </tbody>
 </table>
 </div>
-<div class="sect4">
-<h5 id="_관리자_권한으로_요청시_http_request">HTTP request</h5>
+<div class="sect3">
+<h4 id="_2_3_request_http_request">HTTP request</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/client/test HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoidGVzdCIsImV4cCI6MTY5MTY0MjI5OH0.9_AqFdwFDHnoT5hzrocls2KpagRxVgAaPvwkf7LLOEo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJpc3MiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoidGVzdCIsImV4cCI6MTY5MjMzNzM5NX0.1iT9p_p99JP6inOy2AAg5jpzTu6gFQwDJ7ycCbwGyHY
 Host: localhost:8080</code></pre>
 </div>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_관리자_권한으로_요청시_http_response">HTTP response</h5>
+<div class="sect3">
+<h4 id="_2_3_request_http_response">HTTP response</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 404 Not Found
@@ -799,11 +1027,15 @@ X-Frame-Options: DENY</code></pre>
 </div>
 </div>
 </div>
+<hr>
+</div>
+<div class="sect2">
+<h3 id="_2_4_logout">2.4 logout</h3>
+<div class="paragraph">
+<p>동물 병원 관리자 계정을 로그아웃합니다</p>
 </div>
 <div class="sect3">
-<h4 id="_일반_사용자_권한으로_요청시">일반 사용자 권한으로 요청시</h4>
-<div class="sect4">
-<h5 id="_일반_사용자_권한으로_요청시_request_headers">Request headers</h5>
+<h4 id="_2_4_logout_request_headers">Request headers</h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -823,21 +1055,22 @@ X-Frame-Options: DENY</code></pre>
 </tbody>
 </table>
 </div>
-<div class="sect4">
-<h5 id="_일반_사용자_권한으로_요청시_http_request">HTTP request</h5>
+<div class="sect3">
+<h4 id="_2_4_logout_http_request">HTTP request</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /v1/client/test HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoidXNlciIsImV4cCI6MTY5MTY0MjE3Mn0.FBF5IeDE0qNaqoMTA8iIz4eZ7cPdYPr4AIdo-D5CiWk
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /client/logout HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhY2Nlc3MiLCJpc3MiOiJsb2NhbGhvc3Q6ODA4MCIsImlkIjoidGVzdCIsImV4cCI6MTY5MjMzOTkzMn0.F4dqe_MfFtD-8oaeMLaN8XLisT5ATuKmhgD6_cVPgZ0
 Host: localhost:8080</code></pre>
 </div>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_일반_사용자_권한으로_요청시_http_response">HTTP response</h5>
+<div class="sect3">
+<h4 id="_2_4_logout_http_response">HTTP response</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 403 Forbidden
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
@@ -846,8 +1079,10 @@ X-XSS-Protection: 0
 Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
-X-Frame-Options: DENY</code></pre>
-</div>
+X-Frame-Options: DENY
+Content-Length: 24
+
+"successfully logout!!!"</code></pre>
 </div>
 </div>
 </div>
@@ -858,7 +1093,7 @@ X-Frame-Options: DENY</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-08-09 13:55:15 +0900
+Last updated 2023-08-18 14:14:59 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

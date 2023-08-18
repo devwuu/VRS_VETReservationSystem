@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@WithUserDetails(userDetailsServiceBeanName = "adminDetailService", value = "test")
+@WithUserDetails(userDetailsServiceBeanName = "adminDetailService", value = "admin")
 class ReservationManagementAdminControllerTest extends ControllerTestSupporter {
 
     private final ZonedDateTime START = LocalDateTime.now().atZone(ZoneOffset.UTC);

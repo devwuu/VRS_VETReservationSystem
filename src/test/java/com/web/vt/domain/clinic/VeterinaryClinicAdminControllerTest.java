@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@WithUserDetails(userDetailsServiceBeanName = "adminDetailService", value = "test")
+@WithUserDetails(userDetailsServiceBeanName = "adminDetailService", value = "admin")
 class VeterinaryClinicAdminControllerTest extends ControllerTestSupporter {
 
     @Test @DisplayName("신규 동물병원을 등록합니다")
