@@ -115,7 +115,7 @@ public class SecurityConfiguration {
                 )
                 .addFilter(authenticationFilter)
                 .addFilterBefore(new UserAuthorizationFilter(detailService, jwtUtil), AuthorizationFilter.class)
-                .addFilterAt(new FilterExceptionHandler(), ExceptionTranslationFilter.class);
+                .addFilterAt(new ExceptionHandlerFilter(), ExceptionTranslationFilter.class);
 
         return http.build();
     }
@@ -152,7 +152,7 @@ public class SecurityConfiguration {
                 )
                 .addFilter(authenticationFilter)
                 .addFilterBefore(new UserAuthorizationFilter(detailService, jwtUtil), AuthorizationFilter.class)
-                .addFilterAt(new FilterExceptionHandler(), ExceptionTranslationFilter.class);
+                .addFilterAt(new ExceptionHandlerFilter(), ExceptionTranslationFilter.class);
 
         return http.build();
     }

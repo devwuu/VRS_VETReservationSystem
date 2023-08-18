@@ -30,12 +30,12 @@ public class UserAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String header = request.getHeader("Authorization");
 
-        if(StringUtil.isEmpty(header) || !jwtUtil.isStartWithPrefix(header) ||!jwtUtil.isAccessToken(header)){
+        if(StringUtil.isEmpty(header) || !jwtUtil.isStartWithPrefix(header)){
             filterChain.doFilter(request, response);
             return;
         }
         Optional<DecodedJWT> decodedJWT = jwtUtil.verifyAccessToken(header);
-        if(decodedJWT.isEmpty()){
+        if(!jwtUtil.isAccessToken(header) || decodedJWT.isEmpty()){
             throw new InvalidTokenException("INVALID ACCESS TOKEN");
         }
         String id = decodedJWT.get().getClaim("id").asString();
