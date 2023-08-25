@@ -17,7 +17,7 @@ operation::guardian-client-controller-test/search-all-by-name[snippets='query-pa
 
 '''
 
-=== 1.2 search by guardian name
+=== 1.2 search by contact
 등록된 반려동물 보호자 리스트에서  보호자 연락처로 검색합니다
 
 operation::guardian-client-controller-test/search-all-by-contact[snippets='query-parameters,http-request,http-response']

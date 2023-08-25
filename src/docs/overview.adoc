@@ -18,6 +18,7 @@ IMPORTANT: 시스템 관리자 권한 또는 동물병원 관리자 권한이 �
 == Guardian API
 
 * link:guardian/guardian-index.html[보호자 API, window=_blank]
+* link:guardian/guardian-search-index.html[보호자 검색 API, window=_blank]
 
 == Animal API
 
