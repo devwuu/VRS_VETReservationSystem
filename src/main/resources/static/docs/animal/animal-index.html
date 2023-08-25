@@ -633,7 +633,7 @@ Host: localhost:8080
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Location: /v1/animal/6752
+Location: /v1/animal/6952
 Content-Type: application/json;charset=UTF-8
 X-Content-Type-Options: nosniff
 X-XSS-Protection: 0
@@ -644,11 +644,11 @@ X-Frame-Options: DENY
 Content-Length: 322
 
 {
-  "createdAt" : "2023-08-25T05:04:16.975407Z",
-  "updatedAt" : "2023-08-25T05:04:16.975407Z",
+  "createdAt" : "2023-08-25T09:00:41.575346Z",
+  "updatedAt" : "2023-08-25T09:00:41.575346Z",
   "createBy" : "test",
   "updatedBy" : "test",
-  "id" : 6752,
+  "id" : 6952,
   "name" : "달이",
   "species" : "강아지",
   "age" : 10,
@@ -842,12 +842,12 @@ Content-Length: 1169
   "pageable" : {
     "sort" : {
       "empty" : false,
-      "unsorted" : false,
-      "sorted" : true
+      "sorted" : true,
+      "unsorted" : false
     },
     "offset" : 0,
-    "pageSize" : 2,
     "pageNumber" : 0,
+    "pageSize" : 2,
     "paged" : true,
     "unpaged" : false
   },
@@ -859,8 +859,8 @@ Content-Length: 1169
   "number" : 0,
   "sort" : {
     "empty" : false,
-    "unsorted" : false,
-    "sorted" : true
+    "sorted" : true,
+    "unsorted" : false
   },
   "numberOfElements" : 2,
   "empty" : false

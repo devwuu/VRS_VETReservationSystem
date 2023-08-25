@@ -65,6 +65,7 @@ class GuardianClientControllerTest extends ControllerTestSupporter {
                                         fieldWithPath("address").type(JsonFieldType.STRING).description("보호자 주소").optional(),
                                         fieldWithPath("status").type(JsonFieldType.STRING).attributes(field("constraints", "[ Use | NotUse | Deleted ]")).description("상태"),
                                         fieldWithPath("remark").type(JsonFieldType.STRING).description("비고").optional(),
+                                        fieldWithPath("clinicId").ignored(),
                                         fieldWithPath("createdAt").ignored(),
                                         fieldWithPath("updatedAt").ignored(),
                                         fieldWithPath("createBy").ignored(),
@@ -156,6 +157,7 @@ class GuardianClientControllerTest extends ControllerTestSupporter {
                                 requestFields(
                                         fieldWithPath("id").type(JsonFieldType.NUMBER).description("보호자 id"),
                                         fieldWithPath("name").ignored(),
+                                        fieldWithPath("clinicId").ignored(),
                                         fieldWithPath("contact").ignored(),
                                         fieldWithPath("address").ignored(),
                                         fieldWithPath("status").ignored(),

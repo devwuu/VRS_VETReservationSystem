@@ -28,6 +28,7 @@ class AnimalGuardianServiceTest {
     public void saveTest() {
 
         GuardianVO vo = new GuardianVO()
+                .clinicId(202L)
                 .name("devwuu")
                 .contact("03111112222")
                 .status(UsageStatus.USE)

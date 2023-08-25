@@ -1,0 +1,25 @@
+= Guardian API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+
+NOTE: 반려동물 보호자와 관련된 api 입니다
+
+== 1. Client API
+IMPORTANT: 로그인한 사용자가 근무 중인 동물병원을 기준으로 하여 데이터를 조회합니다.
+
+=== 1.1 search by name
+등록된 반려동물 보호자 리스트에서 이름으로 검색합니다
+
+operation::guardian-client-controller-test/search-all-by-name[snippets='query-parameters,http-request,http-response']
+
+'''
+
+=== 1.2 search by guardian name
+등록된 반려동물 보호자 리스트에서  보호자 연락처로 검색합니다
+
+operation::guardian-client-controller-test/search-all-by-contact[snippets='query-parameters,http-request,http-response']
+
+'''
