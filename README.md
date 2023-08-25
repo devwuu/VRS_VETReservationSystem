@@ -15,54 +15,21 @@
 * **Frontend(document)** : Spring Rest Docs
 
 ---
-### domains
+### Domain
 
 * clinic
-* employee (proto)
+* employee (prototype)
 * animal
 * guardian
 * reservation
 * reservation management
-* user (proto)
+* admin(user) (prototype)
 
 ---
-### feature
+### Install
 
-* **VET**
-  - [x] 등록
-  - [x] 단건 조회
-  - [x] 다건 조회 
-  - [x] 수정
-  - [x] 삭제   
-<br/>
-
-* **animal**
-  - [x] 등록
-  - [x] 단건 조회
-  - [x] 다건 조회
-  - [x] 검색
-  - [x] 수정
-  - [x] 삭제  
-<br/>
-
-* **guardian**
-  - [x] 등록
-  - [x] 단건 조회
-  - [x] 수정
-  - [x] 삭제  
-<br/>
-
-* **reservation**
-  - [x] 예약 가능 시간 조회
-  - [x] 등록
-  - [x] 단건 조회
-  - [x] 다건 조회
-  - [x] 검색
-  - [x] 수정   
-<br/>
-
-* **reservation management**
-  - [x] 조회
-  - [x] 등록
-  - [x] 수정
+1. postgreSQL(port : 5432) 설치 및 실행
+2. Redis(port: 6379) 설치 및 실행
+3. spring boot run의 active profile을 local로 설정
+4. run application
  

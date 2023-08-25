@@ -40,7 +40,7 @@ operation::animal-client-controller-test/update[snippets='request-fields,http-re
 
 
 === 1.5 delete
-동물병원을 삭제(영업중지)합니다.
+반려동물의 정보를 삭제합니다.
 
-operation::veterinary-clinic-admin-controller-test/delete[snippets='request-fields,http-request,http-response']
+operation::animal-client-controller-test/delete[snippets='request-fields,http-request,http-response']
 
