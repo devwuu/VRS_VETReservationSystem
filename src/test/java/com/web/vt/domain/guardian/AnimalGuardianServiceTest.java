@@ -80,8 +80,8 @@ class AnimalGuardianServiceTest {
     public void searhAllTest() {
         Pageable pageable = (Pageable) PageRequest.of(0, 5);
         GuardianSearchCondition condition = new GuardianSearchCondition()
-                .clinicId(202L)
-                .name("bc");
+                .setClinicId(202L)
+                .setName("bc");
         Page<GuardianVO> all = service.searchAll(condition, pageable);
         assertThat(all).isNotNull();
     }

@@ -43,14 +43,14 @@ public class GuardianQuerydslRepositoryImpl implements GuardianQuerydslRepositor
 
     private BooleanExpression whereWith(GuardianSearchCondition condition) {
 
-        BooleanExpression expression = guardian.clinic.id.eq(condition.clinicId())
+        BooleanExpression expression = guardian.clinic.id.eq(condition.getClinicId())
                 .and(guardian.status.eq(UsageStatus.USE));
 
-        if(StringUtil.isNotEmpty(condition.name())){
-            expression = expression.and(guardian.name.like("%"+ condition.name()+"%"));
+        if(StringUtil.isNotEmpty(condition.getName())){
+            expression = expression.and(guardian.name.like("%"+ condition.getName()+"%"));
         }
-        if(StringUtil.isNotEmpty(condition.contact())){
-            expression = expression.and(guardian.contact.like("%"+ condition.contact()+"%"));
+        if(StringUtil.isNotEmpty(condition.getContact())){
+            expression = expression.and(guardian.contact.like("%"+ condition.getContact()+"%"));
         }
 
         return expression;

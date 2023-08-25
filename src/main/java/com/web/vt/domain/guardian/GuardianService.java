@@ -58,7 +58,7 @@ public class GuardianService {
                 vo.status(),
                 pageable
         );
-        return all.map(GuardianVO::new);
+        return all.map(guardian -> new GuardianVO().clinicId(vo.clinicId()));
     }
 
     @Transactional(readOnly = true)

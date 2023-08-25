@@ -1,11 +1,16 @@
 package com.web.vt.domain.guardian;
 
+import com.web.vt.domain.common.PageVO;
+import com.web.vt.domain.common.dto.GuardianSearchCondition;
 import com.web.vt.domain.common.enums.UsageStatus;
 import com.web.vt.exceptions.ValidationException;
 import com.web.vt.utils.ObjectUtil;
 import com.web.vt.utils.SecurityUtil;
 import com.web.vt.utils.StringUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,6 +49,38 @@ public class GuardianClientController {
         }
         GuardianVO vo = new GuardianVO().id(Long.parseLong(id)).status(UsageStatus.USE);
         GuardianVO find = guardianService.findByIdAndStatus(vo);
+        return ResponseEntity.ok().body(find);
+    }
+
+    @GetMapping("all")
+    public ResponseEntity<Page<GuardianVO>> findAll(PageVO pageVO){
+
+        if(pageVO.getSize() == 0){
+            throw new ValidationException("PAGINATION INFO SHOULD NOT BE EMPTY");
+        }
+
+        Long clinicId = SecurityUtil.getEmployeePrincipal().getClinicId();
+        GuardianVO vo = new GuardianVO().clinicId(clinicId).status(UsageStatus.USE);
+        Pageable pageable = PageRequest.of(pageVO.getPage(), pageVO.getSize());
+
+        Page<GuardianVO> all = guardianService.findAllByClinicAndStatus(vo, pageable);
+
+        return ResponseEntity.ok().body(all);
+    }
+
+    @GetMapping("search")
+    public ResponseEntity<Page<GuardianVO>> searchAll(PageVO pageVO, GuardianSearchCondition condition){
+
+        if(pageVO.getSize() == 0){
+            throw new ValidationException("PAGINATION INFO SHOULD NOT BE EMPTY");
+        }
+
+        Long clinicId = SecurityUtil.getEmployeePrincipal().getClinicId();
+        condition.setClinicId(clinicId);
+        Pageable pageable = PageRequest.of(pageVO.getPage(), pageVO.getSize());
+
+        Page<GuardianVO> find = guardianService.searchAll(condition, pageable);
+
         return ResponseEntity.ok().body(find);
     }
 
