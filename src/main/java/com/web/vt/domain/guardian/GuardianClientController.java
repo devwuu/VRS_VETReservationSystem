@@ -3,6 +3,7 @@ package com.web.vt.domain.guardian;
 import com.web.vt.domain.common.enums.UsageStatus;
 import com.web.vt.exceptions.ValidationException;
 import com.web.vt.utils.ObjectUtil;
+import com.web.vt.utils.SecurityUtil;
 import com.web.vt.utils.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,8 @@ public class GuardianClientController {
         if(ObjectUtil.isNotEmpty(vo.id())){
             throw new ValidationException("ID SHOULD BE EMPTY");
         }
-        GuardianVO saved = guardianService.save(vo);
+        Long clinicId = SecurityUtil.getEmployeePrincipal().getClinicId();
+        GuardianVO saved = guardianService.save(vo.clinicId(clinicId));
         return ResponseEntity.created(URI.create("/v1/guardian/"+saved.id())).body(saved);
     }
 

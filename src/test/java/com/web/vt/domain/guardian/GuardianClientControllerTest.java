@@ -25,7 +25,7 @@ class GuardianClientControllerTest extends ControllerTestSupporter {
     @DisplayName("신규 보호자를 등록합니다")
     public void save() throws Exception {
 
-        GuardianVO vo = new GuardianVO().name("달이 언니").contact("01011112222").status(UsageStatus.USE);
+        GuardianVO vo = new GuardianVO().name("달이 언니").contact("01011112222").status(UsageStatus.USE).clinicId(202L);
 
         mvc.perform(post("/v1/client/guardian/save")
                     .contentType(MediaType.APPLICATION_JSON)
@@ -38,6 +38,7 @@ class GuardianClientControllerTest extends ControllerTestSupporter {
                                 fieldWithPath("address").type(JsonFieldType.STRING).description("보호자 주소").optional(),
                                 fieldWithPath("status").type(JsonFieldType.STRING).attributes(field("constraints", "[ Use | NotUse | Deleted ]")).description("상태"),
                                 fieldWithPath("remark").type(JsonFieldType.STRING).description("비고").optional(),
+                                fieldWithPath("clinicId").ignored(),
                                 fieldWithPath("createdAt").ignored(),
                                 fieldWithPath("updatedAt").ignored(),
                                 fieldWithPath("createBy").ignored(),

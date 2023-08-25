@@ -18,6 +18,7 @@ public class GuardianVO extends BaseVO implements Serializable {
     private static final long serialVersionUID = -2010468697125940197L;
 
     private Long id;
+    private Long clinicId;
     private String name;
     private String contact;
     private String address;
@@ -37,4 +38,5 @@ public class GuardianVO extends BaseVO implements Serializable {
         updatedBy(updatedBy());
         updatedAt(entity.updatedAt());
     }
+
 }

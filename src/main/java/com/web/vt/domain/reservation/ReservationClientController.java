@@ -90,7 +90,6 @@ public class ReservationClientController {
         return ResponseEntity.ok().body(all);
     }
 
-    // todo clinicId 에 security 적용
     @GetMapping("search")
     public ResponseEntity<Page<ReservationAnimalGuardianDTO>> searchAll(PageVO pageVO, ReservationSearchCondition condition){
 

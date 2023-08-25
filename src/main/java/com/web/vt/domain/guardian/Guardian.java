@@ -1,5 +1,7 @@
 package com.web.vt.domain.guardian;
 
+import com.web.vt.domain.clinic.VeterinaryClinic;
+import com.web.vt.domain.clinic.VeterinaryClinicVO;
 import com.web.vt.domain.common.BaseEntity;
 import com.web.vt.domain.common.enums.UsageStatus;
 import com.web.vt.domain.common.enums.UsageStatusConverter;
@@ -17,6 +19,10 @@ public class Guardian extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+
+    @JoinColumn(name = "clinic_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private VeterinaryClinic clinic;
 
     @Column(name = "name")
     private String name;
@@ -42,4 +48,10 @@ public class Guardian extends BaseEntity {
         status = vo.status();
         remark = vo.remark();
     }
+
+    public Guardian addClinic(VeterinaryClinicVO vo){
+        clinic = new VeterinaryClinic(vo);
+        return this;
+    }
+
 }
