@@ -1,7 +1,6 @@
-## VRS
+## 토닥토닥
 
-> VET Reservation System  
-> 동물병원 진료 예약 시스템  
+> 동물병원 진료 예약 API  
 > API overview : http://localhost:8080/docs/overview.html
 
 ---
