@@ -1,6 +1,7 @@
 package com.web.vt.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.web.vt.domain.common.BaseVO;
 import com.web.vt.domain.common.enums.UsageStatus;
 import lombok.Getter;
@@ -19,7 +20,10 @@ public class AdminVO extends BaseVO implements Serializable {
     private static final long serialVersionUID = -8910905059888155635L;
 
     private String id;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
+
     private UsageStatus status;
 
     public AdminVO(Admin admin) {

@@ -36,8 +36,9 @@ public class ReservationService {
     public List<ReservationSlotDTO> findAllReservationSlots(ReservationVO vo){
         LocalDate criteriaDate = LocalDate.ofInstant(vo.reservationDateTime(), ZoneId.of("UTC"));
 
-        Instant from = criteriaDate.atStartOfDay().toInstant(ZoneOffset.UTC);
-        Instant to = criteriaDate.atTime(OffsetTime.MAX).toInstant();
+        // 기준일 ( 예: 24일 )
+        Instant from = criteriaDate.atStartOfDay().toInstant(ZoneOffset.UTC); // 00시
+        Instant to = criteriaDate.atTime(OffsetTime.MAX).toInstant(); // 23시 59분
         ReservationSearchCondition condition = new ReservationSearchCondition().setFrom(from).setTo(to);
 
         // 기예약건
@@ -46,8 +47,10 @@ public class ReservationService {
         ReservationManagementVO managementInfo = managementService.findByClinicId(new ReservationManagementVO().clinicId(vo.clinicId()));
 
         // todo 고려사항
-        //  예약 관리 정보가 front에 이미 있을 것이기 때문에 비즈니스 로직을 front로 이동시켜도 무방하지 않을까?
+        // 예약 관리 정보가 front에 이미 있을 것이기 때문에 비즈니스 로직을 front로 이동시켜도 무방하지 않을까?
+        // ( 예약 가능일 하이라이트를 위해서 )
 
+        // 기준 시간 ( 예: 9시 ~ 16시 )
         LocalTime startTime = LocalTime.ofInstant(managementInfo.startDateTime(), ZoneOffset.UTC);
         LocalTime endTime = LocalTime.ofInstant(managementInfo.endDateTime(), ZoneOffset.UTC);
         LocalTime currentSlotTime = startTime;

@@ -1,6 +1,7 @@
 package com.web.vt.domain.employee;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.web.vt.domain.common.BaseVO;
 import com.web.vt.domain.common.enums.Position;
 import com.web.vt.domain.common.enums.UsageStatus;
@@ -20,6 +21,8 @@ public class EmployeeVO extends BaseVO implements Serializable {
     private static final long serialVersionUID = -8910905059888155635L;
 
     private String id;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private String role;
 
