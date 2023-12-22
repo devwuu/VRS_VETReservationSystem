@@ -20,7 +20,7 @@ public class Guardian extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @JoinColumn(name = "clinic_id")
+    @JoinColumn(name = "clinic_id", updatable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private VeterinaryClinic clinic;
 

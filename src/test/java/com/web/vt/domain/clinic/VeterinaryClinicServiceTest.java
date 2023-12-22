@@ -24,7 +24,7 @@ class VeterinaryClinicServiceTest {
     @Test @DisplayName("새로운 동물병원을 등록합니다.")
     public void saveTest() {
         VeterinaryClinicVO vo = new VeterinaryClinicVO()
-                .name("고양이 동물병원")
+                .name("완전 새로운 동물병원")
                 .contact("0211112222")
                 .remark("고양이 전문")
                 .status(UsageStatus.USE);
