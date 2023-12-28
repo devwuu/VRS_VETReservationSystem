@@ -28,8 +28,8 @@
 ---
 ### Install
 
-1. postgreSQL(port : 5432) 설치 및 실행
-2. Redis(port: 6379) 설치 및 실행
-3. spring boot run의 active profile을 local로 설정
+1. docker desktop 설치 및 실행
+2. 프로젝트 루트 경로에서 docker compose 실행 
+3. active profile을 local로 설정
 4. run application
  
